@@ -20,6 +20,7 @@ package com.webwizards.screenseekers.controller;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -90,18 +91,6 @@ public class UserController {
 			}
 			
 			User user = userResult.get();
-			/*
-			Set<Rating> userRatings = new HashSet<>();
-			
-			for(Rating rating : user.getRatings()) {
-				Optional<Movie> movie = movieRepo.findById(rating.getMovie().getId());
-				rating.setMovie(movie.get());
-				System.out.println("HELLO WORLD "+ rating.getMovie().getTitle());
-				userRatings.add(rating);
-			}
-			
-			user.setRatings(userRatings);
-			*/
 			
 			return new ResponseEntity<>(user,HttpStatus.OK);
 			
@@ -134,6 +123,8 @@ public class UserController {
 			currentUser.setCountry(newUserInfo.getCountry());
 			currentUser.setEmail(newUserInfo.getEmail());
 			
+			currentUser.setUpdatedAt(new Date());
+			
 			//Changing password
 			currentUser.setPassword(encoder.encode(newUserInfo.getPassword()));
 			
@@ -148,6 +139,49 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		
 	}
+	
+	@PutMapping("/user/{id}/disable")
+	public ResponseEntity<User> disableUser(@PathVariable long id){
+		try {
+			
+			Optional<User> user = userRepo.findById(id);
+			
+			if(!user.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			User updateUser = user.get();
+			
+			updateUser.setDeletedAt(new Date());
+			
+			return new ResponseEntity<>(updateUser, HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/user/{id}/enable")
+	public ResponseEntity<User> enableUser(@PathVariable long id){
+		try {
+			
+			Optional<User> user = userRepo.findById(id);
+			
+			if(!user.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			User updateUser = user.get();
+			
+			updateUser.setUpdatedAt(new Date());
+			updateUser.setDeletedAt(null);
+			
+			return new ResponseEntity<>(updateUser, HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 }

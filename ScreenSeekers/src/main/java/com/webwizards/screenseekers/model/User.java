@@ -88,6 +88,15 @@ public class User {
 	@Column(name = "country")
 	private String country;
 	
+	@Column(name = "createdAt")
+	private Date createdAt;
+	
+	@Column(name = "updatedAt")
+	private Date updatedAt;
+	
+	@Column(name = "deletedAt")
+	private Date deletedAt;
+	
 	
 	//Setting relation with Role table
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -117,7 +126,7 @@ public class User {
 			String lastName, Date dateOfBirth,
 			String phone, String address,
 			String city, String province,
-			String country) {
+			String country, Date createdAt, Date updatedAt, Date deletedAt) {
 		this.id = id;
 		this.password = password;
 		this.firstName = firstName;
@@ -128,6 +137,9 @@ public class User {
 		this.city = city;
 		this.province = province;
 		this.country = country;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.deletedAt = deletedAt;
 	}
 
 	public Long getId() {
@@ -232,6 +244,30 @@ public class User {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+	
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public Date getDeletedAt() {
+		return deletedAt;
+	}
+
+	public void setDeletedAt(Date deletedAt) {
+		this.deletedAt = deletedAt;
 	}
 
 	public Set<Rating> getRatings() {

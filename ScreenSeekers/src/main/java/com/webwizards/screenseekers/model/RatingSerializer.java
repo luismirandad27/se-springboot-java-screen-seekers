@@ -37,6 +37,7 @@ public class RatingSerializer extends StdSerializer<Rating>{
         gen.writeNumberField("userRating", value.getUserRating());
         gen.writeStringField("comment", value.getComment());
         
+        //Retrieving the information of the movie
         gen.writeNumberField("movieId", value.getMovie().getId());
         gen.writeStringField("title", value.getMovie().getTitle());
         
