@@ -1,3 +1,17 @@
+/*
+ * Class File: UserRepository.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the Jpa methods to access the User table from
+ * the database
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.repository;
 
 import java.util.Optional;
@@ -14,7 +28,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	Boolean existsByUsername(String username);
 
 	Boolean existsByEmail(String email);
-	
-	
 	
 }

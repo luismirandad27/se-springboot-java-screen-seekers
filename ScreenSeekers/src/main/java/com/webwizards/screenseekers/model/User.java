@@ -88,14 +88,23 @@ public class User {
 	@Column(name = "country")
 	private String country;
 	
+	
+	//Setting relation with Role table
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(	name = "user_roles", 
+	@JoinTable(	name = "userRole", 
 				joinColumns = @JoinColumn(name = "user_id"), 
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
 	public User() {
 	}
+	
+	//Setting relation with Rating table (comes from a Many to Many relationship)
+	@OneToMany(mappedBy="user",
+				cascade = CascadeType.ALL,
+				fetch = FetchType.LAZY)
+	private Set<Rating> ratings = new HashSet<>();
+	
 	
 	//Constructor to create the User in the database
 	public User(String username, String email, String password) {
@@ -223,6 +232,14 @@ public class User {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public Set<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(Set<Rating> ratings) {
+		this.ratings = ratings;
 	}
 	
 	

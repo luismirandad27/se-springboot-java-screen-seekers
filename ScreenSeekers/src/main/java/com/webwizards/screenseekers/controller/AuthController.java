@@ -1,3 +1,16 @@
+/*
+ * Class File: AuthController.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the API methods for login and signup
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.controller;
 
 

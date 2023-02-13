@@ -1,13 +1,34 @@
+/*
+ * Class File: UserController.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the API methods with regards of the User profile management.
+ * That includes:
+ * 
+ * 1) Retrieving all users
+ * 2) Get user based on the id
+ * 3) Update the information of a user
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.controller;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +37,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webwizards.screenseekers.model.Movie;
+import com.webwizards.screenseekers.model.Rating;
 import com.webwizards.screenseekers.model.User;
+import com.webwizards.screenseekers.repository.MovieRepository;
+import com.webwizards.screenseekers.repository.RatingRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -26,6 +51,15 @@ public class UserController {
 
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	RatingRepository ratingRepo;
+	
+	@Autowired
+	MovieRepository movieRepo;
+	
+	@Autowired
+	PasswordEncoder encoder;
 	
 	@GetMapping("/users")
 	public ResponseEntity<List<User>> getAllUsers(){
@@ -49,17 +83,30 @@ public class UserController {
 	public ResponseEntity<User> getUser(@PathVariable long id){
 		try{
 			
-			Optional<User> user = userRepo.findById(id);
+			Optional<User> userResult = userRepo.findById(id);
 			
-			if (!user.isPresent()) {
+			if (!userResult.isPresent()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-			else {
-				return new ResponseEntity<>(user.get(),HttpStatus.OK);
+			
+			User user = userResult.get();
+			/*
+			Set<Rating> userRatings = new HashSet<>();
+			
+			for(Rating rating : user.getRatings()) {
+				Optional<Movie> movie = movieRepo.findById(rating.getMovie().getId());
+				rating.setMovie(movie.get());
+				System.out.println("HELLO WORLD "+ rating.getMovie().getTitle());
+				userRatings.add(rating);
 			}
 			
+			user.setRatings(userRatings);
+			*/
+			
+			return new ResponseEntity<>(user,HttpStatus.OK);
+			
 		}catch(Exception e) {
-			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -74,17 +121,27 @@ public class UserController {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
-			user.get().setFirstName(newUserInfo.getFirstName());
-			user.get().setLastName(newUserInfo.getLastName());
-			user.get().setDateOfBirth(newUserInfo.getDateOfBirth());
-			user.get().setPhone(newUserInfo.getPhone());
-			user.get().setAddress(newUserInfo.getAddress());
-			user.get().setCity(newUserInfo.getCity());
-			user.get().setProvince(newUserInfo.getProvince());
-			user.get().setCountry(newUserInfo.getCountry());
-			user.get().setEmail(newUserInfo.getEmail());
+			User currentUser = user.get();
 			
-			return null;
+			//Changing basic information of the user
+			currentUser.setFirstName(newUserInfo.getFirstName());
+			currentUser.setLastName(newUserInfo.getLastName());
+			currentUser.setDateOfBirth(newUserInfo.getDateOfBirth());
+			currentUser.setPhone(newUserInfo.getPhone());
+			currentUser.setAddress(newUserInfo.getAddress());
+			currentUser.setCity(newUserInfo.getCity());
+			currentUser.setProvince(newUserInfo.getProvince());
+			currentUser.setCountry(newUserInfo.getCountry());
+			currentUser.setEmail(newUserInfo.getEmail());
+			
+			//Changing password
+			currentUser.setPassword(encoder.encode(newUserInfo.getPassword()));
+			
+			//Store the new User information
+			userRepo.save(currentUser);
+			
+			//Return the User information (response)
+			return new ResponseEntity<>(currentUser,HttpStatus.OK);
 			
 			
 		}catch(Exception e) {
