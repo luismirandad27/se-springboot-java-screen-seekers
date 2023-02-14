@@ -25,9 +25,6 @@ public class ScreenSeekersApplication {
 			roleRepo.save(new Role(ERole.ROLE_USER));
 			
 			movieRepo.save(new Movie("Titanic", "Drama", "1997-12-19", 180, "Synopsys here..", "R","https://www.youtube.com/watch?v=I7c1etV7D7g", "2023-02-06", "2023-02-06", "2023-02-06" ));
-			movieRepo.save(new Movie("Titanic2", "Drama", "1997-12-19", 180, "Synopsys here..", "R","https://www.youtube.com/watch?v=I7c1etV7D7g", "2023-02-06", "2023-02-06", "2023-02-06" ));
-			
-//			moveiRepo.findAll().forEach(System.out::println);
 			
 		};
 				

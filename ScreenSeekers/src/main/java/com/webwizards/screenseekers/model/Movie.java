@@ -47,6 +47,12 @@ public class Movie {
 				fetch = FetchType.LAZY)
 	private Set<Rating> ratings = new HashSet<>();
 	
+	//Setting relation with Watchlist table (comes from a Many to Many relationship)
+	@OneToMany(mappedBy="movie",
+			cascade = CascadeType.ALL,
+			fetch = FetchType.LAZY)
+	private Set<WatchlistDetail> watchlistDetails = new HashSet<>(); 
+	
 	public Long getId() {
 		return id;
 	}
@@ -118,6 +124,12 @@ public class Movie {
 	}
 	public void setRatings(Set<Rating> ratings) {
 		this.ratings = ratings;
+	}
+	public Set<WatchlistDetail> getWatchlistDetails() {
+		return watchlistDetails;
+	}
+	public void setWatchlistDetails(Set<WatchlistDetail> watchlistDetails) {
+		this.watchlistDetails = watchlistDetails;
 	}
 	public Movie(String title, String genre, String releaseDate, int length, String synopsis, String classificationRating,
 			String movieTrailerLink, String createdAt, String updatedAt, String deletedAt) {

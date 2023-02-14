@@ -114,6 +114,12 @@ public class User {
 				fetch = FetchType.LAZY)
 	private Set<Rating> ratings = new HashSet<>();
 	
+	//Setting relation with Watchlist table (comes from a One to Many relationship)
+	@OneToMany(mappedBy="user",
+				cascade = CascadeType.ALL,
+				fetch = FetchType.LAZY)
+	private Set<Watchlist> watchlists = new HashSet<>();
+	
 	
 	//Constructor to create the User in the database
 	public User(String username, String email, String password) {
@@ -277,7 +283,13 @@ public class User {
 	public void setRatings(Set<Rating> ratings) {
 		this.ratings = ratings;
 	}
-	
-	
+
+	public Set<Watchlist> getWatchlists() {
+		return watchlists;
+	}
+
+	public void setWatchlists(Set<Watchlist> watchlists) {
+		this.watchlists = watchlists;
+	}
 	
 }
