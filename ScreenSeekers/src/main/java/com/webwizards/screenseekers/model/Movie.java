@@ -1,12 +1,16 @@
 package com.webwizards.screenseekers.model;
 
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,6 +40,18 @@ public class Movie {
 	private String updatedAt;
 	@Column(name="deletedAt")
 	private String deletedAt;
+	
+	//Setting relation with Rating table (comes from a Many to Many relationship)
+	@OneToMany(mappedBy = "movie",
+				cascade = CascadeType.ALL,
+				fetch = FetchType.LAZY)
+	private Set<Rating> ratings = new HashSet<>();
+	
+	//Setting relation with Watchlist table (comes from a Many to Many relationship)
+	@OneToMany(mappedBy="movie",
+			cascade = CascadeType.ALL,
+			fetch = FetchType.LAZY)
+	private Set<WatchlistDetail> watchlistDetails = new HashSet<>(); 
 	
 	public Long getId() {
 		return id;
@@ -103,9 +119,21 @@ public class Movie {
 	public void setDeletedAt(String deletedAt) {
 		this.deletedAt = deletedAt;
 	}
+	public Set<Rating> getRatings() {
+		return ratings;
+	}
+	public void setRatings(Set<Rating> ratings) {
+		this.ratings = ratings;
+	}
+	public Set<WatchlistDetail> getWatchlistDetails() {
+		return watchlistDetails;
+	}
+	public void setWatchlistDetails(Set<WatchlistDetail> watchlistDetails) {
+		this.watchlistDetails = watchlistDetails;
+	}
 	public Movie(String title, String genre, String releaseDate, int length, String synopsis, String classificationRating,
 			String movieTrailerLink, String createdAt, String updatedAt, String deletedAt) {
-		super();
+		
 		this.title = title;
 		this.genre = genre;
 		this.releaseDate = releaseDate;
@@ -118,7 +146,7 @@ public class Movie {
 		this.deletedAt = deletedAt;
 	}
 	public Movie() {
-		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 	

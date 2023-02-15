@@ -1,3 +1,17 @@
+/*
+ * Class File: MovieRepository.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the Jpa methods to access the Movie table from
+ * the database
+ * 
+ * @author Regal Cruz
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.repository;
 
 import java.util.List;
