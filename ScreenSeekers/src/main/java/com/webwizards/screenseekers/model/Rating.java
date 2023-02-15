@@ -1,3 +1,16 @@
+/*
+ * Class File: Rating.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the information of the different Rating
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.model;
 
 import java.util.Date;

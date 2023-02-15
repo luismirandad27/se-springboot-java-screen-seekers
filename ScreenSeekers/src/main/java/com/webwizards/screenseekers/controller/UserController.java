@@ -10,6 +10,7 @@
  * 1) Retrieving all users
  * 2) Get user based on the id
  * 3) Update the information of a user
+ * 4) Enable/Disable a user
  * 
  * @author Luis Miguel Miranda
  * @version 1.0

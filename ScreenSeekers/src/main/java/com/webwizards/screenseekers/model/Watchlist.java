@@ -1,3 +1,17 @@
+/*
+ * Class File: Watchlist.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the information of the watchlist created by
+ * a user.
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.model;
 
 import java.util.Date;

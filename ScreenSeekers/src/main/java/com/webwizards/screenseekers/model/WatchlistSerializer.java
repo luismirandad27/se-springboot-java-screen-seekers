@@ -1,3 +1,17 @@
+/*
+ * Class File: WatchlistSerializer.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * The WatchlistDetail table is an intermediate table from the combination of Watchlists and Movies
+ * This serializer class will help us to retrieve the information of the watchlist and each item.
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.model;
 
 import java.io.IOException;
@@ -19,15 +33,11 @@ public class WatchlistSerializer extends StdSerializer<WatchlistDetail> {
 	@Override
     public void serialize(WatchlistDetail value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
-        gen.writeNumberField("id", value.getId());
         
         //Retrieving the information of the movie
         gen.writeNumberField("movieId", value.getMovie().getId());
         gen.writeStringField("title", value.getMovie().getTitle());
         
-        gen.writeObjectField("createdAt", value.getCreatedAt());
-        gen.writeObjectField("updatedAt", value.getUpdatedAt());
-        gen.writeObjectField("deletedAt", value.getDeletedAt());
         gen.writeEndObject();
     }
 

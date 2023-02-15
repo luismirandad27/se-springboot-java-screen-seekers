@@ -1,3 +1,17 @@
+/*
+ * Class File: WatchlistDetail.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the information of the watchlist item (movie added to a
+ * watchlist).
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.model;
 
 import java.util.Date;
