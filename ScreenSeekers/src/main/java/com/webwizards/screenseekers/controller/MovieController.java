@@ -30,6 +30,15 @@ public class MovieController {
 	@Autowired
 	MovieRepository rep;
 	
+	@GetMapping("/titles")
+	public ResponseEntity<List <Movie>> searchTitle (@RequestParam String titles){
+		try {
+			return new ResponseEntity<List <Movie> > (rep.findByTitleContainingIgnoreCase(titles), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@GetMapping("/movies")
 	public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required=false) String title){
 		try {
@@ -37,7 +46,7 @@ public class MovieController {
 			if(title==null) {
 				myList=rep.findAll();
 			}else {
-				myList=rep.findByTitle(title);
+				myList=rep.findByTitleContainingIgnoreCase(title);
 			}
 			return new ResponseEntity<>(myList, HttpStatus.OK);
 		}catch(Exception e) {
