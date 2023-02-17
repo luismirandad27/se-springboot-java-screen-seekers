@@ -7,7 +7,7 @@
  * This class will store the information of the user (customer, admins), including
  * the username and password. This class have 3 many to many relationships:
  * 
- * 1) User x Role
+ * 1) User x Role (message from my branch)
  * 2) User x Movie (for rating and review)
  * 3) User x WatchList (for storing the different watchlists the user could have)
  * 
