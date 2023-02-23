@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,8 @@ public class MovieController {
 	@Autowired
 	MovieRepository rep;
 	
+//	
+
 	@GetMapping("/titles")
 	public ResponseEntity<List <Movie>> searchTitle (@RequestParam String titles){
 		try {
@@ -40,6 +43,7 @@ public class MovieController {
 	}
 	
 	@GetMapping("/movies")
+	@PreAuthorize("hasRole('ADMIN')") // @PreAuthorize not working, a person with user role can still access
 	public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required=false) String title){
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
