@@ -1,6 +1,20 @@
+/*
+ * Class File: AuthController.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the API methods for login and signup
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.controller;
 
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +53,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-	@Autowired
+	  @Autowired
 	  AuthenticationManager authenticationManager;
 
 	  @Autowired
@@ -93,6 +107,8 @@ public class AuthController {
 	    User user = new User(signUpRequest.getUsername(), 
 	               signUpRequest.getEmail(),
 	               encoder.encode(signUpRequest.getPassword()));
+	    
+	    user.setCreatedAt(new Date());
 
 	    Set<String> strRoles = signUpRequest.getRole();
 	    Set<Role> roles = new HashSet<>();
