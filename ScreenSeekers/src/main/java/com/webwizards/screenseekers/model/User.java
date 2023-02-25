@@ -88,6 +88,10 @@ public class User {
 	@Column(name = "country")
 	private String country;
 	
+	@Column(name= "profileImage")
+	@Lob
+	private byte[] profileImage;
+	
 	@Column(name = "createdAt")
 	private Date createdAt;
 	
@@ -291,5 +295,15 @@ public class User {
 	public void setWatchlists(Set<Watchlist> watchlists) {
 		this.watchlists = watchlists;
 	}
+
+	public byte[] getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(byte[] profileImage) {
+		this.profileImage = profileImage;
+	}
+	
+	
 	
 }
