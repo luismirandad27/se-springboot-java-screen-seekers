@@ -156,6 +156,8 @@ public class UserController {
 			
 			updateUser.setDeletedAt(new Date());
 			
+			userRepo.save(updateUser);
+			
 			return new ResponseEntity<>(updateUser, HttpStatus.OK);
 			
 		}catch(Exception e) {
@@ -178,7 +180,34 @@ public class UserController {
 			updateUser.setUpdatedAt(new Date());
 			updateUser.setDeletedAt(null);
 			
+			userRepo.save(updateUser);
+			
 			return new ResponseEntity<>(updateUser, HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/user/{id}/updateProfileImage")
+	public ResponseEntity<User> updateProfileImage(@PathVariable long id, @RequestBody Byte[] profileImage){
+		try {
+			
+			Optional<User> user = userRepo.findById(id);
+			
+			if(!user.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			User updateUser = user.get();
+			
+			updateUser.setUpdatedAt(new Date());
+			updateUser.setProfileImage(profileImage);
+			
+			userRepo.save(updateUser);
+			
+			return new ResponseEntity<>(updateUser, HttpStatus.OK);
+			
 			
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
