@@ -17,9 +17,13 @@ package com.webwizards.screenseekers.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.webwizards.screenseekers.model.Movie;
 
 public interface MovieRepository extends JpaRepository<Movie, Long>{
 	List<Movie> findByTitle(String title);
+	
+	@Query("SELECT e FROM Movie e WHERE deletedAt IS NULL")
+	List<Movie> findAllMoviesAvailable();
 }

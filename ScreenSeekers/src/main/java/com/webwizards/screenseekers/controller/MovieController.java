@@ -1,6 +1,7 @@
 package com.webwizards.screenseekers.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webwizards.screenseekers.model.Movie;
+import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
+import com.webwizards.screenseekers.repository.UserRepository;
+import com.webwizards.screenseekers.utils.Recommender;
 
 @RestController
 @RequestMapping("/api")
@@ -29,6 +33,9 @@ public class MovieController {
 	
 	@Autowired
 	MovieRepository rep;
+	
+	@Autowired
+	UserRepository userRepo;
 	
 	@GetMapping("/movies")
 	public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required=false) String title){
@@ -116,5 +123,38 @@ public class MovieController {
 		}catch(Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@GetMapping("/movies/recommend")
+	public ResponseEntity<HashMap<Long,HashMap<Long,Double>>> recommendMoviesToUser(){
+		
+		try {
+			
+			//Getting All Movies
+			List<Movie> allMovies = rep.findAllMoviesAvailable();
+			
+			//Get the User Info
+			//Optional<User> user = userRepo.findById(1);
+			
+			if (allMovies.isEmpty() /*|| !user.isPresent()*/) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			Recommender movieRecommender = new Recommender();
+			
+			//Let's create the HashMap
+			movieRecommender.setRatings(allMovies);
+			
+			movieRecommender.displayHashMap();
+			
+			HashMap<Long,HashMap<Long,Double>> x = movieRecommender.getRatings();
+			
+			//HashMap<Long,HashMap<Long,Double>> ratings = 
+			return new ResponseEntity<>(x,HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 }

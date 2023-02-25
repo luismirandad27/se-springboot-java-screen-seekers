@@ -87,6 +87,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/user/{id}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> getUser(@PathVariable long id){
 		try{
 			
@@ -106,6 +107,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/user/{id}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User newUserInfo){
 		
 		try {
@@ -148,6 +150,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/user/{id}/disable")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> disableUser(@PathVariable long id){
 		try {
 			
@@ -171,6 +174,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/user/{id}/enable")
+	@PreAuthorize("hasRole('ADMIN')" )
 	public ResponseEntity<User> enableUser(@PathVariable long id){
 		try {
 			
@@ -195,6 +199,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/user/{id}/updateProfileImage")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> updateProfileImage(@PathVariable long id, @RequestParam("file") MultipartFile profileImageFile){
 		try {
 			
