@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import com.webwizards.screenseekers.model.ERole;
 import com.webwizards.screenseekers.model.Movie;
 import com.webwizards.screenseekers.model.Rating;
+import com.webwizards.screenseekers.model.RatingSerializer;
 import com.webwizards.screenseekers.model.Role;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.RatingRepository;

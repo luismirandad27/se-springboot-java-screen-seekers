@@ -1,11 +1,22 @@
 /*
- * Class File: MovieController.java
+ * Class File: RatingController.java
  * 
  * ------------
  * Description:
  * ------------
- * This class will create end-point to interact with front-end. 
- * v1.01: added Find methods and random movies 
+ * This class will store the API methods with regards of the movies information management.
+ * That includes:
+ * 
+ * 1) Retrieve all movies accessed by Admin
+ * 2) Retrieve random movies  
+ * 3) Get movies based on the Title
+ * 4) Get movies based on the Genre
+ * 5) Get movies based on the ReleaseDate 
+ * 6) Get movies based on the id
+ * 7) Create movies
+ * 8) Update the movie information
+ * 9) Delete movies based on id
+ * 10) Delete all movies
  * 
  * @author Victor Chawsukho
  * @version 1.01
@@ -18,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//import org.apache.el.stream.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +54,7 @@ import com.webwizards.screenseekers.repository.MovieRepository;
 public class MovieController {
 
 	@Autowired
-	MovieRepository rep;
+	MovieRepository movieRepo;
 
 	@GetMapping("/movies")
 	@PreAuthorize("hasRole('ADMIN')") // @PreAuthorize not working, a person with user role can still access
@@ -51,9 +62,9 @@ public class MovieController {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
 			if (title == null) {
-				myList = rep.findAll();
+				myList = movieRepo.findAll();
 			} else {
-				myList = rep.findByTitleContainingIgnoreCase(title);
+				myList = movieRepo.findByTitleContainingIgnoreCase(title);
 			}
 			return new ResponseEntity<>(myList, HttpStatus.OK);
 		} catch (Exception e) {
@@ -61,15 +72,15 @@ public class MovieController {
 		}
 	}
 
-	// View movie information (Random) : basic info, where to watch, reviews
+	
 	@GetMapping("/movies/random")
 	public ResponseEntity<List<Movie>> getRandomMovies(@RequestParam(required = false) String title) {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
 			if (title == null) {
-				myList = rep.findRandom();
+				myList = movieRepo.findRandom();
 			} else {
-				myList = rep.findByTitleContainingIgnoreCase(title);
+				myList = movieRepo.findByTitleContainingIgnoreCase(title);
 			}
 
 			return new ResponseEntity<>(myList, HttpStatus.OK);
@@ -83,9 +94,9 @@ public class MovieController {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
 			if (title == null) {
-				myList = rep.findAll();
+				myList = movieRepo.findAll();
 			} else {
-				myList = rep.findByTitleContainingIgnoreCase(title);
+				myList = movieRepo.findByTitleContainingIgnoreCase(title);
 			}
 
 			return new ResponseEntity<>(myList, HttpStatus.OK);
@@ -99,9 +110,9 @@ public class MovieController {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
 			if (genre == null) {
-				myList = rep.findAll();
+				myList = movieRepo.findAll();
 			} else {
-				myList = rep.findByGenreContainingIgnoreCase(genre);
+				myList = movieRepo.findByGenreContainingIgnoreCase(genre);
 			}
 
 			return new ResponseEntity<>(myList, HttpStatus.OK);
@@ -115,9 +126,9 @@ public class MovieController {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
 			if (year == 0) {
-				myList = rep.findAll();
+				myList = movieRepo.findAll();
 			} else {
-				myList = rep.findByReleaseDateYear(year);
+				myList = movieRepo.findByReleaseDateYear(year);
 			}
 
 			return new ResponseEntity<>(myList, HttpStatus.OK);
@@ -129,8 +140,8 @@ public class MovieController {
 	@GetMapping("/movies/{id}")
 	public ResponseEntity<Movie> getMovie(@PathVariable("id") Long id) {
 		try {
-			if (rep.findById(id).isPresent()) {
-				return new ResponseEntity<>(rep.findById(id).get(), HttpStatus.FOUND);
+			if (movieRepo.findById(id).isPresent()) {
+				return new ResponseEntity<>(movieRepo.findById(id).get(), HttpStatus.FOUND);
 			} else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
@@ -140,10 +151,10 @@ public class MovieController {
 	}
 
 	@PostMapping("/movies")
-	public ResponseEntity<Movie> getMovie(@RequestBody Movie movie) {
+	public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
 		try {
 			Movie myMovie = movie;
-			rep.save(new Movie(movie.getTitle(), movie.getGenre(), movie.getReleaseDate(), movie.getLength(),
+			movieRepo.save(new Movie(movie.getTitle(), movie.getGenre(), movie.getReleaseDate(), movie.getLength(),
 					movie.getSynopsis(), movie.getClassificationRating(), movie.getMovieTrailerLink(),
 					movie.getCreatedAt(), movie.getUpdatedAt(), movie.getDeletedAt()));
 			return new ResponseEntity<>(myMovie, HttpStatus.CREATED);
@@ -155,8 +166,8 @@ public class MovieController {
 	@PutMapping("movies/{id}")
 	public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
 		try {
-			Optional<Movie> myMovie = rep.findById(id);
-			if (rep.findById(id).isPresent()) {
+			Optional<Movie> myMovie = movieRepo.findById(id);
+			if (movieRepo.findById(id).isPresent()) {
 				Movie _myMovie = myMovie.get();
 				_myMovie.setTitle(movie.getTitle());
 				_myMovie.setGenre(movie.getGenre());
@@ -168,7 +179,7 @@ public class MovieController {
 				_myMovie.setCreatedAt(movie.getCreatedAt());
 				_myMovie.setUpdatedAt(movie.getUpdatedAt());
 				_myMovie.setDeletedAt(movie.getDeletedAt());
-				rep.save(_myMovie);
+				movieRepo.save(_myMovie);
 				return new ResponseEntity<>(_myMovie, HttpStatus.OK);
 			} else
 				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -180,8 +191,8 @@ public class MovieController {
 	@DeleteMapping("movies/{id}")
 	public ResponseEntity deleteMovie(@PathVariable Long id) {
 		try {
-			if (rep.findById(id).isPresent()) {
-				rep.deleteById(id);
+			if (movieRepo.findById(id).isPresent()) {
+				movieRepo.deleteById(id);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -194,7 +205,7 @@ public class MovieController {
 	@DeleteMapping("/movies")
 	public ResponseEntity deleteAllMovies() {
 		try {
-			rep.deleteAll();
+			movieRepo.deleteAll();
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
