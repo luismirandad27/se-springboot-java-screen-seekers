@@ -1,7 +1,7 @@
 package com.webwizards.screenseekers.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webwizards.screenseekers.model.Movie;
+import com.webwizards.screenseekers.model.Rating;
 import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
@@ -69,7 +70,7 @@ public class MovieController {
 	public ResponseEntity<Movie> getMovie(@RequestBody Movie movie){
 		try {
 			Movie myMovie = movie;
-			rep.save(new Movie(movie.getTitle(), movie.getGenre(), movie.getReleaseDate(), movie.getLength(), movie.getSynopsis(), movie.getClassificationRating(), movie.getMovieTrailerLink(), movie.getCreatedAt(), movie.getUpdatedAt(), movie.getDeletedAt()));
+			rep.save(new Movie(movie.getTitle(), movie.getGenre(), movie.getReleaseDate(), movie.getLength(), movie.getSynopsis(), movie.getClassificationRating(), movie.getMovieTrailerLink()));
 			return new ResponseEntity<>(myMovie, HttpStatus.CREATED);
 		}catch(Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -89,9 +90,7 @@ public class MovieController {
 				_myMovie.setSynopsis(movie.getSynopsis());
 				_myMovie.setClassificationRating(movie.getClassificationRating());
 				_myMovie.setMovieTrailerLink(movie.getMovieTrailerLink());
-				_myMovie.setCreatedAt(movie.getCreatedAt());
-				_myMovie.setUpdatedAt(movie.getUpdatedAt());
-				_myMovie.setDeletedAt(movie.getDeletedAt());
+				_myMovie.setUpdatedAt(new Date());
 				rep.save(_myMovie);
 				return new ResponseEntity<>(_myMovie, HttpStatus.OK);
 			}else
@@ -125,32 +124,36 @@ public class MovieController {
 		}
 	}
 	
-	@GetMapping("/movies/recommend")
-	public ResponseEntity<HashMap<Long,HashMap<Long,Double>>> recommendMoviesToUser(){
+	@GetMapping("/movies/{id}/recommend")
+	public ResponseEntity<List<Movie>> recommendMoviesToUser(@PathVariable long id){
 		
 		try {
 			
 			//Getting All Movies
 			List<Movie> allMovies = rep.findAllMoviesAvailable();
 			
-			//Get the User Info
-			//Optional<User> user = userRepo.findById(1);
+			//Getting All Available Ratings
+			List<User> allUsers = userRepo.findAllUsersAvailable();
 			
-			if (allMovies.isEmpty() /*|| !user.isPresent()*/) {
+			//Get the User Info
+			Optional<User> user = userRepo.findById(id);
+			
+			if (allMovies.isEmpty() || !user.isPresent() || allUsers.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			
 			Recommender movieRecommender = new Recommender();
 			
 			//Let's create the HashMap
-			movieRecommender.setRatings(allMovies);
+			movieRecommender.setRatings(allUsers);
 			
-			movieRecommender.displayHashMap();
+			List<Movie> recommendations = movieRecommender.getRecommendedMovieList(allMovies, id);
 			
-			HashMap<Long,HashMap<Long,Double>> x = movieRecommender.getRatings();
+			if (recommendations.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
 			
-			//HashMap<Long,HashMap<Long,Double>> ratings = 
-			return new ResponseEntity<>(x,HttpStatus.OK);
+			return new ResponseEntity<>(recommendations,HttpStatus.OK);
 			
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -133,7 +133,7 @@ public class Movie {
 		this.watchlistDetails = watchlistDetails;
 	}
 	public Movie(String title, String genre, Date releaseDate, int length, String synopsis, String classificationRating,
-			String movieTrailerLink, Date createdAt, Date updatedAt, Date deletedAt) {
+			String movieTrailerLink) {
 		
 		this.title = title;
 		this.genre = genre;
@@ -142,9 +142,7 @@ public class Movie {
 		this.synopsis = synopsis;
 		this.classificationRating = classificationRating;
 		this.movieTrailerLink = movieTrailerLink;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
+		this.createdAt = new Date();
 	}
 	public Movie() {
 		

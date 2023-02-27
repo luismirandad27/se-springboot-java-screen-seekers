@@ -69,13 +69,11 @@ public class Rating {
 		
 	}
 
-	public Rating(long id, int userRating, String comment, Date createdAt, Date updatedAt, Date deletedAt, User user, Movie movie) {
+	public Rating(long id, int userRating, String comment, User user, Movie movie) {
 		this.id = id;
 		this.userRating = userRating;
 		this.comment = comment;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
+		this.createdAt = new Date();
 		this.user = user;
 		this.movie = movie;
 	}

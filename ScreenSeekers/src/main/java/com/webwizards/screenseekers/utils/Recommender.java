@@ -26,11 +26,13 @@ import java.util.Set;
 
 import com.webwizards.screenseekers.model.Movie;
 import com.webwizards.screenseekers.model.Rating;
+import com.webwizards.screenseekers.model.User;
 
 
 public class Recommender {
 
-	private static final int NUM_NEIGHBORS = 2;
+	private static final int NUM_NEIGHBORS = 10;
+	private static final double MIN_ACCEPTABLE_RATING = 3.5;
 	private HashMap<Long, HashMap<Long,Double>> ratings;
 	
 	
@@ -102,11 +104,6 @@ public class Recommender {
 	 * {double} -> the similarity between users 'a' and 'b' with a list of common rated movies
 	 */
 	public double calculateSimilarity(long a, long b, List<Long> crm) {
-		
-		double similarity = 0.0;
-		
-		double avgRa = calculateAverageRating(a);
-		double avgRb = calculateAverageRating(b);
 		
 		double numerator = 0.0;
 		double denom1 = 0.0;
@@ -187,7 +184,13 @@ public class Recommender {
 				
 				double similarity = calculateSimilarity(a,entry.getKey(),crm);
 				
-				userSimilarities.put(entry.getKey(), similarity);
+				//don't include users with similarity score -100.0
+				if (similarity != -100.0) {
+					
+					userSimilarities.put(entry.getKey(), similarity);
+					
+				}
+
 				
 			}
 			
@@ -207,10 +210,10 @@ public class Recommender {
 	 * return:
 	 * {double} -> predicted rating
 	 */
-	public double calculatePrediction(int a, long movieIdx) {
+	public double calculatePrediction(long a, long movieIdx) {
 		
 		//First we are going to calculate the similarities and let's set a limit of Neighbors
-		HashMap<Long, Double > similarUsers = getUsersSimilarities(a);
+		HashMap<Long, Double> similarUsers = getUsersSimilarities(a);
 		
 		int numUsers = Math.min(similarUsers.size(), NUM_NEIGHBORS);
 		
@@ -263,18 +266,18 @@ public class Recommender {
 	}
 	
 	/*
-	 * method: rateAllMoviesForUser
+	 * method: getRecommendedMovieList
 	 * params:
 	 * {List<Movie>} -> list of all movies available
 	 * {int a} -> userId
 	 * return:
-	 * {HashMap<Integer,Double>} -> all the movies that the user didn't rate that include the predicted rating.
+	 * {List<Movie>} -> recommended movies
 	 */
-	public HashMap<Long,Double> rateAllMoviesForUser(List<Movie> allMovies ,int a) {
+	public List<Movie> getRecommendedMovieList(List<Movie> allMovies ,long a) {
 		
 		//Before making the predictions, first we need to get the users with the highest similarities
 		
-		HashMap<Long,Double> predictedRatings = new HashMap<>();
+		List<Movie> recommendedMovieList = new ArrayList<>();
 		
 		for (int i = 0; i < allMovies.size() ; i++) {
 			
@@ -282,61 +285,64 @@ public class Recommender {
 			
 			if (ratings.get(a).get(movie.getId()) == null) {
 				
-				predictedRatings.put(movie.getId(), calculatePrediction(a,movie.getId()));
+				double predictedRating = calculatePrediction(a,movie.getId());
+				
+				if (predictedRating > MIN_ACCEPTABLE_RATING) {
+					
+					recommendedMovieList.add(movie);
+					
+				}
 
 			}
 			
 		}
 		
-		return predictedRatings;
+		return recommendedMovieList;
 		
 	}
-
+	
+	/*
+	 * method: setRatings
+	 * return:
+	 * {HashMap<Long, HashMap<Long, Double>>} -> rating list
+	 */
 	public HashMap<Long, HashMap<Long, Double>> getRatings() {
 		return ratings;
 	}
-
-	public void setRatings(List<Movie> movieList) {
+	
+	/*
+	 * method: setRatings
+	 * params:
+	 * {List<User>} -> total of users
+	 * return:
+	 * {void}
+	 */
+	public void setRatings(List<User> users) {
 		HashMap<Long,HashMap<Long,Double>> ratingList = new HashMap<>();
 		
-		System.out.println("TESTING");
-		
-		for(Movie movie : movieList) {
+		for(User user : users) {
 			
-			HashMap<Long,Double> ratingMovie = new HashMap<>();
+			Set<Rating> ratings = user.getRatings();
 			
-			for (Rating rating: movie.getRatings()) {
+			if (ratings != null) {
 				
-				ratingMovie.put(rating.getUser().getId(),rating.getUserRating()*1.0);
+				HashMap<Long,Double> ratingMovie = new HashMap<>();
+				
+				for (Rating rating: user.getRatings()) {
+					
+					ratingMovie.put(rating.getMovie().getId(),rating.getUserRating()*1.0);
+					
+				}
+				
+				ratingList.put(user.getId(), ratingMovie);
 				
 			}
 			
-			ratingList.put(movie.getId(), ratingMovie);
 			
 		}
 		
 		
 		this.ratings = ratingList;
 	}
-	
-	public void displayHashMap() {
-		
-		System.out.println("TRYING TO DISPLAY THE HASHMAP");
-		
-		for(Map.Entry<Long, HashMap<Long, Double>> r: ratings.entrySet()) {
-			
-			HashMap<Long,Double> sub = r.getValue();
-			
-			Set<Long> keys = sub.keySet();
-			
-			for (Long d: keys) {
-				System.out.println("ID IS "+d);
-			}
-			
-		}
-		
-	}
-	
-	
 	
 }

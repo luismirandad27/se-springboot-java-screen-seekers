@@ -17,6 +17,7 @@ package com.webwizards.screenseekers.controller;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -92,9 +93,31 @@ public class AuthController {
 	  @PostMapping("/signup")
 	  public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
 	    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-	      return ResponseEntity
-	          .badRequest()
-	          .body(new MessageResponse("Error: Username is already taken!"));
+	    	
+	    	//if the user exists, let's see if it's disabled
+	    	User user = userRepository.findByUsername(signUpRequest.getUsername()).get();
+	    	
+	    	if (user.getDeletedAt() == null) {
+	    		//it's active!
+	    		return ResponseEntity
+	    		          .badRequest()
+	    		          .body(new MessageResponse("Error: Username is already taken!"));
+	    	}else {
+	    		
+	    		//it's inactive, let's re-activate it
+	    		user.setEmail(signUpRequest.getEmail());
+	    		user.setPassword(encoder.encode(signUpRequest.getPassword()));
+	    		user.setUpdatedAt(new Date());
+	    		user.setDeletedAt(null);
+	    		
+	    		userRepository.save(user);
+	    		
+	    		return ResponseEntity
+	    		          .ok()
+	    		          .body(new MessageResponse("User re-activated successfully"));
+	    		
+	    	}
+	      
 	    }
 
 	    if (userRepository.existsByEmail(signUpRequest.getEmail())) {

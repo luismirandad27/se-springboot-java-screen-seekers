@@ -60,13 +60,11 @@ public class Watchlist {
 	@OneToMany(mappedBy="watchlist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<WatchlistDetail> watchlistDetails = new HashSet<>();
 
-	public Watchlist(Long id, String name, Date createdAt, Date updatedAt, Date deletedAt) {
+	public Watchlist(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
+		this.createdAt =  new Date();
 	}
 	
 	public Watchlist() {

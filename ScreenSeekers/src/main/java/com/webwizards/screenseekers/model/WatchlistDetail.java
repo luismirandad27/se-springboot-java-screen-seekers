@@ -55,15 +55,7 @@ public class WatchlistDetail {
 	private Watchlist watchlist;
 
 	public WatchlistDetail() {
-		
-	}
-	
-	public WatchlistDetail(Long id, Date createdAt, Date updatedAt, Date deletedAt) {
-		super();
-		this.id = id;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
+		this.createdAt = new Date();
 	}
 
 	public Long getId() {
