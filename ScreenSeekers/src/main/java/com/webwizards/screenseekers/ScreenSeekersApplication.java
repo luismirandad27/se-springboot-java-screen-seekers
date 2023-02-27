@@ -1,3 +1,16 @@
+/*
+ * Class File: ScreenSeekersApplication.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * v1.01: added 20 movies, Rating Repo
+ * 
+ * @author Victor Chawsukho
+ * @version 1.01
+ * 
+ */
+
 package com.webwizards.screenseekers;
 
 import java.text.DateFormat;
@@ -15,18 +28,22 @@ import com.webwizards.screenseekers.model.Movie;
 import com.webwizards.screenseekers.model.Role;
 import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
+import com.webwizards.screenseekers.repository.RatingRepository;
 import com.webwizards.screenseekers.repository.RoleRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
 
 @SpringBootApplication
 public class ScreenSeekersApplication {
+	// this is for parsing input date from ApplicationRunner
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScreenSeekersApplication.class, args);
 	}
-	
+
 	@Bean
-	ApplicationRunner init(RoleRepository roleRepo, MovieRepository movieRepo, UserRepository userRepo) {
+	ApplicationRunner init(RoleRepository roleRepo, MovieRepository movieRepo, RatingRepository ratingRepo, UserRepository userRepo) {
+
 		return args -> {
 			
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -110,8 +127,10 @@ public class ScreenSeekersApplication {
 			movieRepo.save(new Movie("Titanic", "Drama", dateFormat.parse("1997-12-19"), 180, "Synopsys here..", "R",
 					"https://www.youtube.com/watch?v=I7c1etV7D7g"));
 			
+
 			roleRepo.save(new Role(ERole.ROLE_ADMIN));
 			roleRepo.save(new Role(ERole.ROLE_USER));
+
 			
 			//Users
 			User user1 = new User("lmirandad","lmirandad27@gmail.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
@@ -154,7 +173,7 @@ public class ScreenSeekersApplication {
 			
 		          
 		};
-				
+
 	}
 
 }

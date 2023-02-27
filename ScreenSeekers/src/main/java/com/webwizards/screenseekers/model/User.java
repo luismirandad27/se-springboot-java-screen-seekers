@@ -91,8 +91,8 @@ public class User {
 	@Column(name= "profileImage")
 	@Lob
 	private byte[] profileImage;
-	
-	@Column(name = "createdAt")
+
+  @Column(name = "createdAt")
 	private Date createdAt;
 	
 	@Column(name = "updatedAt")
@@ -304,7 +304,5 @@ public class User {
 	public void setProfileImage(byte[] profileImage) {
 		this.profileImage = profileImage;
 	}
-	
-	
 	
 }

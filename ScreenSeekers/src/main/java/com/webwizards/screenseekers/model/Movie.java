@@ -134,6 +134,7 @@ public class Movie {
 	}
 	public Movie(String title, String genre, Date releaseDate, int length, String synopsis, String classificationRating,
 			String movieTrailerLink) {
+
 		
 		this.title = title;
 		this.genre = genre;

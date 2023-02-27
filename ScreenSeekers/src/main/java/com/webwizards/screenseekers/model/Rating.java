@@ -5,9 +5,9 @@
  * Description:
  * ------------
  * This class will store the information of the different Rating
- * 
- * @author Luis Miguel Miranda
- * @version 1.0
+ * v1.01: Added constructor for rating and comment.
+ * @author Victor Chawsukho
+ * @version 1.01
  * 
  */
 
@@ -69,13 +69,18 @@ public class Rating {
 		
 	}
 
-	public Rating(long id, int userRating, String comment, User user, Movie movie) {
-		this.id = id;
+	//userId and movieId are FK and not allow null, how to fetch when Post new Rating and Comment?
+	public Rating(int userRating, String comment, Date createdAt, Date updatedAt, Date deletedAt, User user, Movie movie) {
 		this.userRating = userRating;
 		this.comment = comment;
 		this.createdAt = new Date();
 		this.user = user;
 		this.movie = movie;
+	}
+
+  public Rating(int userRating, String comment) {
+		this.userRating = userRating;
+		this.comment = comment;
 	}
 
 	public long getId() {
