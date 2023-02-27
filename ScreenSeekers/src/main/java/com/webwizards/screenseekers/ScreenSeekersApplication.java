@@ -43,6 +43,7 @@ public class ScreenSeekersApplication {
 
 	@Bean
 	ApplicationRunner init(RoleRepository roleRepo, MovieRepository movieRepo, RatingRepository ratingRepo) {
+
 		return args -> {
 
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -139,15 +140,10 @@ public class ScreenSeekersApplication {
 			movieRepo.save(new Movie("Titanic", "Drama", dateFormat.parse("1997-12-19"), 180, "Synopsys here..", "R",
 					"https://www.youtube.com/watch?v=I7c1etV7D7g", dateFormat.parse("2023-02-06"),
 					dateFormat.parse("2023-02-06"), dateFormat.parse("2023-02-06")));
-
-			List<Movie> mo = movieRepo.findAll();
-			for (Movie m : mo) {
-				System.out.println(mo);
-			}
+      
 			roleRepo.save(new Role(ERole.ROLE_ADMIN));
 			roleRepo.save(new Role(ERole.ROLE_USER));
 
-//			ratingRepo.save(new Rating(9,"Cool movie!"));
 		};
 
 	}

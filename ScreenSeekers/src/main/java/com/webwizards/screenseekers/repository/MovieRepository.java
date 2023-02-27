@@ -8,7 +8,7 @@
  * the database.
  * v1.01: added Find methods and random movies 
  * 
- * @author Victor Chawsukho
+ * @authors Victor Chawsukho, Regal Cruz
  * @version 1.01
  * 
  */
@@ -33,6 +33,5 @@ public interface MovieRepository extends JpaRepository <Movie, Long>{
 	
 	@Query("SELECT e FROM Movie e WHERE EXTRACT(YEAR FROM e.releaseDate) = ?1")
 	List<Movie> findByReleaseDateYear(int year);
-	
 	
 }

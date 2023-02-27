@@ -69,7 +69,6 @@ public class Rating {
 		
 	}
 
-	
 	//userId and movieId are FK and not allow null, how to fetch when Post new Rating and Comment?
 	public Rating(int userRating, String comment, Date createdAt, Date updatedAt, Date deletedAt, User user, Movie movie) {
 		this.userRating = userRating;
@@ -80,8 +79,8 @@ public class Rating {
 		this.user = user;
 		this.movie = movie;
 	}
-	
-	public Rating(int userRating, String comment) {
+
+  public Rating(int userRating, String comment) {
 		this.userRating = userRating;
 		this.comment = comment;
 	}
