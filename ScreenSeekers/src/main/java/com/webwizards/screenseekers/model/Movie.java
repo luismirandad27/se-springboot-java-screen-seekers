@@ -1,5 +1,6 @@
 package com.webwizards.screenseekers.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class Movie {
 	@Column(name="genre")
 	private String genre;
 	@Column(name="releaseDate")
-	private String releaseDate;
+	private Date releaseDate;
 	@Column(name="length")
 	private int length;
 	@Column(name="synopsis")
@@ -35,11 +36,11 @@ public class Movie {
 	@Column(name="movieTrailerLink")
 	private String movieTrailerLink;
 	@Column(name="createdAt")
-	private String createdAt;
+	private Date createdAt;
 	@Column(name="updatedAt")
-	private String updatedAt;
+	private Date updatedAt;
 	@Column(name="deletedAt")
-	private String deletedAt;
+	private Date deletedAt;
 	
 	//Setting relation with Rating table (comes from a Many to Many relationship)
 	@OneToMany(mappedBy = "movie",
@@ -71,10 +72,10 @@ public class Movie {
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
-	public String getReleaseDate() {
+	public Date getReleaseDate() {
 		return releaseDate;
 	}
-	public void setReleaseDate(String releaseDate) {
+	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 	public int getLength() {
@@ -101,22 +102,22 @@ public class Movie {
 	public void setMovieTrailerLink(String movieTrailerLink) {
 		this.movieTrailerLink = movieTrailerLink;
 	}
-	public String getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
-	public void setCreatedAt(String createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	public String getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return updatedAt;
 	}
-	public void setUpdatedAt(String updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	public String getDeletedAt() {
+	public Date getDeletedAt() {
 		return deletedAt;
 	}
-	public void setDeletedAt(String deletedAt) {
+	public void setDeletedAt(Date deletedAt) {
 		this.deletedAt = deletedAt;
 	}
 	public Set<Rating> getRatings() {
@@ -131,8 +132,8 @@ public class Movie {
 	public void setWatchlistDetails(Set<WatchlistDetail> watchlistDetails) {
 		this.watchlistDetails = watchlistDetails;
 	}
-	public Movie(String title, String genre, String releaseDate, int length, String synopsis, String classificationRating,
-			String movieTrailerLink, String createdAt, String updatedAt, String deletedAt) {
+	public Movie(String title, String genre, Date releaseDate, int length, String synopsis, String classificationRating,
+			String movieTrailerLink, Date createdAt, Date updatedAt, Date deletedAt) {
 		
 		this.title = title;
 		this.genre = genre;

@@ -11,10 +11,8 @@
  * 2) Get user based on the id
  * 3) Update the information of a user
  * 4) Enable/Disable a user
- * 5) Update Profile Image of the user
- * 
  * @author Luis Miguel Miranda
- * @version 1.1
+ * @version 1.0
  * 
  */
 
@@ -214,7 +212,6 @@ public class UserController {
 			userRepo.save(updateUser);
 			
 			return new ResponseEntity<>(updateUser, HttpStatus.OK);
-			
 			
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
