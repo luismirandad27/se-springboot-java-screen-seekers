@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: RatingController.java
  * 
  * ------------
@@ -17,15 +17,17 @@
  * 8) Update the movie information
  * 9) Delete movies based on id
  * 10) Delete all movies
+ * 11) Get recommendations for an specific user
  * 
- * @author Victor Chawsukho
- * @version 1.01
+ * @author Victor Chawsukho, Luis Miguel Miranda
+ * @version 1.02
  * 
- */
+ **/
 
 package com.webwizards.screenseekers.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +48,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webwizards.screenseekers.model.Movie;
+import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
+import com.webwizards.screenseekers.repository.UserRepository;
+import com.webwizards.screenseekers.utils.Recommender;
 
 @RestController
 @RequestMapping("/api")
@@ -55,9 +60,13 @@ public class MovieController {
 
 	@Autowired
 	MovieRepository movieRepo;
+	
+	@Autowired
+	UserRepository userRepo;
+	
 
 	@GetMapping("/movies")
-	@PreAuthorize("hasRole('ADMIN')") // @PreAuthorize not working, a person with user role can still access
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required = false) String title) {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
@@ -74,6 +83,7 @@ public class MovieController {
 
 	
 	@GetMapping("/movies/random")
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<List<Movie>> getRandomMovies(@RequestParam(required = false) String title) {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
@@ -90,6 +100,7 @@ public class MovieController {
 	}
 
 	@GetMapping("/movies/searchByTitle")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<List<Movie>> getMovieByTitle(@RequestParam(required = false) String title) {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
@@ -106,6 +117,7 @@ public class MovieController {
 	}
 
 	@GetMapping("/movies/searchByGenre")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<List<Movie>> getMovieByGenre(@RequestParam(required = false) String genre) {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
@@ -122,6 +134,7 @@ public class MovieController {
 	}
 
 	@GetMapping("/movies/searchByReleaseDate")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<List<Movie>> getMovieByReleaseDate(@RequestParam(required = false) int year) {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
@@ -138,12 +151,13 @@ public class MovieController {
 	}
 
 	@GetMapping("/movies/{id}")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<Movie> getMovie(@PathVariable("id") Long id) {
 		try {
 			if (movieRepo.findById(id).isPresent()) {
-				return new ResponseEntity<>(movieRepo.findById(id).get(), HttpStatus.FOUND);
+				return new ResponseEntity<>(movieRepo.findById(id).get(), HttpStatus.OK);
 			} else {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -151,19 +165,21 @@ public class MovieController {
 	}
 
 	@PostMapping("/movies")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
 		try {
 			Movie myMovie = movie;
-			movieRepo.save(new Movie(movie.getTitle(), movie.getGenre(), movie.getReleaseDate(), movie.getLength(),
-					movie.getSynopsis(), movie.getClassificationRating(), movie.getMovieTrailerLink(),
-					movie.getCreatedAt(), movie.getUpdatedAt(), movie.getDeletedAt()));
-			return new ResponseEntity<>(myMovie, HttpStatus.CREATED);
+
+			movieRepo.save(new Movie(movie.getTitle(), movie.getGenre(), movie.getReleaseDate(), movie.getLength(), movie.getSynopsis(), movie.getClassificationRating(), movie.getMovieTrailerLink()));
+
+			return new ResponseEntity<>(myMovie, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PutMapping("movies/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
 		try {
 			Optional<Movie> myMovie = movieRepo.findById(id);
@@ -176,26 +192,25 @@ public class MovieController {
 				_myMovie.setSynopsis(movie.getSynopsis());
 				_myMovie.setClassificationRating(movie.getClassificationRating());
 				_myMovie.setMovieTrailerLink(movie.getMovieTrailerLink());
-				_myMovie.setCreatedAt(movie.getCreatedAt());
-				_myMovie.setUpdatedAt(movie.getUpdatedAt());
-				_myMovie.setDeletedAt(movie.getDeletedAt());
+				_myMovie.setUpdatedAt(new Date());
 				movieRepo.save(_myMovie);
 				return new ResponseEntity<>(_myMovie, HttpStatus.OK);
 			} else
-				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@DeleteMapping("movies/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity deleteMovie(@PathVariable Long id) {
 		try {
 			if (movieRepo.findById(id).isPresent()) {
 				movieRepo.deleteById(id);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
-				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -203,6 +218,7 @@ public class MovieController {
 	}
 
 	@DeleteMapping("/movies")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity deleteAllMovies() {
 		try {
 			movieRepo.deleteAll();
@@ -210,5 +226,43 @@ public class MovieController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@GetMapping("/movies/{id}/recommend")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<List<Movie>> recommendMoviesToUser(@PathVariable long id){
+		
+		try {
+			
+			//Getting All Movies
+			List<Movie> allMovies = movieRepo.findAll();
+			
+			//Getting All Available Ratings
+			List<User> allUsers = userRepo.findAllUsersAvailable();
+			
+			//Get the User Info
+			Optional<User> user = userRepo.findById(id);
+			
+			if (allMovies.isEmpty() || !user.isPresent() || allUsers.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			Recommender movieRecommender = new Recommender();
+			
+			//Let's create the HashMap
+			movieRecommender.setRatings(allUsers);
+			
+			List<Movie> recommendations = movieRecommender.getRecommendedMovieList(allMovies, id);
+			
+			if (recommendations.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			return new ResponseEntity<>(recommendations,HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 }

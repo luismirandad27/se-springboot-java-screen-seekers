@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: RatingRepository.java
  * 
  * ------------
@@ -20,6 +20,7 @@ import java.util.Optional;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.webwizards.screenseekers.model.Rating;
 
@@ -27,7 +28,9 @@ public interface RatingRepository extends JpaRepository<Rating,Long>{
 
 	List<Rating> findAllByUserId(Long userId);
 
-	Optional<Rating> findByUserId(Long userId);
+	Optional<Rating> findByUserIdAndMovieId(Long userId, Long movieId);
 
+	@Query("SELECT r FROM Rating r")
+	List<Rating> findAllRatings();
 	
 }

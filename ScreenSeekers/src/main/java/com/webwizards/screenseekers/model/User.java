@@ -1,5 +1,5 @@
-/*
- * Class File: User.java (Testing for pulling/merge)
+/**
+ * Class File: User.java
  * 
  * ------------
  * Description:
@@ -130,6 +130,7 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.createdAt = new Date();
 	}
 	
 	public User(Long id, String password, String firstName,
