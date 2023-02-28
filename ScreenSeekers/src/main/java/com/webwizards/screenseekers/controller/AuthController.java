@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: AuthController.java
  * 
  * ------------
@@ -9,7 +9,7 @@
  * @author Luis Miguel Miranda
  * @version 1.0
  * 
- */
+ **/
 
 package com.webwizards.screenseekers.controller;
 
@@ -17,7 +17,6 @@ package com.webwizards.screenseekers.controller;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

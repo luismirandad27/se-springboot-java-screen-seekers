@@ -1,18 +1,17 @@
-package com.webwizards.screenseekers.utils;
 /**
  * Java Class: Recommender
  * 
- * Author: Luis Miguel Miranda
- * 
- * Date: 24/01/2023
- * 
- * Description: This class consists on a list of methods that will calculate the prediction of a movie rating
+ * ------------
+ * Description:
+ * ------------ 
+ * This class consists on a list of methods that will calculate the prediction of a movie rating
  * by using the User-based Collaborative Filtering Algorithm
  * 
- * Version: 1.0
+ * @author Luis Miguel MIranda
+ * @version 1.0
  **/
 
-
+package com.webwizards.screenseekers.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: RatingRepository.java
  * 
  * ------------
@@ -28,10 +28,9 @@ public interface RatingRepository extends JpaRepository<Rating,Long>{
 
 	List<Rating> findAllByUserId(Long userId);
 
-	Optional<Rating> findByUserId(Long userId);
+	Optional<Rating> findByUserIdAndMovieId(Long userId, Long movieId);
 
-	
-	@Query("SELECT r FROM Rating r WHERE deletedAt IS NULL")
+	@Query("SELECT r FROM Rating r")
 	List<Rating> findAllRatings();
 	
 }

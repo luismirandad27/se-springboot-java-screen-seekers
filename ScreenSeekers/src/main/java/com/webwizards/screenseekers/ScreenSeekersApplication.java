@@ -1,15 +1,16 @@
-/*
+/**
  * Class File: ScreenSeekersApplication.java
  * 
  * ------------
  * Description:
  * ------------
  * v1.01: added 20 movies, Rating Repo
+ * v1.02: added 6 users, User Repo
  * 
- * @author Victor Chawsukho
+ * @author Victor Chawsukho, Luis Miguel Miranda
  * @version 1.01
  * 
- */
+ **/
 
 package com.webwizards.screenseekers;
 
@@ -138,38 +139,37 @@ public class ScreenSeekersApplication {
 			User user3 = new User("dmiddas1","adinsmore1@engadget.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
 			User user4 = new User("wzelley2","patlee2@hibu.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
 			User user5 = new User("cstandishbrooks3","lbellay3@sciencedirect.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			/*
 			User user6 = new User("efoucar4","bfarthin4@oaic.gov.au","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
 			User user7 = new User("bpyer5","kfoffano5@arizona.edu","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			User user8 = new User("tpennington6","tzylbermann6@prlog.org","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			*/
+			User user8 = new User("admin123","admin@screenseekers.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
 
 			Set<Role> roles = new HashSet<>();
 			Role userRole = roleRepo.findByName(ERole.ROLE_USER)
 		              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 		          roles.add(userRole);
+		          
+		    Set<Role> rolesAdmin = new HashSet<>();
+			Role adminRole = roleRepo.findByName(ERole.ROLE_ADMIN)
+		              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+			rolesAdmin.add(adminRole);
 			
 			user1.setRoles(roles);
 			user2.setRoles(roles);
 			user3.setRoles(roles);
 			user4.setRoles(roles);
 			user5.setRoles(roles);
-			/*
 			user6.setRoles(roles);
 			user7.setRoles(roles);
-			user8.setRoles(roles);
-			*/
+			user8.setRoles(rolesAdmin);
 			
 			userRepo.save(user1);
 			userRepo.save(user2);
 			userRepo.save(user3);
 			userRepo.save(user4);
 			userRepo.save(user5);
-			/*
 			userRepo.save(user6);
 			userRepo.save(user7);
 			userRepo.save(user8);
-			*/
 			
 		          
 		};

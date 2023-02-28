@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: Rating.java
  * 
  * ------------
@@ -6,6 +6,7 @@
  * ------------
  * This class will store the information of the different Rating
  * v1.01: Added constructor for rating and comment.
+ * 
  * @author Victor Chawsukho
  * @version 1.01
  * 
@@ -50,9 +51,6 @@ public class Rating {
 	@Column(name="updatedAt")
 	private Date updatedAt;
 	
-	@Column(name="deletedAt")
-	private Date deletedAt;
-	
 	//Setting relation with User table (comes from a Many to Many relationship)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "userId", nullable=false)
@@ -70,17 +68,13 @@ public class Rating {
 	}
 
 	//userId and movieId are FK and not allow null, how to fetch when Post new Rating and Comment?
-	public Rating(int userRating, String comment, Date createdAt, Date updatedAt, Date deletedAt, User user, Movie movie) {
+	public Rating(int userRating, String comment) {
 		this.userRating = userRating;
 		this.comment = comment;
 		this.createdAt = new Date();
-		this.user = user;
-		this.movie = movie;
-	}
-
-  public Rating(int userRating, String comment) {
-		this.userRating = userRating;
-		this.comment = comment;
+		this.user = null;
+		this.movie = null;
+		this.updatedAt = null;
 	}
 
 	public long getId() {
@@ -121,14 +115,6 @@ public class Rating {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public Date getDeletedAt() {
-		return deletedAt;
-	}
-
-	public void setDeletedAt(Date deletedAt) {
-		this.deletedAt = deletedAt;
 	}
 
 	public User getUser() {

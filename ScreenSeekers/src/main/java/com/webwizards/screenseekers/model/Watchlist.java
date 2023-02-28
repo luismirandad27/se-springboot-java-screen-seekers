@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: Watchlist.java
  * 
  * ------------
@@ -49,9 +49,6 @@ public class Watchlist {
 	@Column(name="updatedAt")
 	private Date updatedAt;
 	
-	@Column(name="deletedAt")
-	private Date deletedAt;
-	
 	@ManyToOne(fetch = FetchType.LAZY, optional=false)
 	@JoinColumn(name="userId", nullable = false)
 	@JsonIgnore
@@ -101,14 +98,6 @@ public class Watchlist {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public Date getDeletedAt() {
-		return deletedAt;
-	}
-
-	public void setDeletedAt(Date deletedAt) {
-		this.deletedAt = deletedAt;
 	}
 
 	public User getUser() {

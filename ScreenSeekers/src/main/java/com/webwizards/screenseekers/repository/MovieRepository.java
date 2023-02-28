@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: MovieRepository.java
  * 
  * ------------
@@ -7,9 +7,10 @@
  * This class will store the Jpa methods to access the Movie table from
  * the database.
  * v1.01: added Find methods and random movies 
+ * v1.02: added find available movies (not deleted) 
  * 
  * @authors Victor Chawsukho, Regal Cruz
- * @version 1.01
+ * @version 1.02
  * 
  */
 
@@ -26,9 +27,6 @@ import com.webwizards.screenseekers.model.Movie;
 public interface MovieRepository extends JpaRepository<Movie, Long>{
 	
 	List<Movie> findByTitle(String title);
-	
-	@Query("SELECT e FROM Movie e WHERE deletedAt IS NULL")
-	List<Movie> findAllMoviesAvailable();
 
 	List<Movie> findByTitleContainingIgnoreCase(String title);
 	

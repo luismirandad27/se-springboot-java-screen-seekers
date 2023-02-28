@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: WatchlistDetail.java
  * 
  * ------------
@@ -43,9 +43,6 @@ public class WatchlistDetail {
 	@Column(name="updatedAt")
 	private Date updatedAt;
 	
-	@Column(name="deletedAt")
-	private Date deletedAt;
-	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "movieId", nullable = false)
 	private Movie movie;
@@ -80,14 +77,6 @@ public class WatchlistDetail {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public Date getDeletedAt() {
-		return deletedAt;
-	}
-
-	public void setDeletedAt(Date deletedAt) {
-		this.deletedAt = deletedAt;
 	}
 
 	public Movie getMovie() {

@@ -1,5 +1,5 @@
-/*
- * Class File: User.java (Testing for pulling/merge)
+/**
+ * Class File: User.java
  * 
  * ------------
  * Description:

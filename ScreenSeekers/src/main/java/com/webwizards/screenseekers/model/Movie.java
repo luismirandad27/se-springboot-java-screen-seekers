@@ -1,3 +1,17 @@
+/**
+ * Class File: Rating.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the information of the different Rating
+ * v1.01: Added constructor for rating and comment.
+ * 
+ * @author Victor Chawsukho, Regal Cruz
+ * @version 1.01
+ * 
+ */
+
 package com.webwizards.screenseekers.model;
 
 import java.util.Date;
@@ -39,8 +53,6 @@ public class Movie {
 	private Date createdAt;
 	@Column(name="updatedAt")
 	private Date updatedAt;
-	@Column(name="deletedAt")
-	private Date deletedAt;
 	
 	//Setting relation with Rating table (comes from a Many to Many relationship)
 	@OneToMany(mappedBy = "movie",
@@ -113,12 +125,6 @@ public class Movie {
 	}
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-	public Date getDeletedAt() {
-		return deletedAt;
-	}
-	public void setDeletedAt(Date deletedAt) {
-		this.deletedAt = deletedAt;
 	}
 	public Set<Rating> getRatings() {
 		return ratings;

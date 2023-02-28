@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: UserController.java
  * 
  * ------------
@@ -11,20 +11,20 @@
  * 2) Get user based on the id
  * 3) Update the information of a user
  * 4) Enable/Disable a user
+ * 5) Update user profile image
+ * 
  * @author Luis Miguel Miranda
  * @version 1.0
  * 
- */
+ **/
 
 package com.webwizards.screenseekers.controller;
 
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,8 +41,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.webwizards.screenseekers.model.Movie;
-import com.webwizards.screenseekers.model.Rating;
 import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.RatingRepository;
