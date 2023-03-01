@@ -18,6 +18,7 @@
  * 9) Delete movies based on id
  * 10) Delete all movies
  * 11) Get recommendations for an specific user
+ * 12) Add a crew member to the movie's crew (1 crew member - an actor for example - can work in multiple movies)
  * 
  * @author Victor Chawsukho, Luis Miguel Miranda
  * @version 1.02
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,9 +49,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webwizards.screenseekers.model.Crew;
 import com.webwizards.screenseekers.model.Movie;
+import com.webwizards.screenseekers.model.ProductionCrew;
 import com.webwizards.screenseekers.model.User;
+import com.webwizards.screenseekers.repository.CrewRepository;
 import com.webwizards.screenseekers.repository.MovieRepository;
+import com.webwizards.screenseekers.repository.ProductionCrewRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
 import com.webwizards.screenseekers.utils.Recommender;
 import com.webwizards.screenseekers.utils.ResponseMessage;
@@ -64,6 +70,12 @@ public class MovieController {
 	
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	CrewRepository crewRepo; 
+	
+	@Autowired
+	ProductionCrewRepository productionCrewRepo;
 	
 
 	@GetMapping("/movies")
@@ -261,4 +273,35 @@ public class MovieController {
 		}
 		
 	}
+	
+	@PutMapping("/movies/{movieId}/add-crew-member/{crewId}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ProductionCrew> addCrewMemberToMovie(@PathVariable long movieId, @PathVariable long crewId,@RequestBody ProductionCrew productionCrew){
+		
+		try {
+			
+			Optional<Movie> movie = movieRepo.findById(movieId);
+			Optional<Crew> crew = crewRepo.findById(crewId);
+			
+			if (!movie.isPresent() || !crew.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			ProductionCrew prodCrew = new ProductionCrew(
+					productionCrew.getMovieRole(),
+					productionCrew.getCharacterName());
+			
+			prodCrew.setMovie(movie.get());
+			prodCrew.setCrew(crew.get());
+			
+			productionCrewRepo.save(prodCrew);
+			
+			return new ResponseEntity<>(prodCrew,HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
 }

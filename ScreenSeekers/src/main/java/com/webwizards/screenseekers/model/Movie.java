@@ -69,13 +69,10 @@ public class Movie {
 	private Set<WatchlistDetail> watchlistDetails = new HashSet<>(); 
 	
 	//Setting relation with Crew table (comes from a Many to Many relationship)
-		@OneToMany(mappedBy="movie",
-				cascade = CascadeType.ALL,
-				fetch = FetchType.LAZY)
-		private Set<ProductionCrew> productionCrews = new HashSet<>(); 
-	
-	
-	
+	@OneToMany(mappedBy="movie",
+			cascade = CascadeType.ALL,
+			fetch = FetchType.LAZY)
+	private Set<ProductionCrew> productionCrews = new HashSet<>(); 
 	
 	public Long getId() {
 		return id;

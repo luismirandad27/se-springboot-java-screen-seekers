@@ -41,7 +41,7 @@ public class ProductionCrew {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name="moveiRole")
+	@Column(name="movieRole")
 	private String movieRole;
 	
 	@Column(name="characterName")
@@ -91,13 +91,11 @@ public class ProductionCrew {
 		this.characterName=characterName;
 	}
 
-	public ProductionCrew(String movieRole, String characterName, Date createdAt, Date updatedAt, Date deletedAt) {
+	public ProductionCrew(String movieRole, String characterName) {
 		super();
 		this.movieRole = movieRole;
 		this.characterName = characterName;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
+		this.createdAt = new Date();
 	}
 
 	public Long getId() {

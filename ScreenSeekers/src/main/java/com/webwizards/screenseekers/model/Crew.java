@@ -69,17 +69,14 @@ public class Crew {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Crew(String firstName, String lastName, Date dateOfBirth, String nationality, String award, Date createdAt,
-			Date updatedAt, Date deletedAt) {
+	public Crew(String firstName, String lastName, Date dateOfBirth, String nationality, String award) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
 		this.nationality = nationality;
 		this.award = award;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
+		this.createdAt = new Date();
 	}
 	public Long getId() {
 		return id;
