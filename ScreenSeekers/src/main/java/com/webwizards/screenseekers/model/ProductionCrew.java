@@ -1,3 +1,17 @@
+/**
+ * Class File: ProductionCrew.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will be the middle entity between movie model and crew model to make many to many relationship
+ * 
+ * 
+ * @author Regal Cruz
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.model;
 
 import java.util.Date;
@@ -43,11 +57,11 @@ public class ProductionCrew {
 	private Date deletedAt;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "movieId", nullable = false)
+	@JoinColumn(name = "movie_id", nullable = false)
 	private Movie movie;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "crewId", nullable = false)
+	@JoinColumn(name = "crew_id", nullable = false)
 	private Crew crew;
 	
 	
@@ -71,6 +85,10 @@ public class ProductionCrew {
 	public ProductionCrew() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	
+	public ProductionCrew(String characterName) {
+		this.characterName=characterName;
 	}
 
 	public ProductionCrew(String movieRole, String characterName, Date createdAt, Date updatedAt, Date deletedAt) {

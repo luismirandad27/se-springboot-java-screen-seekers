@@ -1,3 +1,17 @@
+/**
+ * Class File: ProdCrewSerializer.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * The ProductionCrew table is an intermediate table from the combination of Movies and Crews
+ * 
+ * 
+ * @author Regal Cruz
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.model;
 
 import java.io.IOException;

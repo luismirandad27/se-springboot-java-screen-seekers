@@ -1,3 +1,17 @@
+/**
+ * Class File: Crew.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store information about crew -these are the people who worked on the movies
+ * 
+ * 
+ * @author Regal Cruz
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.model;
 
 import java.util.Date;

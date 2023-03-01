@@ -16,7 +16,11 @@ package com.webwizards.screenseekers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.boot.ApplicationRunner;
@@ -24,11 +28,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.webwizards.screenseekers.model.Crew;
 import com.webwizards.screenseekers.model.ERole;
 import com.webwizards.screenseekers.model.Movie;
+import com.webwizards.screenseekers.model.ProductionCrew;
 import com.webwizards.screenseekers.model.Role;
 import com.webwizards.screenseekers.model.User;
+import com.webwizards.screenseekers.repository.CrewRepository;
 import com.webwizards.screenseekers.repository.MovieRepository;
+import com.webwizards.screenseekers.repository.ProductionCrewRepository;
 import com.webwizards.screenseekers.repository.RatingRepository;
 import com.webwizards.screenseekers.repository.RoleRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
@@ -43,7 +51,7 @@ public class ScreenSeekersApplication {
 	}
 
 	@Bean
-	ApplicationRunner init(RoleRepository roleRepo, MovieRepository movieRepo, RatingRepository ratingRepo, UserRepository userRepo) {
+	ApplicationRunner init(RoleRepository roleRepo, MovieRepository movieRepo, RatingRepository ratingRepo, UserRepository userRepo, CrewRepository crewRepo, ProductionCrewRepository prodCrewRepo) {
 
 		return args -> {
 			
@@ -171,9 +179,56 @@ public class ScreenSeekersApplication {
 			userRepo.save(user7);
 			userRepo.save(user8);
 			
-		          
+			//creating crew object for testing
+			Crew crew1 = new Crew("Pedro", "Pascal",dateFormat.parse("2018-08-15"), "Phil", "Award", dateFormat.parse("2018-08-15"),dateFormat.parse("2018-08-15"), null );
+			Crew crew2 = new Crew("Bella", "Ramsey",dateFormat.parse("2018-08-15"), "Phil", "Award", dateFormat.parse("2018-08-15"),dateFormat.parse("2018-08-15"), null );
+			crewRepo.save(crew1);crewRepo.save(crew2);
+			
+			//creating additional movie object for testing
+			Movie movie1 = new Movie("Mad Maxsxx: Fury Road", "Action, Adventure, Sci-Fi", dateFormat.parse("2015-05-15"),
+					120,
+					"In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners, a psychotic worshiper, and a drifter named Max.",
+					"R", "https://www.youtube.com/watch?v=hEJnMQG9ev8");
+			Movie movie2 = new Movie("Mad Maxzzz: Fury Road", "Action, Adventure, Sci-Fi", dateFormat.parse("2015-05-15"),
+					120,
+					"In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners, a psychotic worshiper, and a drifter named Max.",
+					"R", "https://www.youtube.com/watch?v=hEJnMQG9ev8");
+			movieRepo.save(movie1);movieRepo.save(movie2);
+			
+			//creating prodcrew objects for testing
+			ProductionCrew prodCrew1 = new ProductionCrew("Man1");
+			ProductionCrew prodCrew2 = new ProductionCrew("Man2");
+			ProductionCrew prodCrew3 = new ProductionCrew("Man3");
+			ProductionCrew prodCrew4 = new ProductionCrew("Man4");
+			
+
+			//linking the 3 objects to demonstrate many to many relationship
+			crew1.setProductionCrews(new HashSet<>(Arrays.asList(prodCrew1, prodCrew2))); 
+			crew2.setProductionCrews(new HashSet<>(Arrays.asList(prodCrew1, prodCrew2)));
+			
+			movie1.setProductionCrews(new HashSet<>(Arrays.asList(prodCrew1, prodCrew2)));
+			movie2.setProductionCrews(new HashSet<>(Arrays.asList(prodCrew1, prodCrew2)));
+			
+			prodCrew1.setCrew(crew1);
+			prodCrew1.setMovie(movie1);
+			
+			prodCrew2.setCrew(crew2);
+			prodCrew2.setMovie(movie2);
+			
+			prodCrew3.setCrew(crew1);
+			prodCrew3.setMovie(movie2);
+			
+			prodCrew4.setCrew(crew2);
+			prodCrew4.setMovie(movie1);
+			
+			//saving crew and movie objects back to the DB
+			crewRepo.save(crew1);crewRepo.save(crew2);
+			movieRepo.save(movie1);movieRepo.save(movie2);
+			  
 		};
 
 	}
+	
+	
 
 }
