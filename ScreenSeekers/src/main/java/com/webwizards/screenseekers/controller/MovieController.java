@@ -52,6 +52,7 @@ import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
 import com.webwizards.screenseekers.utils.Recommender;
+import com.webwizards.screenseekers.utils.ResponseMessage;
 
 @RestController
 @RequestMapping("/api")
@@ -66,14 +67,31 @@ public class MovieController {
 	
 
 	@GetMapping("/movies")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required = false) String title) {
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required = false) String title, 
+													@RequestParam(required = false) String genre, 
+													@RequestParam(required = false) Integer year) {
 		try {
+			
 			List<Movie> myList = new ArrayList<Movie>();
-			if (title == null) {
-				myList = movieRepo.findAll();
-			} else {
+			
+			if (title != null) {
+				
 				myList = movieRepo.findByTitleContainingIgnoreCase(title);
+				
+			} else if(genre != null) {
+				
+				myList = movieRepo.findByGenreContainingIgnoreCase(genre);
+				
+			} else if(year != null) {
+				
+				myList = movieRepo.findByReleaseDateYear(year);
+				
+			}
+			else {
+				
+				myList = movieRepo.findAll();
+				
 			}
 			return new ResponseEntity<>(myList, HttpStatus.OK);
 		} catch (Exception e) {
@@ -91,57 +109,6 @@ public class MovieController {
 				myList = movieRepo.findRandom();
 			} else {
 				myList = movieRepo.findByTitleContainingIgnoreCase(title);
-			}
-
-			return new ResponseEntity<>(myList, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@GetMapping("/movies/searchByTitle")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<List<Movie>> getMovieByTitle(@RequestParam(required = false) String title) {
-		try {
-			List<Movie> myList = new ArrayList<Movie>();
-			if (title == null) {
-				myList = movieRepo.findAll();
-			} else {
-				myList = movieRepo.findByTitleContainingIgnoreCase(title);
-			}
-
-			return new ResponseEntity<>(myList, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@GetMapping("/movies/searchByGenre")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<List<Movie>> getMovieByGenre(@RequestParam(required = false) String genre) {
-		try {
-			List<Movie> myList = new ArrayList<Movie>();
-			if (genre == null) {
-				myList = movieRepo.findAll();
-			} else {
-				myList = movieRepo.findByGenreContainingIgnoreCase(genre);
-			}
-
-			return new ResponseEntity<>(myList, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@GetMapping("/movies/searchByReleaseDate")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<List<Movie>> getMovieByReleaseDate(@RequestParam(required = false) int year) {
-		try {
-			List<Movie> myList = new ArrayList<Movie>();
-			if (year == 0) {
-				myList = movieRepo.findAll();
-			} else {
-				myList = movieRepo.findByReleaseDateYear(year);
 			}
 
 			return new ResponseEntity<>(myList, HttpStatus.OK);
@@ -170,7 +137,14 @@ public class MovieController {
 		try {
 			Movie myMovie = movie;
 
-			movieRepo.save(new Movie(movie.getTitle(), movie.getGenre(), movie.getReleaseDate(), movie.getLength(), movie.getSynopsis(), movie.getClassificationRating(), movie.getMovieTrailerLink()));
+			movieRepo.save(new Movie(movie.getTitle(), 
+									 movie.getGenre(), 
+									 movie.getReleaseDate(), 
+									 movie.getLength(), 
+									 movie.getSynopsis(), 
+									 movie.getClassificationRating(), 
+									 movie.getMovieTrailerLink(), 
+									 movie.getIsInTheaters()));
 
 			return new ResponseEntity<>(myMovie, HttpStatus.OK);
 		} catch (Exception e) {
@@ -184,7 +158,9 @@ public class MovieController {
 		try {
 			Optional<Movie> myMovie = movieRepo.findById(id);
 			if (movieRepo.findById(id).isPresent()) {
+				
 				Movie _myMovie = myMovie.get();
+				
 				_myMovie.setTitle(movie.getTitle());
 				_myMovie.setGenre(movie.getGenre());
 				_myMovie.setReleaseDate(movie.getReleaseDate());
@@ -192,8 +168,11 @@ public class MovieController {
 				_myMovie.setSynopsis(movie.getSynopsis());
 				_myMovie.setClassificationRating(movie.getClassificationRating());
 				_myMovie.setMovieTrailerLink(movie.getMovieTrailerLink());
+				_myMovie.setIsInTheaters(movie.getIsInTheaters());
 				_myMovie.setUpdatedAt(new Date());
+				
 				movieRepo.save(_myMovie);
+				
 				return new ResponseEntity<>(_myMovie, HttpStatus.OK);
 			} else
 				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
@@ -204,13 +183,25 @@ public class MovieController {
 
 	@DeleteMapping("movies/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity deleteMovie(@PathVariable Long id) {
+	public ResponseEntity<ResponseMessage> deleteMovie(@PathVariable Long id) {
 		try {
-			if (movieRepo.findById(id).isPresent()) {
+			
+			Optional<Movie> movie = movieRepo.findById(id);
+			
+			if (movie.isPresent()) {
+				
+				String movieName = movie.get().getTitle();
+				
 				movieRepo.deleteById(id);
-				return new ResponseEntity<>(HttpStatus.OK);
+				
+				String message = "Movie: "+movieName+" has been deleted successfully!";
+				
+				return new ResponseEntity<>(new ResponseMessage(message),HttpStatus.OK);
+				
 			} else {
+				
 				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+				
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -219,10 +210,15 @@ public class MovieController {
 
 	@DeleteMapping("/movies")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity deleteAllMovies() {
+	public ResponseEntity<ResponseMessage> deleteAllMovies() {
 		try {
+			
 			movieRepo.deleteAll();
-			return new ResponseEntity<>(HttpStatus.OK);
+			
+			String message = "All movies have been deleted successfully!";
+			
+			return new ResponseEntity<>(new ResponseMessage(message),HttpStatus.OK);
+			
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

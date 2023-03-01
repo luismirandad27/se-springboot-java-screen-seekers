@@ -20,6 +20,7 @@
 package com.webwizards.screenseekers.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +60,7 @@ public class RatingController {
 	UserRepository userRepo;
 
 	
-	@PostMapping("/movies/rating/{userId}/{movieId}")
+	@PostMapping("/movies/{movieId}/rating/{userId}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<Rating> createRating(@RequestBody Rating rating, @PathVariable long userId, @PathVariable long movieId) {
 		try {
@@ -85,7 +86,7 @@ public class RatingController {
 
 
 	
-	@GetMapping("/movies/rating")
+	@GetMapping("/movies/rating/{userId}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Rating>> getAllRating(@RequestParam(required = false) Long userId) {
 		try {
@@ -103,7 +104,7 @@ public class RatingController {
 	}
 		
 		
-	@GetMapping("/movies/rating/{userId}/{movieId}")
+	@GetMapping("/movies/{movieId}/rating/{userId}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<Rating> getRatingByUserId(@PathVariable Long userId, @PathVariable Long movieId){
 		try {
@@ -119,7 +120,7 @@ public class RatingController {
 		}
 	}
 	
-	@PutMapping("movies/rating/{userId}/{movieId}")
+	@PutMapping("movies/{movieId}/rating/{userId}")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Rating> updateRating(@RequestBody Rating rating, @PathVariable Long userId, @PathVariable Long movieId) {
 		try {
@@ -130,6 +131,7 @@ public class RatingController {
 				Rating _myRating = myRating.get();
 				_myRating.setUserRating(rating.getUserRating());
 				_myRating.setComment(rating.getComment());
+				_myRating.setUpdatedAt(new Date());
 				ratingRepo.save(_myRating);
 				return new ResponseEntity<>(_myRating, HttpStatus.OK);
 			} else
