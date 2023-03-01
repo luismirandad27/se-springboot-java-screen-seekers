@@ -49,6 +49,8 @@ public class Movie {
 	private String classificationRating;
 	@Column(name="movieTrailerLink")
 	private String movieTrailerLink;
+	@Column(name="isInTheaters")
+	private Boolean isInTheaters;
 	@Column(name="createdAt")
 	private Date createdAt;
 	@Column(name="updatedAt")
@@ -114,6 +116,12 @@ public class Movie {
 	public void setMovieTrailerLink(String movieTrailerLink) {
 		this.movieTrailerLink = movieTrailerLink;
 	}
+	public Boolean getIsInTheaters() {
+		return isInTheaters;
+	}
+	public void setIsInTheaters(Boolean isInTheaters) {
+		this.isInTheaters = isInTheaters;
+	}
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -139,8 +147,7 @@ public class Movie {
 		this.watchlistDetails = watchlistDetails;
 	}
 	public Movie(String title, String genre, Date releaseDate, int length, String synopsis, String classificationRating,
-			String movieTrailerLink) {
-
+			String movieTrailerLink, Boolean isInTheaters) {
 		
 		this.title = title;
 		this.genre = genre;
@@ -150,6 +157,7 @@ public class Movie {
 		this.classificationRating = classificationRating;
 		this.movieTrailerLink = movieTrailerLink;
 		this.createdAt = new Date();
+		this.isInTheaters = isInTheaters;
 	}
 	public Movie() {
 		

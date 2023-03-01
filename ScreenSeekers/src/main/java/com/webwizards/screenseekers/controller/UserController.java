@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +47,8 @@ import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.RatingRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
+import com.webwizards.screenseekers.service.FilesStorageService;
+import com.webwizards.screenseekers.utils.ResponseMessage;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -62,6 +66,9 @@ public class UserController {
 	
 	@Autowired
 	PasswordEncoder encoder;
+	
+	@Autowired
+	FilesStorageService storageService;
 	
 	@GetMapping("/users")
 	@PreAuthorize("hasRole('ADMIN')" )
@@ -82,7 +89,7 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping("/user/{id}")
+	@GetMapping("/users/{id}")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> getUser(@PathVariable long id){
 		try{
@@ -102,7 +109,7 @@ public class UserController {
 		}
 	}
 	
-	@PutMapping("/user/{id}")
+	@PutMapping("/users/{id}")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User newUserInfo){
 		
@@ -145,9 +152,9 @@ public class UserController {
 		
 	}
 	
-	@PutMapping("/user/{id}/disable")
+	@PutMapping("/users/{id}/disable")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
-	public ResponseEntity<User> disableUser(@PathVariable long id){
+	public ResponseEntity<ResponseMessage> disableUser(@PathVariable long id){
 		try {
 			
 			Optional<User> user = userRepo.findById(id);
@@ -162,16 +169,18 @@ public class UserController {
 			
 			userRepo.save(updateUser);
 			
-			return new ResponseEntity<>(updateUser, HttpStatus.OK);
+			String message = "User account with id "+updateUser.getId()+" has been disabled successfully!";
+			
+			return new ResponseEntity<>(new ResponseMessage(message), HttpStatus.OK);
 			
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	@PutMapping("/user/{id}/enable")
-	@PreAuthorize("hasRole('ADMIN')" )
-	public ResponseEntity<User> enableUser(@PathVariable long id){
+	@PutMapping("/users/{id}/enable")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
+	public ResponseEntity<ResponseMessage> enableUser(@PathVariable long id){
 		try {
 			
 			Optional<User> user = userRepo.findById(id);
@@ -187,14 +196,16 @@ public class UserController {
 			
 			userRepo.save(updateUser);
 			
-			return new ResponseEntity<>(updateUser, HttpStatus.OK);
+			String message = "User account with id "+updateUser.getId()+" has been enabled successfully!";
+			
+			return new ResponseEntity<>(new ResponseMessage(message), HttpStatus.OK);
 			
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	@PutMapping("/user/{id}/updateProfileImage")
+	@PutMapping("/users/{id}/upload-profile-image")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> updateProfileImage(@PathVariable long id, @RequestParam("file") MultipartFile profileImageFile){
 		try {
@@ -207,16 +218,51 @@ public class UserController {
 			
 			User updateUser = user.get();
 			
-			byte[] profileImage = profileImageFile.getBytes();
+			if (updateUser.getProfileImage() != null) {
+				
+				String fileName = updateUser.getProfileImage();
+				
+				if (storageService.fileExists(fileName)) {
+					
+					storageService.deleteFile(fileName);
+					
+				}
+				
+			}
+			
+			storageService.save(profileImageFile);
+			updateUser.setProfileImage(profileImageFile.getOriginalFilename());
 			
 			updateUser.setUpdatedAt(new Date());
-			updateUser.setProfileImage(profileImage);
 			
 			userRepo.save(updateUser);
 			
 			return new ResponseEntity<>(updateUser, HttpStatus.OK);
 			
 		}catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/users/{id}/load-profile-image")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
+	public ResponseEntity<Resource> loadProfileImage(@PathVariable long id){
+		try {
+			
+			Optional<User> user = userRepo.findById(id);
+			
+			if(!user.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			String profileImageFilename = user.get().getProfileImage();
+			Resource profileImage = storageService.load(profileImageFilename);
+			
+			return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(profileImage);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
