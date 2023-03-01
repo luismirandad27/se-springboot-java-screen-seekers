@@ -48,7 +48,7 @@ public class CrewController {
 	}
 	
 	@GetMapping("/crew/{id}")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Crew> getACrew(@PathVariable("id") Long id) {
 		try {
 			if (crewRepo.findById(id).isPresent()) {
