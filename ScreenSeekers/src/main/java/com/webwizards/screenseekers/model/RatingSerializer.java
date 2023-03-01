@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: RatingSerializer.java
  * 
  * ------------
@@ -43,7 +43,6 @@ public class RatingSerializer extends StdSerializer<Rating>{
         
         gen.writeObjectField("createdAt", value.getCreatedAt());
         gen.writeObjectField("updatedAt", value.getUpdatedAt());
-        gen.writeObjectField("deletedAt", value.getDeletedAt());
         gen.writeEndObject();
     }
 	

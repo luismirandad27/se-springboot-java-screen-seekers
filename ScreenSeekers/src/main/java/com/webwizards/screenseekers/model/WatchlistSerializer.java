@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: WatchlistSerializer.java
  * 
  * ------------

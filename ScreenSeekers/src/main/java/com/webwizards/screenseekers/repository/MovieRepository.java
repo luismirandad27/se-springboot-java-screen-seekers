@@ -1,14 +1,16 @@
-/*
+/**
  * Class File: MovieRepository.java
  * 
  * ------------
  * Description:
  * ------------
  * This class will store the Jpa methods to access the Movie table from
- * the database
+ * the database.
+ * v1.01: added Find methods and random movies 
+ * v1.02: added find available movies (not deleted) 
  * 
- * @author Regal Cruz
- * @version 1.0
+ * @authors Victor Chawsukho, Regal Cruz
+ * @version 1.02
  * 
  */
 
@@ -17,52 +19,24 @@ package com.webwizards.screenseekers.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.webwizards.screenseekers.model.Movie;
 
-public interface MovieRepository extends JpaRepository <Movie, Long>{
-/*
- * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.details
- * interface PersonRepository extends Repository<Person, Long> {
 
-  List<Person> findByEmailAddressAndLastname(EmailAddress emailAddress, String lastname);
-
-  // Enables the distinct flag for the query
-  List<Person> findDistinctPeopleByLastnameOrFirstname(String lastname, String firstname);
-  List<Person> findPeopleDistinctByLastnameOrFirstname(String lastname, String firstname);
-
-  // Enabling ignoring case for an individual property
-  List<Person> findByLastnameIgnoreCase(String lastname);
-  // Enabling ignoring case for all suitable properties
-  List<Person> findByLastnameAndFirstnameAllIgnoreCase(String lastname, String firstname);
-
-  // Enabling static ORDER BY for a query
-  List<Person> findByLastnameOrderByFirstnameAsc(String lastname);
-  List<Person> findByLastnameOrderByFirstnameDesc(String lastname);
-}
- */
+public interface MovieRepository extends JpaRepository<Movie, Long>{
 	
-	
-	//	List<Movie> findByTitle(String title);
-	
-	//Search (Victor)
+	List<Movie> findByTitle(String title);
+
 	List<Movie> findByTitleContainingIgnoreCase(String title);
-	List<Movie> findByGenreIgnoreCase(String genre);
-//	List<Movie> findByReleaseDate(String releaseDate);
-//	List<Movie> findByLength(int length);
-//	List<Movie> findBySynopsisIgnoreCase(String synopsis);
 	
-	/* private Long id;
-	@Column(name="title")
-	private String title;
-	@Column(name="genre")
-	private String genre;
-	@Column(name="releaseDate")
-	private String releaseDate;
-	@Column(name="length")
-	private int length;
-	@Column(name="synopsis")
-	private String synopsis;
-	@Column(name="classificationRating")
-	private String classificationRating; */
+	List<Movie> findByGenreContainingIgnoreCase(String genre);
+	
+	@Query("SELECT m FROM Movie m ORDER BY RAND() LIMIT 10")
+    List<Movie> findRandom();
+	
+	@Query("SELECT e FROM Movie e WHERE EXTRACT(YEAR FROM e.releaseDate) = ?1")
+	List<Movie> findByReleaseDateYear(int year);
+	
+
 }

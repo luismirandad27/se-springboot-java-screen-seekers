@@ -1,5 +1,5 @@
-/*
- * Class File: User.java (Testing for pulling/merge)
+/**
+ * Class File: User.java
  * 
  * ------------
  * Description:
@@ -88,7 +88,11 @@ public class User {
 	@Column(name = "country")
 	private String country;
 	
-	@Column(name = "createdAt")
+	@Column(name= "profileImage")
+	@Lob
+	private byte[] profileImage;
+
+  @Column(name = "createdAt")
 	private Date createdAt;
 	
 	@Column(name = "updatedAt")
@@ -126,6 +130,7 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.createdAt = new Date();
 	}
 	
 	public User(Long id, String password, String firstName,
@@ -290,6 +295,14 @@ public class User {
 
 	public void setWatchlists(Set<Watchlist> watchlists) {
 		this.watchlists = watchlists;
+	}
+
+	public byte[] getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(byte[] profileImage) {
+		this.profileImage = profileImage;
 	}
 	
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Class File: UserController.java
  * 
  * ------------
@@ -11,25 +11,25 @@
  * 2) Get user based on the id
  * 3) Update the information of a user
  * 4) Enable/Disable a user
+ * 5) Update user profile image
  * 
  * @author Luis Miguel Miranda
  * @version 1.0
  * 
- */
+ **/
 
 package com.webwizards.screenseekers.controller;
 
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,10 +37,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.webwizards.screenseekers.model.Movie;
-import com.webwizards.screenseekers.model.Rating;
 import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.RatingRepository;
@@ -64,6 +64,7 @@ public class UserController {
 	PasswordEncoder encoder;
 	
 	@GetMapping("/users")
+	@PreAuthorize("hasRole('ADMIN')" )
 	public ResponseEntity<List<User>> getAllUsers(){
 		try {
 			
@@ -82,6 +83,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/user/{id}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> getUser(@PathVariable long id){
 		try{
 			
@@ -101,6 +103,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/user/{id}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User newUserInfo){
 		
 		try {
@@ -143,6 +146,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/user/{id}/disable")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
 	public ResponseEntity<User> disableUser(@PathVariable long id){
 		try {
 			
@@ -156,6 +160,8 @@ public class UserController {
 			
 			updateUser.setDeletedAt(new Date());
 			
+			userRepo.save(updateUser);
+			
 			return new ResponseEntity<>(updateUser, HttpStatus.OK);
 			
 		}catch(Exception e) {
@@ -164,6 +170,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/user/{id}/enable")
+	@PreAuthorize("hasRole('ADMIN')" )
 	public ResponseEntity<User> enableUser(@PathVariable long id){
 		try {
 			
@@ -177,6 +184,35 @@ public class UserController {
 			
 			updateUser.setUpdatedAt(new Date());
 			updateUser.setDeletedAt(null);
+			
+			userRepo.save(updateUser);
+			
+			return new ResponseEntity<>(updateUser, HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/user/{id}/updateProfileImage")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
+	public ResponseEntity<User> updateProfileImage(@PathVariable long id, @RequestParam("file") MultipartFile profileImageFile){
+		try {
+			
+			Optional<User> user = userRepo.findById(id);
+			
+			if(!user.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			User updateUser = user.get();
+			
+			byte[] profileImage = profileImageFile.getBytes();
+			
+			updateUser.setUpdatedAt(new Date());
+			updateUser.setProfileImage(profileImage);
+			
+			userRepo.save(updateUser);
 			
 			return new ResponseEntity<>(updateUser, HttpStatus.OK);
 			
