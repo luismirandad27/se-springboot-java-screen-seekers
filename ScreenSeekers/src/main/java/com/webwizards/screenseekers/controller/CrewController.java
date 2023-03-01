@@ -1,3 +1,23 @@
+/**
+ * Class File: CrewController.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the API methods with regards of the Crew member for a movie.
+ * That includes:
+ * 
+ * 1) Get all the crew member from the database or by name of the crew member
+ * 2) Retrieve a crew member by id
+ * 3) Create a new crew member from the database
+ * 4) Update the crew member information
+ * 5) Delete a crew member from the database by Id
+ * 6) Delete all crew members from the database
+ * 
+ * @author Regal Cruz
+ * @version 1.0
+ * 
+ */
 package com.webwizards.screenseekers.controller;
 
 import java.util.ArrayList;
@@ -23,6 +43,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.webwizards.screenseekers.model.Crew;
 import com.webwizards.screenseekers.model.Movie;
 import com.webwizards.screenseekers.repository.CrewRepository;
+import com.webwizards.screenseekers.utils.ResponseMessage;
 
 @RestController
 @RequestMapping("/api")
@@ -65,9 +86,10 @@ public class CrewController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Crew> createCrew(@RequestBody Crew crew) {
 		try {
-			Crew myCrew = crew;
+			
+			Crew myCrew = new Crew(crew.getFirstName(), crew.getLastName(), crew.getDateOfBirth(), crew.getNationality(), crew.getAward());
 
-			crewRepo.save(new Crew(crew.getFirstName(), crew.getLastName(), crew.getDateOfBirth(), crew.getNationality(), crew.getAward(), crew.getCreatedAt(), crew.getUpdatedAt(), crew.getDeletedAt()));
+			crewRepo.save(myCrew);
 
 			return new ResponseEntity<>(myCrew, HttpStatus.OK);
 		} catch (Exception e) {
@@ -101,13 +123,23 @@ public class CrewController {
 	
 	@DeleteMapping("crew/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity deleteMovie(@PathVariable Long id) {
+	public ResponseEntity<ResponseMessage> deleteCrew(@PathVariable Long id) {
 		try {
-			if (crewRepo.findById(id).isPresent()) {
+			
+			Optional<Crew> crew = crewRepo.findById(id);
+			
+			if (crew.isPresent()) {
+				
+				String message = "Crew member: "+crew.get().getFirstName()+" "+crew.get().getLastName() + " has been deleted successfully!";
+				
 				crewRepo.deleteById(id);
-				return new ResponseEntity<>(HttpStatus.OK);
+				
+				return new ResponseEntity<>(new ResponseMessage(message),HttpStatus.OK);
+				
 			} else {
+				
 				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+				
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -116,12 +148,18 @@ public class CrewController {
 	
 	@DeleteMapping("/crew")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity deleteAllMovies() {
+	public ResponseEntity<ResponseMessage> deleteAllCrews() {
 		try {
+			
 			crewRepo.deleteAll();
-			return new ResponseEntity<>(HttpStatus.OK);
+			
+			String message = "All crews information has been deleted from the database successfully!";
+			
+			return new ResponseEntity<>(new ResponseMessage(message),HttpStatus.OK);
+			
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
 }
