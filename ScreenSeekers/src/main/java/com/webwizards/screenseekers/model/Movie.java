@@ -68,6 +68,15 @@ public class Movie {
 			fetch = FetchType.LAZY)
 	private Set<WatchlistDetail> watchlistDetails = new HashSet<>(); 
 	
+	//Setting relation with Crew table (comes from a Many to Many relationship)
+		@OneToMany(mappedBy="movie",
+				cascade = CascadeType.ALL,
+				fetch = FetchType.LAZY)
+		private Set<ProductionCrew> productionCrews = new HashSet<>(); 
+	
+	
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -145,6 +154,14 @@ public class Movie {
 	}
 	public void setWatchlistDetails(Set<WatchlistDetail> watchlistDetails) {
 		this.watchlistDetails = watchlistDetails;
+	}
+	
+	
+	public Set<ProductionCrew> getProductionCrews() {
+		return productionCrews;
+	}
+	public void setProductionCrews(Set<ProductionCrew> productionCrews) {
+		this.productionCrews = productionCrews;
 	}
 	public Movie(String title, String genre, Date releaseDate, int length, String synopsis, String classificationRating,
 			String movieTrailerLink, Boolean isInTheaters) {
