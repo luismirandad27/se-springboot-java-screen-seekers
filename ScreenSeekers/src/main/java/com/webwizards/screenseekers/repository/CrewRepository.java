@@ -15,10 +15,12 @@
 
 package com.webwizards.screenseekers.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.webwizards.screenseekers.model.Crew;
 
 public interface CrewRepository extends JpaRepository<Crew, Long> {
-
+	List<Crew> findByFirstName(String firstName);
 }
