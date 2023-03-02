@@ -14,10 +14,13 @@
 
 package com.webwizards.screenseekers.repository;
 
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.webwizards.screenseekers.model.Watchlist;
 
 public interface WatchlistRepository extends JpaRepository<Watchlist,Long> {
-
+	List<Watchlist> findByName(String name);
 }
