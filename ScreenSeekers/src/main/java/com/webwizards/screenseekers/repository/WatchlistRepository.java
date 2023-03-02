@@ -23,5 +23,5 @@ import com.webwizards.screenseekers.model.Watchlist;
 
 public interface WatchlistRepository extends JpaRepository<Watchlist,Long> {
 	List<Watchlist> findByName(String name);
-	
+	 
 }

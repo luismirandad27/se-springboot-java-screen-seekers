@@ -147,7 +147,7 @@ public class WatchlistController {
 	}
 	
 	
-	
+	 
 	@DeleteMapping("/watchlists/{id}")
 	public ResponseEntity<Watchlist> deleteWatchlist(@PathVariable Long id){
 		try {
