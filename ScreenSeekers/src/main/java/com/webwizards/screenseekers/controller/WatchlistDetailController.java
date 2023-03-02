@@ -95,7 +95,6 @@ public class WatchlistDetailController {
 		}
 	}
 	
-	
 
 	@DeleteMapping("/watchlistdetail/{watchlistId}/movies/{movieId}")
 	public ResponseEntity<WatchlistDetail> deleteWatchlistDetailItem(@PathVariable Long watchlistId, @PathVariable Long movieId){

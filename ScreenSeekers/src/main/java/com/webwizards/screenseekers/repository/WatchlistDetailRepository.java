@@ -23,4 +23,4 @@ import com.webwizards.screenseekers.model.WatchlistDetail;
 public interface WatchlistDetailRepository extends JpaRepository<WatchlistDetail,Long>{
 	Optional<WatchlistDetail> findById(Long id);
 
-}
+} 
