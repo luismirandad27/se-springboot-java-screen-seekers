@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -115,12 +117,14 @@ public class User {
 	@OneToMany(mappedBy="user",
 				cascade = CascadeType.ALL,
 				fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<Rating> ratings = new HashSet<>();
 	
 	//Setting relation with Watchlist table (comes from a One to Many relationship)
 	@OneToMany(mappedBy="user",
 				cascade = CascadeType.ALL,
 				fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<Watchlist> watchlists = new HashSet<>();
 	
 	

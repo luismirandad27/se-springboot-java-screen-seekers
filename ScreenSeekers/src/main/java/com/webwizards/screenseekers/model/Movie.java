@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,18 +66,21 @@ public class Movie {
 	@OneToMany(mappedBy = "movie",
 				cascade = CascadeType.ALL,
 				fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<Rating> ratings = new HashSet<>();
 	
 	//Setting relation with Watchlist table (comes from a Many to Many relationship)
 	@OneToMany(mappedBy="movie",
 			cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<WatchlistDetail> watchlistDetails = new HashSet<>(); 
 	
 	//Setting relation with Crew table (comes from a Many to Many relationship)
 	@OneToMany(mappedBy="movie",
 			cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<ProductionCrew> productionCrews = new HashSet<>(); 
 	
 	public Long getId() {
