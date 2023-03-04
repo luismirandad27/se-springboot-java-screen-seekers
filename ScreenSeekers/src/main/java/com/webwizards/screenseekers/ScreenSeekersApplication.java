@@ -26,18 +26,22 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.webwizards.screenseekers.model.Crew;
+import com.webwizards.screenseekers.model.CrewMember;
 import com.webwizards.screenseekers.model.ERole;
 import com.webwizards.screenseekers.model.Movie;
 import com.webwizards.screenseekers.model.ProductionCrew;
 import com.webwizards.screenseekers.model.Role;
 import com.webwizards.screenseekers.model.User;
-import com.webwizards.screenseekers.repository.CrewRepository;
+import com.webwizards.screenseekers.model.Watchlist;
+import com.webwizards.screenseekers.model.WatchlistDetail;
+import com.webwizards.screenseekers.repository.CrewMemberRepository;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.ProductionCrewRepository;
 import com.webwizards.screenseekers.repository.RatingRepository;
 import com.webwizards.screenseekers.repository.RoleRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
+import com.webwizards.screenseekers.repository.WatchlistDetailRepository;
+import com.webwizards.screenseekers.repository.WatchlistRepository;
 
 @SpringBootApplication
 public class ScreenSeekersApplication {
@@ -49,7 +53,14 @@ public class ScreenSeekersApplication {
 	}
 
 	@Bean
-	ApplicationRunner init(RoleRepository roleRepo, MovieRepository movieRepo, RatingRepository ratingRepo, UserRepository userRepo, CrewRepository crewRepo, ProductionCrewRepository prodCrewRepo) {
+	ApplicationRunner init(RoleRepository roleRepo, 
+						   MovieRepository movieRepo, 
+						   RatingRepository ratingRepo, 
+						   UserRepository userRepo, 
+						   CrewMemberRepository crewRepo, 
+						   ProductionCrewRepository prodCrewRepo,
+						   WatchlistRepository watchlistRepo,
+						   WatchlistDetailRepository watchlistDetailRepo) {
 
 		return args -> {
 			
@@ -177,48 +188,59 @@ public class ScreenSeekersApplication {
 			userRepo.save(user7);
 			userRepo.save(user8);
 			
+			long id1 = 1L;
+			long id2 = 2L;
+			long id3 = 3L;
+			
+			Movie movie1 = movieRepo.findById(id1).get();
+			Movie movie2 = movieRepo.findById(id2).get();
+			Movie movie3 = movieRepo.findById(id3).get();
+			
 			//creating crew object for testing
-			Crew crew1 = new Crew("Pedro", "Pascal",dateFormat.parse("2018-08-15"), "Phil", "Award");
-			Crew crew2 = new Crew("Bella", "Ramsey",dateFormat.parse("2018-08-15"), "Phil", "Award");
+			CrewMember crew1 = new CrewMember("Cristian", "Bale",dateFormat.parse("2018-08-15"), "Phil", "Award");
+			CrewMember crew2 = new CrewMember("Heath", "Ledger",dateFormat.parse("2018-08-15"), "Phil", "Award");
 			
 			crewRepo.save(crew1);
 			crewRepo.save(crew2);
 			
 			//creating prodcrew objects for testing
-			ProductionCrew prodCrew1 = new ProductionCrew("Man1");
-			ProductionCrew prodCrew2 = new ProductionCrew("Man2");
-			ProductionCrew prodCrew3 = new ProductionCrew("Man3");
-			ProductionCrew prodCrew4 = new ProductionCrew("Man4");
+			ProductionCrew prodCrew1 = new ProductionCrew("Batman");
+			ProductionCrew prodCrew2 = new ProductionCrew("The Joker");
+			ProductionCrew prodCrew3 = new ProductionCrew("Main Character");
 			
-			//linking the 3 objects to demonstrate many to many relationship
-			crew1.setProductionCrews(new HashSet<>(Arrays.asList(prodCrew1, prodCrew2))); 
-			crew2.setProductionCrews(new HashSet<>(Arrays.asList(prodCrew1, prodCrew2)));
-			
-			long id1, id2;
-			id1 = 1;
-			id2 = 2;
-			
-			Movie movie1 = movieRepo.findById(id1).get();
-			Movie movie2 = movieRepo.findById(id2).get();
-			
-			movie1.setProductionCrews(new HashSet<>(Arrays.asList(prodCrew1, prodCrew2)));
-			movie2.setProductionCrews(new HashSet<>(Arrays.asList(prodCrew1, prodCrew2)));
-			
-			prodCrew1.setCrew(crew1);
 			prodCrew1.setMovie(movie1);
+			prodCrew1.setCrewMember(crew1);
 			
-			prodCrew2.setCrew(crew2);
-			prodCrew2.setMovie(movie2);
+			prodCrew2.setMovie(movie1);
+			prodCrew2.setCrewMember(crew2);
 			
-			prodCrew3.setCrew(crew1);
-			prodCrew3.setMovie(movie2);
+			prodCrew3.setMovie(movie3);
+			prodCrew3.setCrewMember(crew1);
 			
-			prodCrew4.setCrew(crew2);
-			prodCrew4.setMovie(movie1);
+			prodCrewRepo.save(prodCrew1);
+			prodCrewRepo.save(prodCrew2);
+			prodCrewRepo.save(prodCrew3);
 			
-			//saving crew and movie objects back to the DB
-			crewRepo.save(crew1);crewRepo.save(crew2);
-			movieRepo.save(movie1);movieRepo.save(movie2);
+			//Adding watchlist
+			Watchlist watchlist = new Watchlist("My favorite Sci-fi movies",user1);
+			watchlistRepo.save(watchlist);
+			
+			//Adding watchlist item
+			WatchlistDetail item1 = new WatchlistDetail();
+			item1.setWatchlist(watchlist);
+			item1.setMovie(movie1);
+			watchlistDetailRepo.save(item1);
+			
+			WatchlistDetail item2 = new WatchlistDetail();
+			item2.setWatchlist(watchlist);
+			item2.setMovie(movie2);
+			watchlistDetailRepo.save(item2);
+			
+			WatchlistDetail item3 = new WatchlistDetail();
+			item3.setWatchlist(watchlist);
+			item3.setMovie(movie3);
+			watchlistDetailRepo.save(item3);
+			
 			  
 		};
 

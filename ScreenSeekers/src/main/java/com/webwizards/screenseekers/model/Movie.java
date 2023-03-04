@@ -43,7 +43,7 @@ public class Movie {
 	private Date releaseDate;
 	@Column(name="length")
 	private int length;
-	@Column(name="synopsis")
+	@Column(name="synopsis", length=500)
 	private String synopsis;
 	@Column(name="classificationRating")
 	private String classificationRating;
@@ -51,6 +51,10 @@ public class Movie {
 	private String movieTrailerLink;
 	@Column(name="isInTheaters")
 	private Boolean isInTheaters;
+	@Column(name= "posterImage")
+	private String posterImage;
+	@Column(name= "imageTrailer")
+	private String imageTrailer;
 	@Column(name="createdAt")
 	private Date createdAt;
 	@Column(name="updatedAt")
@@ -125,8 +129,21 @@ public class Movie {
 	public Boolean getIsInTheaters() {
 		return isInTheaters;
 	}
+	
 	public void setIsInTheaters(Boolean isInTheaters) {
 		this.isInTheaters = isInTheaters;
+	}
+	public String getPosterImage() {
+		return posterImage;
+	}
+	public void setPosterImage(String posterImage) {
+		this.posterImage = posterImage;
+	}
+	public String getImageTrailer() {
+		return imageTrailer;
+	}
+	public void setImageTrailer(String imageTrailer) {
+		this.imageTrailer = imageTrailer;
 	}
 	public Date getCreatedAt() {
 		return createdAt;

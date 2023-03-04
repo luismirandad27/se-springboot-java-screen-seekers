@@ -1,10 +1,11 @@
 /**
- * Class File: Crew.java
+ * Class File: CrewMember.java
  * 
  * ------------
  * Description:
  * ------------
- * This class will store information about crew -these are the people who worked on the movies
+ * This class will store information about a crew member -these are the people who worked on the movies
+ * Directors, Editors, Special Effects, cast 
  * 
  * 
  * @author Regal Cruz
@@ -29,8 +30,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="crew")
-public class Crew {
+@Table(name="crewmember")
+public class CrewMember {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -52,12 +53,10 @@ public class Crew {
 	@Column(name="deletedAt")
 	private Date deletedAt;
 	
-	@OneToMany(mappedBy="crew",
+	@OneToMany(mappedBy="crewMember",
 			cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
 	private Set<ProductionCrew> productionCrews = new HashSet<>(); 
-	
-	
 	
 	public Set<ProductionCrew> getProductionCrews() {
 		return productionCrews;
@@ -65,11 +64,11 @@ public class Crew {
 	public void setProductionCrews(Set<ProductionCrew> productionCrews) {
 		this.productionCrews = productionCrews;
 	}
-	public Crew() {
+	public CrewMember() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Crew(String firstName, String lastName, Date dateOfBirth, String nationality, String award) {
+	public CrewMember(String firstName, String lastName, Date dateOfBirth, String nationality, String award) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;

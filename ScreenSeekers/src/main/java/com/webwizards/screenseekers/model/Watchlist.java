@@ -57,10 +57,9 @@ public class Watchlist {
 	@OneToMany(mappedBy="watchlist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<WatchlistDetail> watchlistDetails = new HashSet<>();
 
-	public Watchlist(Long id, String name) {
-		super();
-		this.id = id;
+	public Watchlist(String name, User user) {
 		this.name = name;
+		this.user = user;
 		this.createdAt =  new Date();
 	}
 	

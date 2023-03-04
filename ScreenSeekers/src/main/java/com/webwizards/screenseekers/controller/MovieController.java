@@ -7,18 +7,14 @@
  * This class will store the API methods with regards of the movies information management.
  * That includes:
  * 
- * 1) Retrieve all movies accessed by Admin
- * 2) Retrieve random movies  
- * 3) Get movies based on the Title
- * 4) Get movies based on the Genre
- * 5) Get movies based on the ReleaseDate 
- * 6) Get movies based on the id
- * 7) Create movies
- * 8) Update the movie information
- * 9) Delete movies based on id
- * 10) Delete all movies
- * 11) Get recommendations for an specific user
- * 12) Add a crew member to the movie's crew (1 crew member - an actor for example - can work in multiple movies)
+ * 1) Create movies
+ * 2) Update the movie information
+ * 3) Get movies based on the id
+ * 4) Retrieve all movies accessed or by title or by genre or by released Year
+ * 5) Retrieve random movies
+ * 6) Delete movies based on id
+ * 7) Delete all movies
+ * 8) Get recommendations for an specific user
  * 
  * @author Victor Chawsukho, Luis Miguel Miranda
  * @version 1.02
@@ -49,11 +45,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.webwizards.screenseekers.model.Crew;
+import com.webwizards.screenseekers.model.CrewMember;
 import com.webwizards.screenseekers.model.Movie;
 import com.webwizards.screenseekers.model.ProductionCrew;
 import com.webwizards.screenseekers.model.User;
-import com.webwizards.screenseekers.repository.CrewRepository;
+import com.webwizards.screenseekers.repository.CrewMemberRepository;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.ProductionCrewRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
@@ -72,11 +68,76 @@ public class MovieController {
 	UserRepository userRepo;
 	
 	@Autowired
-	CrewRepository crewRepo; 
+	CrewMemberRepository crewRepo; 
 	
 	@Autowired
 	ProductionCrewRepository productionCrewRepo;
 	
+	@PostMapping("/movies")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
+		try {
+			Movie myMovie = movie;
+			
+			Movie newMovie = new Movie(movie.getTitle(), 
+					 movie.getGenre(), 
+					 movie.getReleaseDate(), 
+					 movie.getLength(), 
+					 movie.getSynopsis(), 
+					 movie.getClassificationRating(), 
+					 movie.getMovieTrailerLink(), 
+					 movie.getIsInTheaters());
+
+			movieRepo.save(newMovie);
+
+			return new ResponseEntity<>(newMovie, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PutMapping("movies/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
+		try {
+			Optional<Movie> myMovie = movieRepo.findById(id);
+			if (movieRepo.findById(id).isPresent()) {
+				
+				Movie _myMovie = myMovie.get();
+				
+				_myMovie.setTitle(movie.getTitle());
+				_myMovie.setGenre(movie.getGenre());
+				_myMovie.setReleaseDate(movie.getReleaseDate());
+				_myMovie.setLength(movie.getLength());
+				_myMovie.setSynopsis(movie.getSynopsis());
+				_myMovie.setClassificationRating(movie.getClassificationRating());
+				_myMovie.setMovieTrailerLink(movie.getMovieTrailerLink());
+				_myMovie.setIsInTheaters(movie.getIsInTheaters());
+				_myMovie.setUpdatedAt(new Date());
+				
+				movieRepo.save(_myMovie);
+				
+				return new ResponseEntity<>(_myMovie, HttpStatus.OK);
+			} else
+				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/movies/{id}")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public ResponseEntity<Movie> getMovie(@PathVariable("id") Long id) {
+		try {
+			if (movieRepo.findById(id).isPresent()) {
+				return new ResponseEntity<>(movieRepo.findById(id).get(), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 	@GetMapping("/movies")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
@@ -129,70 +190,6 @@ public class MovieController {
 		}
 	}
 
-	@GetMapping("/movies/{id}")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<Movie> getMovie(@PathVariable("id") Long id) {
-		try {
-			if (movieRepo.findById(id).isPresent()) {
-				return new ResponseEntity<>(movieRepo.findById(id).get(), HttpStatus.OK);
-			} else {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@PostMapping("/movies")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
-		try {
-			Movie myMovie = movie;
-
-			movieRepo.save(new Movie(movie.getTitle(), 
-									 movie.getGenre(), 
-									 movie.getReleaseDate(), 
-									 movie.getLength(), 
-									 movie.getSynopsis(), 
-									 movie.getClassificationRating(), 
-									 movie.getMovieTrailerLink(), 
-									 movie.getIsInTheaters()));
-
-			return new ResponseEntity<>(myMovie, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@PutMapping("movies/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
-		try {
-			Optional<Movie> myMovie = movieRepo.findById(id);
-			if (movieRepo.findById(id).isPresent()) {
-				
-				Movie _myMovie = myMovie.get();
-				
-				_myMovie.setTitle(movie.getTitle());
-				_myMovie.setGenre(movie.getGenre());
-				_myMovie.setReleaseDate(movie.getReleaseDate());
-				_myMovie.setLength(movie.getLength());
-				_myMovie.setSynopsis(movie.getSynopsis());
-				_myMovie.setClassificationRating(movie.getClassificationRating());
-				_myMovie.setMovieTrailerLink(movie.getMovieTrailerLink());
-				_myMovie.setIsInTheaters(movie.getIsInTheaters());
-				_myMovie.setUpdatedAt(new Date());
-				
-				movieRepo.save(_myMovie);
-				
-				return new ResponseEntity<>(_myMovie, HttpStatus.OK);
-			} else
-				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
 	@DeleteMapping("movies/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ResponseMessage> deleteMovie(@PathVariable Long id) {
@@ -224,6 +221,14 @@ public class MovieController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ResponseMessage> deleteAllMovies() {
 		try {
+			
+			List<Movie> movieList = movieRepo.findAll();
+			
+			if(movieList.isEmpty()) {
+				
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				
+			}
 			
 			movieRepo.deleteAll();
 			
@@ -274,34 +279,6 @@ public class MovieController {
 		
 	}
 	
-	@PutMapping("/movies/{movieId}/add-crew-member/{crewId}")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<ProductionCrew> addCrewMemberToMovie(@PathVariable long movieId, @PathVariable long crewId,@RequestBody ProductionCrew productionCrew){
-		
-		try {
-			
-			Optional<Movie> movie = movieRepo.findById(movieId);
-			Optional<Crew> crew = crewRepo.findById(crewId);
-			
-			if (!movie.isPresent() || !crew.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			
-			ProductionCrew prodCrew = new ProductionCrew(
-					productionCrew.getMovieRole(),
-					productionCrew.getCharacterName());
-			
-			prodCrew.setMovie(movie.get());
-			prodCrew.setCrew(crew.get());
-			
-			productionCrewRepo.save(prodCrew);
-			
-			return new ResponseEntity<>(prodCrew,HttpStatus.OK);
-			
-		}catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-	}
+	
 	
 }

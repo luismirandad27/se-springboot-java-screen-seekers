@@ -14,6 +14,7 @@
 
 package com.webwizards.screenseekers.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,6 +22,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.webwizards.screenseekers.model.WatchlistDetail;
 
 public interface WatchlistDetailRepository extends JpaRepository<WatchlistDetail,Long>{
+	
 	Optional<WatchlistDetail> findById(Long id);
+	
+	List<WatchlistDetail> findByWatchlistId(Long id);
+	
+	Optional<WatchlistDetail> findByWatchlistIdAndMovieId(Long watchlistId, Long movieId);
+	
   
 } 
