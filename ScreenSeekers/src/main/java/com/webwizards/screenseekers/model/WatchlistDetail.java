@@ -16,6 +16,8 @@ package com.webwizards.screenseekers.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import jakarta.persistence.Column;
@@ -45,10 +47,13 @@ public class WatchlistDetail {
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "movieId", nullable = false)
+	@JsonProperty("movie")
+	@JsonIgnore
 	private Movie movie;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "watchlistId", nullable = false)
+	@JsonProperty("watchlist")
 	private Watchlist watchlist;
 
 	public WatchlistDetail() {

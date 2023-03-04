@@ -17,7 +17,6 @@ package com.webwizards.screenseekers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -204,9 +203,9 @@ public class ScreenSeekersApplication {
 			crewRepo.save(crew2);
 			
 			//creating prodcrew objects for testing
-			ProductionCrew prodCrew1 = new ProductionCrew("Batman");
-			ProductionCrew prodCrew2 = new ProductionCrew("The Joker");
-			ProductionCrew prodCrew3 = new ProductionCrew("Main Character");
+			ProductionCrew prodCrew1 = new ProductionCrew("Batman","Actor");
+			ProductionCrew prodCrew2 = new ProductionCrew("The Joker","Actor");
+			ProductionCrew prodCrew3 = new ProductionCrew("Main Character","Actor");
 			
 			prodCrew1.setMovie(movie1);
 			prodCrew1.setCrewMember(crew1);

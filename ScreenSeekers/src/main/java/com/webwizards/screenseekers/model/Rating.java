@@ -17,6 +17,7 @@ package com.webwizards.screenseekers.model;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import jakarta.persistence.Column;
@@ -30,9 +31,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 
+//@JsonSerialize(using = RatingSerializer.class)
 @Entity
 @Table(name="rating")
-@JsonSerialize(using = RatingSerializer.class)
 public class Rating {
 
 	@Id
@@ -52,15 +53,17 @@ public class Rating {
 	private Date updatedAt;
 	
 	//Setting relation with User table (comes from a Many to Many relationship)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "userId", nullable=false)
 	@JsonIgnore
+	@JsonProperty("user")
 	private User user;
 	
 	//Setting relation with Movie table (comes from a Many to Many relationship)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "movieId", nullable=false)
 	@JsonIgnore
+	@JsonProperty("movie")	
 	private Movie movie;
 	
 	public Rating() {

@@ -34,8 +34,10 @@ public interface RatingRepository extends JpaRepository<Rating,Long>{
 
 	Optional<Rating> findByUserIdAndMovieId(Long userId, Long movieId);
 	
+	@Query("SELECT r FROM Rating r LEFT JOIN FETCH r.movie WHERE r.user.id = ?1")
 	List<Rating> findByUserId(Long userId);
 	
+	@Query("SELECT r FROM Rating r LEFT JOIN FETCH r.user WHERE r.movie.id = ?1")
 	List<Rating> findByMovieId(Long movieId);
 
 	@Query("SELECT r FROM Rating r")

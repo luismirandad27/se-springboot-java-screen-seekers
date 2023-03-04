@@ -15,12 +15,9 @@
 package com.webwizards.screenseekers.model;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,7 +26,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -64,8 +60,6 @@ public class ProductionCrew {
 	@JoinColumn(name = "crewmember_id", nullable = false)
 	private CrewMember crewMember;
 	
-	
-
 	public Movie getMovie() {
 		return movie;
 	}

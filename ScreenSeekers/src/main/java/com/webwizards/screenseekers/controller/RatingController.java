@@ -136,14 +136,20 @@ public class RatingController {
 	public ResponseEntity<List<Rating>> getRatingsByUser(@PathVariable Long userId) {
 		try {
 			
-			List<Rating> myRatings = ratingRepo.findByUserId(userId);
+			Optional<User> user = userRepo.findById(userId);
 			
-			if(!myRatings.isEmpty()) {
-				
-				return new ResponseEntity<>(myRatings, HttpStatus.OK);
+			if(!user.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 				
 			} else {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				
+				List<Rating> ratings = new ArrayList<>();
+				
+				for(Rating rating : user.get().getRatings()) {
+					ratings.add(rating);
+				}
+				
+				return new ResponseEntity<>(ratings,HttpStatus.OK);
 			}
 				
 				
@@ -159,6 +165,7 @@ public class RatingController {
 			
 			List<Rating> myRatings = ratingRepo.findByMovieId(movieId);
 			
+			
 			if(!myRatings.isEmpty()) {
 				
 				return new ResponseEntity<>(myRatings, HttpStatus.OK);
@@ -166,7 +173,25 @@ public class RatingController {
 			} else {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
+			
+			
+			/*
+			Optional<Movie> movie = movieRepo.findById(movieId);
+			
+			if(!movie.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 				
+			} else {
+				
+				List<Rating> ratings = new ArrayList<>();
+				
+				for(Rating rating : movie.get().getRatings()) {
+					ratings.add(rating);
+				}
+				
+				return new ResponseEntity<>(ratings,HttpStatus.OK);
+			}
+			*/
 				
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
