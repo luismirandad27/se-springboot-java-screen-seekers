@@ -41,6 +41,11 @@ public class ProdCrewSerializer extends StdSerializer<ProductionCrew>{
         gen.writeNumberField("movieId", value.getMovie().getId());
         gen.writeStringField("title", value.getMovie().getTitle());
         
+        //Retrieving the information of the movie
+        gen.writeNumberField("crewId", value.getCrewMember().getId());
+        gen.writeStringField("firstName", value.getCrewMember().getFirstName());
+        gen.writeStringField("lastName", value.getCrewMember().getLastName());
+        
         gen.writeObjectField("createdAt", value.getCreatedAt());
         gen.writeObjectField("updatedAt", value.getUpdatedAt());
         gen.writeEndObject();

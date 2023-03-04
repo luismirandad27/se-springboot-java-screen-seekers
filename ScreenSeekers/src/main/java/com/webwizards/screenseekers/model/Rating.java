@@ -42,7 +42,7 @@ public class Rating {
 	@Column(name="userRating")
 	private int userRating;
 	
-	@Column(name="comment")
+	@Column(name="comment", length=500)
 	private String comment;
 	
 	@Column(name="createdAt")

@@ -13,8 +13,10 @@
  * 4) Update the crew member information
  * 5) Delete a crew member from the database by Id
  * 6) Delete all crew members from the database
+ * 7) Add a crew member into a movie's crew
+ * 8) Remove a crew member from a movie's crew
  * 
- * @author Regal Cruz
+ * @author Regal Cruz, Luis Miguel Miranda
  * @version 1.0
  * 
  */
@@ -40,23 +42,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.webwizards.screenseekers.model.Crew;
+import com.webwizards.screenseekers.model.CrewMember;
 import com.webwizards.screenseekers.model.Movie;
-import com.webwizards.screenseekers.repository.CrewRepository;
+import com.webwizards.screenseekers.model.ProductionCrew;
+import com.webwizards.screenseekers.repository.CrewMemberRepository;
+import com.webwizards.screenseekers.repository.MovieRepository;
+import com.webwizards.screenseekers.repository.ProductionCrewRepository;
 import com.webwizards.screenseekers.utils.ResponseMessage;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:8081")
 public class CrewController {
-	@Autowired
-	CrewRepository crewRepo;
 	
-	@GetMapping("/crew")
+	@Autowired
+	CrewMemberRepository crewRepo;
+	
+	@Autowired
+	MovieRepository movieRepo;
+	
+	@Autowired
+	ProductionCrewRepository productionCrewRepo;
+	
+	@GetMapping("/movies/crew-members")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<List<Crew>> getAllCrew(@RequestParam(required = false) String name) {
+	public ResponseEntity<List<CrewMember>> getAllCrew(@RequestParam(required = false) String name) {
 		try {
-			List<Crew> myList = new ArrayList<Crew>();
+			List<CrewMember> myList = new ArrayList<CrewMember>();
 			if (name == null) {
 				myList = crewRepo.findAll();
 			} else {
@@ -68,9 +80,9 @@ public class CrewController {
 		}
 	}
 	
-	@GetMapping("/crew/{id}")
+	@GetMapping("/movies/crew-members/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Crew> getACrew(@PathVariable("id") Long id) {
+	public ResponseEntity<CrewMember> getACrew(@PathVariable("id") Long id) {
 		try {
 			if (crewRepo.findById(id).isPresent()) {
 				return new ResponseEntity<>(crewRepo.findById(id).get(), HttpStatus.OK);
@@ -82,12 +94,37 @@ public class CrewController {
 		}
 	}
 	
-	@PostMapping("/crew")
+	@GetMapping("/movies/{movieId}/crew-members")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Crew> createCrew(@RequestBody Crew crew) {
+	public ResponseEntity<List<ProductionCrew>> getProductionCrewByMovie(@PathVariable Long movieId) {
 		try {
 			
-			Crew myCrew = new Crew(crew.getFirstName(), crew.getLastName(), crew.getDateOfBirth(), crew.getNationality(), crew.getAward());
+			Optional<Movie> movie = movieRepo.findById(movieId);
+			
+			if (!movie.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			List<ProductionCrew> productionCrewList = productionCrewRepo.findByMovieId(movieId);
+			
+			if(productionCrewList.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			return new ResponseEntity<>(productionCrewList,HttpStatus.OK);
+			
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/movies/crew-members")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<CrewMember> createCrew(@RequestBody CrewMember crew) {
+		try {
+			
+			CrewMember myCrew = new CrewMember(crew.getFirstName(), crew.getLastName(), crew.getDateOfBirth(), crew.getNationality(), crew.getAward());
 
 			crewRepo.save(myCrew);
 
@@ -97,22 +134,24 @@ public class CrewController {
 		}
 	}
 	
-	@PutMapping("crew/{id}")
+	@PutMapping("/movies/crew-members/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Crew> updateCrew(@RequestBody Crew crew, @PathVariable Long id) {
+	public ResponseEntity<CrewMember> updateCrew(@RequestBody CrewMember crew, @PathVariable Long id) {
 		try {
-			Optional<Crew> myCrew = crewRepo.findById(id);
-			if (crewRepo.findById(id).isPresent()) {
-				Crew _myCrew = myCrew.get();
+			Optional<CrewMember> myCrew = crewRepo.findById(id);
+			if (myCrew.isPresent()) {
+				
+				CrewMember _myCrew = myCrew.get();
+				
 				_myCrew.setFirstName(crew.getFirstName());
 				_myCrew.setLastName(crew.getLastName());
 				_myCrew.setDateOfBirth(crew.getDateOfBirth());
 				_myCrew.setNationality(crew.getNationality());
 				_myCrew.setAward(crew.getAward());
-				_myCrew.setCreatedAt(crew.getCreatedAt());
-				_myCrew.setUpdatedAt(crew.getUpdatedAt());
-				_myCrew.setDeletedAt(crew.getDeletedAt());
+				_myCrew.setUpdatedAt(new Date());
+				
 				crewRepo.save(_myCrew);
+				
 				return new ResponseEntity<>(_myCrew, HttpStatus.OK);
 			} else
 				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
@@ -121,12 +160,12 @@ public class CrewController {
 		}
 	}
 	
-	@DeleteMapping("crew/{id}")
+	@DeleteMapping("/movies/crew-members/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ResponseMessage> deleteCrew(@PathVariable Long id) {
 		try {
 			
-			Optional<Crew> crew = crewRepo.findById(id);
+			Optional<CrewMember> crew = crewRepo.findById(id);
 			
 			if (crew.isPresent()) {
 				
@@ -146,7 +185,7 @@ public class CrewController {
 		}
 	}
 	
-	@DeleteMapping("/crew")
+	@DeleteMapping("/movies/crew-members")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ResponseMessage> deleteAllCrews() {
 		try {
@@ -160,6 +199,61 @@ public class CrewController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@PostMapping("/movies/{movieId}/add-crew-member/{crewId}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ProductionCrew> addCrewMemberToMovie(@PathVariable long movieId, @PathVariable long crewId,@RequestBody ProductionCrew productionCrew){
+		
+		try {
+			
+			Optional<Movie> movie = movieRepo.findById(movieId);
+			Optional<CrewMember> crew = crewRepo.findById(crewId);
+			
+			if (!movie.isPresent() || !crew.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			ProductionCrew prodCrew = new ProductionCrew(
+					productionCrew.getMovieRole(),
+					productionCrew.getCharacterName());
+			
+			prodCrew.setMovie(movie.get());
+			prodCrew.setCrewMember(crew.get());
+			
+			productionCrewRepo.save(prodCrew);
+			
+			return new ResponseEntity<>(prodCrew,HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
+	@DeleteMapping("/movies/{movieId}/remove-crew-member/{crewId}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ResponseMessage> removeCrewMemberToMovie(@PathVariable long movieId, @PathVariable long crewId){
+		
+		try {
+			
+			Optional<ProductionCrew> productionCrew = productionCrewRepo.findByMovieIdAndCrewMemberId(movieId,crewId);
+			
+			if (!productionCrew.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			productionCrewRepo.deleteById(productionCrew.get().getId());
+			
+			String message = "Crew member with id "+productionCrew.get().getCrewMember().getId()+
+							" has been removed from movie "+productionCrew.get().getMovie().getId()+"!";
+			
+			return new ResponseEntity<>(new ResponseMessage(message),HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 }

@@ -1,5 +1,5 @@
 /**
- * Class File: MovieRepository.java
+ * Class File: CrewRepository.java
  * 
  * ------------
  * Description:
@@ -8,7 +8,7 @@
  * the database.
  *
  * 
- 	Regal Cruz
+ * @Author Regal Cruz
  * @version 1.0
  * 
  */
@@ -19,8 +19,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.webwizards.screenseekers.model.Crew;
+import com.webwizards.screenseekers.model.CrewMember;
 
-public interface CrewRepository extends JpaRepository<Crew, Long> {
-	List<Crew> findByFirstName(String firstName);
+public interface CrewMemberRepository extends JpaRepository<CrewMember, Long> {
+	List<CrewMember> findByFirstName(String firstName);
 }

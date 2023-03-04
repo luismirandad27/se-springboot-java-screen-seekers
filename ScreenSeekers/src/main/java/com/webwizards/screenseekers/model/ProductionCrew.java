@@ -61,8 +61,8 @@ public class ProductionCrew {
 	private Movie movie;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "crew_id", nullable = false)
-	private Crew crew;
+	@JoinColumn(name = "crewmember_id", nullable = false)
+	private CrewMember crewMember;
 	
 	
 
@@ -74,12 +74,12 @@ public class ProductionCrew {
 		this.movie = movie;
 	}
 
-	public Crew getCrew() {
-		return crew;
+	public CrewMember getCrewMember() {
+		return crewMember;
 	}
 
-	public void setCrew(Crew crew) {
-		this.crew = crew;
+	public void setCrewMember(CrewMember crewMember) {
+		this.crewMember = crewMember;
 	}
 
 	public ProductionCrew() {

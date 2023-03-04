@@ -35,6 +35,7 @@ public class WatchlistSerializer extends StdSerializer<WatchlistDetail> {
         gen.writeStartObject();
         
         //Retrieving the information of the movie
+        gen.writeNumberField("id", value.getId());
         gen.writeNumberField("movieId", value.getMovie().getId());
         gen.writeStringField("title", value.getMovie().getTitle());
         
