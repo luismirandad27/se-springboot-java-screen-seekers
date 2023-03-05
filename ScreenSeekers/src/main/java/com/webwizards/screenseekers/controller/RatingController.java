@@ -79,8 +79,6 @@ public class RatingController {
 			}
 			
 			Rating newRating = new Rating(rating.getUserRating(), rating.getComment(),user.get(),movie.get());
-			newRating.setMovie(movie.get());
-			newRating.setUser(user.get());
 			
 			ratingRepo.save(newRating);
 			
@@ -133,29 +131,24 @@ public class RatingController {
 	
 	@GetMapping("/users/{userId}/ratings")
 	@PreAuthorize("hasRole('USER')")
-	//public ResponseEntity<List<Rating>> getRatingsByUser(@PathVariable Long userId) {
-	public ResponseEntity<Rating> getRatingsByUser(@PathVariable Long userId) {
+	public ResponseEntity<List<Rating>> getRatingsByUser(@PathVariable Long userId) {
 		try {
 			
-			Optional<User> user = userRepo.findById(userId);
-			List<Rating> ratings = new ArrayList<>();
+			List<Rating> myRatings = ratingRepo.findByUserId(userId);
 			
-			if(!user.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			List<Rating> ratingsResponse = new ArrayList<>();
+			
+			if(!myRatings.isEmpty()) {
 				
-			} else {
-				
-				for(Rating rating : user.get().getRatings()) {
-					
-					Movie movie = rating.getMovie();
-					rating.setMovie(movie);
-					ratings.add(rating);
-					
-					return new ResponseEntity<>(rating,HttpStatus.OK);
+				for(Rating rating: myRatings) {
+					rating.setUser(null);
+					ratingsResponse.add(rating);
 				}
 				
-				//return new ResponseEntity<>(ratings,HttpStatus.OK);
-				return new ResponseEntity<>(null,HttpStatus.OK);
+				return new ResponseEntity<>(ratingsResponse, HttpStatus.OK);
+				
+			} else {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 				
 				
@@ -170,33 +163,23 @@ public class RatingController {
 		try {
 			
 			List<Rating> myRatings = ratingRepo.findByMovieId(movieId);
+			List<Rating> ratingResponse = new ArrayList<>();
 			
 			if(!myRatings.isEmpty()) {
 				
-				return new ResponseEntity<>(myRatings, HttpStatus.OK);
-				
-			} else {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			
-			
-			/*
-			Optional<Movie> movie = movieRepo.findById(movieId);
-			
-			if(!movie.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-				
-			} else {
-				
-				List<Rating> ratings = new ArrayList<>();
-				
-				for(Rating rating : movie.get().getRatings()) {
-					ratings.add(rating);
+				for (Rating rating : myRatings) {
+					
+					rating.setMovie(null);
+					ratingResponse.add(rating);
+					
 				}
 				
-				return new ResponseEntity<>(ratings,HttpStatus.OK);
+				return new ResponseEntity<>(ratingResponse, HttpStatus.OK);
+				
+			} else {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-			*/
+				
 				
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

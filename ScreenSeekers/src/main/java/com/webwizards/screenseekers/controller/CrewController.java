@@ -107,11 +107,21 @@ public class CrewController {
 			
 			List<ProductionCrew> productionCrewList = productionCrewRepo.findByMovieId(movieId);
 			
-			if(productionCrewList.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			List<ProductionCrew> productionCrewListResponse = new ArrayList<>();
+			
+			if(!productionCrewList.isEmpty()) {
+				
+				for (ProductionCrew productionCrewMember: productionCrewList) {
+					
+					productionCrewMember.setMovie(null);
+					productionCrewListResponse.add(productionCrewMember);
+					
+				}
+				
+				return new ResponseEntity<>(productionCrewListResponse,HttpStatus.OK);
 			}
 			
-			return new ResponseEntity<>(productionCrewList,HttpStatus.OK);
+			return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
 			
 			
 		} catch (Exception e) {

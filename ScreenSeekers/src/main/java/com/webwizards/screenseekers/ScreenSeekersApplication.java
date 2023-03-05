@@ -4,12 +4,14 @@
  * ------------
  * Description:
  * ------------
- * v1.01: added 20 movies, Rating Repo (testing purposes)
- * v1.02: added 6 users, User Repo (testing purposes)
- * v1.03: added crew member, Crew Repo (testing purposes)
+ * added 20 movies, Rating Repo (testing purposes)
+ * added 8 users, User Repo (testing purposes)
+ * added 2 crew members, Crew Repo (testing purposes)
+ * added 1 watchlist with 3 items (movies), Watchlist Repo (testing purposes)
+ * added ratings
  * 
  * @author Victor Chawsukho, Luis Miguel Miranda, Regal Cruz
- * @version 1.01
+ * @version 1.0
  * 
  **/
 
@@ -17,6 +19,7 @@ package com.webwizards.screenseekers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,6 +67,7 @@ public class ScreenSeekersApplication {
 
 		return args -> {
 			
+			//MOVIE'S SAMPLES
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
 			movieRepo.save(new Movie("The Dark Knight", "Action, Crime, Drama", dateFormat.parse("2008-07-18"), 152,
@@ -150,7 +154,7 @@ public class ScreenSeekersApplication {
 			roleRepo.save(new Role(ERole.ROLE_USER));
 
 			
-			//Users
+			//USER'S SAMPLES
 			User user1 = new User("lmirandad","lmirandad27@gmail.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
 			User user2 = new User("ftoffanelli0","rchatel0@merriam-webster.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
 			User user3 = new User("dmiddas1","adinsmore1@engadget.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
@@ -188,16 +192,14 @@ public class ScreenSeekersApplication {
 			userRepo.save(user7);
 			userRepo.save(user8);
 			
-			long id1 = 1L;
-			long id2 = 2L;
-			long id3 = 3L;
 			
-			Movie movie1 = movieRepo.findById(id1).get();
-			Movie movie2 = movieRepo.findById(id2).get();
-			Movie movie3 = movieRepo.findById(id3).get();
+			//CREW MEMBER'S SAMPLES
+			Movie movie1 = movieRepo.findById(1L).get();
+			Movie movie2 = movieRepo.findById(2L).get();
+			Movie movie3 = movieRepo.findById(3L).get();
+			Movie movie4 = movieRepo.findById(4L).get();
+			Movie movie5 = movieRepo.findById(5L).get();
 			
-			
-			/*
 			//creating crew object for testing
 			CrewMember crew1 = new CrewMember("Cristian", "Bale",dateFormat.parse("2018-08-15"), "Phil", "Award");
 			CrewMember crew2 = new CrewMember("Heath", "Ledger",dateFormat.parse("2018-08-15"), "Phil", "Award");
@@ -205,10 +207,8 @@ public class ScreenSeekersApplication {
 			crewRepo.save(crew1);
 			crewRepo.save(crew2);
 			
-			//creating prodcrew objects for testing
 			ProductionCrew prodCrew1 = new ProductionCrew("Batman","Actor");
 			ProductionCrew prodCrew2 = new ProductionCrew("The Joker","Actor");
-			ProductionCrew prodCrew3 = new ProductionCrew("Main Character","Actor");
 			
 			prodCrew1.setMovie(movie1);
 			prodCrew1.setCrewMember(crew1);
@@ -216,14 +216,10 @@ public class ScreenSeekersApplication {
 			prodCrew2.setMovie(movie1);
 			prodCrew2.setCrewMember(crew2);
 			
-			prodCrew3.setMovie(movie3);
-			prodCrew3.setCrewMember(crew1);
-			
 			prodCrewRepo.save(prodCrew1);
 			prodCrewRepo.save(prodCrew2);
-			prodCrewRepo.save(prodCrew3);
 			
-			//Adding watchlist
+			//WATCHLIST'S SAMPLES
 			Watchlist watchlist = new Watchlist("My favorite Sci-fi movies",user1);
 			watchlistRepo.save(watchlist);
 			
@@ -242,8 +238,16 @@ public class ScreenSeekersApplication {
 			item3.setWatchlist(watchlist);
 			item3.setMovie(movie3);
 			watchlistDetailRepo.save(item3);
-			*/
-			  
+			
+			//RATING'S SAMPLES
+			ratingRepo.save(new Rating(4,"Amazing Movie",user1,movie1));
+			ratingRepo.save(new Rating(5,"Fantastic!",user3,movie1));
+			ratingRepo.save(new Rating(5,"100% recommended",user5,movie1));
+			
+			ratingRepo.save(new Rating(5,"The best movie I've seen",user1,movie1));
+			ratingRepo.save(new Rating(1,"Not recommended",user2,movie1));
+			ratingRepo.save(new Rating(3,"A good one!",user3,movie1));
+			
 		};
 
 	}

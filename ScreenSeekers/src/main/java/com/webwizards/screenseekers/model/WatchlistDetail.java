@@ -16,8 +16,6 @@ package com.webwizards.screenseekers.model;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import jakarta.persistence.Column;
@@ -30,10 +28,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-
-//@Table(name = "watchlistdetail")
-//@JsonSerialize(using = WatchlistSerializer.class)
 @Entity
+@Table(name = "watchlistdetail")
+@JsonSerialize(using = WatchlistSerializer.class)
 public class WatchlistDetail {
 
 	@Id
@@ -46,22 +43,15 @@ public class WatchlistDetail {
 	@Column(name="updatedAt")
 	private Date updatedAt;
 	
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "movieId", nullable = false)
-	@JsonProperty("movie")
-	@JsonIgnore
 	private Movie movie;
 	
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "watchlistId", nullable = false)
-	@JsonProperty("watchlist")
 	private Watchlist watchlist;
 
-	public WatchlistDetail(Movie movie, Watchlist watchlist) {
-		this.movie = movie;
-		this.watchlist = watchlist;
-		//movie.getWatchlistDetails().add(this);
-		watchlist.getWatchlistDetails().add(this);
+	public WatchlistDetail() {
 		this.createdAt = new Date();
 	}
 

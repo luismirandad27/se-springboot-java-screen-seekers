@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -52,9 +51,9 @@ public class Watchlist {
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional=false)
 	@JoinColumn(name="userId", nullable = false)
+	@JsonIgnore
 	private User user;
 	
-	//We are not setting here the @JsonIgnore annotation because we want to retrieve the watchlistDetail List
 	@OneToMany(mappedBy="watchlist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<WatchlistDetail> watchlistDetails = new HashSet<>();
 

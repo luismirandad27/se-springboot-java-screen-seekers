@@ -36,22 +36,26 @@ public class RatingSerializer extends StdSerializer<Rating>{
         gen.writeNumberField("id", value.getId());
         gen.writeNumberField("userRating", value.getUserRating());
         gen.writeStringField("comment", value.getComment());
+
+        if (value.getMovie() != null) {
+        	//Retrieving the information of the movie
+            gen.writeFieldName("movie");
+            gen.writeStartObject();
+            gen.writeNumberField("id", value.getMovie().getId());
+            gen.writeStringField("title", value.getMovie().getTitle());
+            gen.writeEndObject();
+        }
         
-        //Retrieving the information of the movie
-        gen.writeFieldName("movie");
-        gen.writeStartObject();
-        gen.writeNumberField("id", value.getMovie().getId());
-        gen.writeStringField("title", value.getMovie().getTitle());
-        gen.writeEndObject();
-        
-        //Retrieving the information about the user
-        gen.writeFieldName("user");
-        gen.writeStartObject();
-        gen.writeNumberField("userId", value.getUser().getId());
-        gen.writeStringField("username", value.getUser().getUsername());
-        gen.writeStringField("firstName", value.getUser().getFirstName());
-        gen.writeStringField("lastName", value.getUser().getLastName());
-        gen.writeEndObject();
+        if (value.getUser() != null) {
+        	//Retrieving the information about the user
+            gen.writeFieldName("user");
+            gen.writeStartObject();
+            gen.writeNumberField("userId", value.getUser().getId());
+            gen.writeStringField("username", value.getUser().getUsername());
+            gen.writeStringField("firstName", value.getUser().getFirstName());
+            gen.writeStringField("lastName", value.getUser().getLastName());
+            gen.writeEndObject();
+        }
                 
         gen.writeObjectField("createdAt", value.getCreatedAt());
         gen.writeObjectField("updatedAt", value.getUpdatedAt());
