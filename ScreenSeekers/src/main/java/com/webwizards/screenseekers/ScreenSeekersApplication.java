@@ -29,6 +29,7 @@ import com.webwizards.screenseekers.model.CrewMember;
 import com.webwizards.screenseekers.model.ERole;
 import com.webwizards.screenseekers.model.Movie;
 import com.webwizards.screenseekers.model.ProductionCrew;
+import com.webwizards.screenseekers.model.Rating;
 import com.webwizards.screenseekers.model.Role;
 import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.model.Watchlist;
@@ -195,6 +196,8 @@ public class ScreenSeekersApplication {
 			Movie movie2 = movieRepo.findById(id2).get();
 			Movie movie3 = movieRepo.findById(id3).get();
 			
+			
+			/*
 			//creating crew object for testing
 			CrewMember crew1 = new CrewMember("Cristian", "Bale",dateFormat.parse("2018-08-15"), "Phil", "Award");
 			CrewMember crew2 = new CrewMember("Heath", "Ledger",dateFormat.parse("2018-08-15"), "Phil", "Award");
@@ -239,7 +242,7 @@ public class ScreenSeekersApplication {
 			item3.setWatchlist(watchlist);
 			item3.setMovie(movie3);
 			watchlistDetailRepo.save(item3);
-			
+			*/
 			  
 		};
 

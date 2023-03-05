@@ -269,9 +269,8 @@ public class WatchlistController {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			
-			WatchlistDetail watchlistDetailObj = new WatchlistDetail();
-			watchlistDetailObj.setMovie(movie.get());
-			watchlistDetailObj.setWatchlist(watchlist.get());
+			WatchlistDetail watchlistDetailObj = new WatchlistDetail(movie.get(),watchlist.get());
+			
 			watchlistDetailRepo.save(watchlistDetailObj);
 
 			return new ResponseEntity<>(watchlistDetailObj, HttpStatus.OK);

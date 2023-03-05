@@ -78,7 +78,7 @@ public class RatingController {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			
-			Rating newRating = new Rating(rating.getUserRating(), rating.getComment());
+			Rating newRating = new Rating(rating.getUserRating(), rating.getComment(),user.get(),movie.get());
 			newRating.setMovie(movie.get());
 			newRating.setUser(user.get());
 			
@@ -133,23 +133,29 @@ public class RatingController {
 	
 	@GetMapping("/users/{userId}/ratings")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<List<Rating>> getRatingsByUser(@PathVariable Long userId) {
+	//public ResponseEntity<List<Rating>> getRatingsByUser(@PathVariable Long userId) {
+	public ResponseEntity<Rating> getRatingsByUser(@PathVariable Long userId) {
 		try {
 			
 			Optional<User> user = userRepo.findById(userId);
+			List<Rating> ratings = new ArrayList<>();
 			
 			if(!user.isPresent()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 				
 			} else {
 				
-				List<Rating> ratings = new ArrayList<>();
-				
 				for(Rating rating : user.get().getRatings()) {
+					
+					Movie movie = rating.getMovie();
+					rating.setMovie(movie);
 					ratings.add(rating);
+					
+					return new ResponseEntity<>(rating,HttpStatus.OK);
 				}
 				
-				return new ResponseEntity<>(ratings,HttpStatus.OK);
+				//return new ResponseEntity<>(ratings,HttpStatus.OK);
+				return new ResponseEntity<>(null,HttpStatus.OK);
 			}
 				
 				
@@ -164,7 +170,6 @@ public class RatingController {
 		try {
 			
 			List<Rating> myRatings = ratingRepo.findByMovieId(movieId);
-			
 			
 			if(!myRatings.isEmpty()) {
 				

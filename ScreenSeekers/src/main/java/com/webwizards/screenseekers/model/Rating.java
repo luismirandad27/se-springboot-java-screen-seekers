@@ -33,7 +33,6 @@ import jakarta.persistence.Table;
 
 //@JsonSerialize(using = RatingSerializer.class)
 @Entity
-@Table(name="rating")
 public class Rating {
 
 	@Id
@@ -54,14 +53,14 @@ public class Rating {
 	
 	//Setting relation with User table (comes from a Many to Many relationship)
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "userId", nullable=false)
+	@JoinColumn(name = "user_id", nullable=false)
 	@JsonIgnore
 	@JsonProperty("user")
 	private User user;
 	
 	//Setting relation with Movie table (comes from a Many to Many relationship)
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "movieId", nullable=false)
+	@JoinColumn(name = "movie_id", nullable=false)
 	@JsonIgnore
 	@JsonProperty("movie")	
 	private Movie movie;
@@ -71,13 +70,14 @@ public class Rating {
 	}
 
 	//userId and movieId are FK and not allow null, how to fetch when Post new Rating and Comment?
-	public Rating(int userRating, String comment) {
+	public Rating(int userRating, String comment, User user, Movie movie) {
 		this.userRating = userRating;
 		this.comment = comment;
+		this.user = user;
+		this.movie = movie;
+		user.getRatings().add(this);
+		movie.getRatings().add(this);
 		this.createdAt = new Date();
-		this.user = null;
-		this.movie = null;
-		this.updatedAt = null;
 	}
 
 	public long getId() {

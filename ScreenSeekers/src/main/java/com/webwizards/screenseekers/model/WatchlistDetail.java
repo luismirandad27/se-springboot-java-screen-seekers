@@ -30,9 +30,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
+//@Table(name = "watchlistdetail")
+//@JsonSerialize(using = WatchlistSerializer.class)
 @Entity
-@Table(name = "watchlistdetail")
-@JsonSerialize(using = WatchlistSerializer.class)
 public class WatchlistDetail {
 
 	@Id
@@ -45,18 +46,22 @@ public class WatchlistDetail {
 	@Column(name="updatedAt")
 	private Date updatedAt;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "movieId", nullable = false)
 	@JsonProperty("movie")
 	@JsonIgnore
 	private Movie movie;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "watchlistId", nullable = false)
 	@JsonProperty("watchlist")
 	private Watchlist watchlist;
 
-	public WatchlistDetail() {
+	public WatchlistDetail(Movie movie, Watchlist watchlist) {
+		this.movie = movie;
+		this.watchlist = watchlist;
+		//movie.getWatchlistDetails().add(this);
+		watchlist.getWatchlistDetails().add(this);
 		this.createdAt = new Date();
 	}
 
