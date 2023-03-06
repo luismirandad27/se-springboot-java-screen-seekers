@@ -307,7 +307,7 @@ public class CrewController {
 			
 			crewRepo.save(updatedCrewMember);
 			
-			String uploadDir = "crew-photos/" + updatedCrewMember.getId();
+			String uploadDir = "resources/crew-photos/" + updatedCrewMember.getId();
 			
 			FileUploadUtil.saveFile(uploadDir, fileName, profileImageFile);
 			
