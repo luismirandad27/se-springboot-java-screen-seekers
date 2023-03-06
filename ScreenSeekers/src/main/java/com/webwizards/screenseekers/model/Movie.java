@@ -25,6 +25,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -53,8 +54,8 @@ public class Movie {
 	private Boolean isInTheaters;
 	@Column(name= "posterImage")
 	private String posterImage;
-	@Column(name= "imageTrailer")
-	private String imageTrailer;
+	@Column(name= "trailerImage")
+	private String trailerImage;
 	@Column(name="createdAt")
 	private Date createdAt;
 	@Column(name="updatedAt")
@@ -140,10 +141,10 @@ public class Movie {
 		this.posterImage = posterImage;
 	}
 	public String getImageTrailer() {
-		return imageTrailer;
+		return trailerImage;
 	}
-	public void setImageTrailer(String imageTrailer) {
-		this.imageTrailer = imageTrailer;
+	public void setTrailerImage(String trailerImage) {
+		this.trailerImage = trailerImage;
 	}
 	public Date getCreatedAt() {
 		return createdAt;

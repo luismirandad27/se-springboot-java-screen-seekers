@@ -22,6 +22,11 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 public class ProdCrewSerializer extends StdSerializer<ProductionCrew>{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ProdCrewSerializer() {
 		this(null);
 	}
@@ -37,17 +42,28 @@ public class ProdCrewSerializer extends StdSerializer<ProductionCrew>{
         gen.writeStringField("charName", value.getCharacterName());
         gen.writeStringField("role", value.getMovieRole());
         
-        //Retrieving the information of the movie
-        gen.writeNumberField("movieId", value.getMovie().getId());
-        gen.writeStringField("title", value.getMovie().getTitle());
+        if (value.getMovie() != null) {
+        	//Retrieving the information of the movie
+            gen.writeFieldName("movie");
+            gen.writeStartObject();
+            gen.writeNumberField("movieId", value.getMovie().getId());
+            gen.writeStringField("title", value.getMovie().getTitle());
+            gen.writeEndObject();
+        }
         
-        //Retrieving the information of the movie
-        gen.writeNumberField("crewId", value.getCrewMember().getId());
-        gen.writeStringField("firstName", value.getCrewMember().getFirstName());
-        gen.writeStringField("lastName", value.getCrewMember().getLastName());
+        if (value.getCrewMember() != null) {
+        	//Retrieving the information of the movie
+            gen.writeFieldName("crewMember");
+            gen.writeStartObject();
+            gen.writeNumberField("crewId", value.getCrewMember().getId());
+            gen.writeStringField("firstName", value.getCrewMember().getFirstName());
+            gen.writeStringField("lastName", value.getCrewMember().getLastName());
+            gen.writeEndObject();
+        }
         
         gen.writeObjectField("createdAt", value.getCreatedAt());
         gen.writeObjectField("updatedAt", value.getUpdatedAt());
         gen.writeEndObject();
+        
     }
 }

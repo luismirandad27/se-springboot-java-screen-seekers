@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,6 +48,8 @@ public class CrewMember {
 	private String nationality;
 	@Column(name="award")
 	private String award;
+	@Column(name="profileImage")
+	private String profileImage;
 	@Column(name="createdAt")
 	private Date createdAt;
 	@Column(name="updatedAt")
@@ -56,6 +60,7 @@ public class CrewMember {
 	@OneToMany(mappedBy="crewMember",
 			cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<ProductionCrew> productionCrews = new HashSet<>(); 
 	
 	public Set<ProductionCrew> getProductionCrews() {
@@ -112,6 +117,12 @@ public class CrewMember {
 	}
 	public void setAward(String award) {
 		this.award = award;
+	}
+	public String getProfileImage() {
+		return profileImage;
+	}
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 	public Date getCreatedAt() {
 		return createdAt;

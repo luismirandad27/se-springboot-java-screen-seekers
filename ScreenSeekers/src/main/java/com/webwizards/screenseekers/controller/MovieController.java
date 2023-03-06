@@ -1,5 +1,5 @@
 /**
- * Class File: RatingController.java
+ * Class File: MovieController.java
  * 
  * ------------
  * Description:
@@ -15,9 +15,10 @@
  * 6) Delete movies based on id
  * 7) Delete all movies
  * 8) Get recommendations for an specific user
+ * 9) Add Poster Image and Trailer Image
  * 
  * @author Victor Chawsukho, Luis Miguel Miranda
- * @version 1.02
+ * @version 1.0
  * 
  **/
 
@@ -31,9 +32,10 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +45,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.webwizards.screenseekers.model.CrewMember;
 import com.webwizards.screenseekers.model.Movie;
@@ -53,6 +57,7 @@ import com.webwizards.screenseekers.repository.CrewMemberRepository;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.ProductionCrewRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
+import com.webwizards.screenseekers.service.FileUploadUtil;
 import com.webwizards.screenseekers.utils.Recommender;
 import com.webwizards.screenseekers.utils.ResponseMessage;
 
@@ -77,6 +82,7 @@ public class MovieController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
 		try {
+			
 			Movie myMovie = movie;
 			
 			Movie newMovie = new Movie(movie.getTitle(), 
@@ -87,10 +93,10 @@ public class MovieController {
 					 movie.getClassificationRating(), 
 					 movie.getMovieTrailerLink(), 
 					 movie.getIsInTheaters());
-
+			
 			movieRepo.save(newMovie);
 
-			return new ResponseEntity<>(newMovie, HttpStatus.OK);
+			return new ResponseEntity<>(newMovie, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -119,7 +125,7 @@ public class MovieController {
 				
 				return new ResponseEntity<>(_myMovie, HttpStatus.OK);
 			} else
-				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -132,7 +138,7 @@ public class MovieController {
 			if (movieRepo.findById(id).isPresent()) {
 				return new ResponseEntity<>(movieRepo.findById(id).get(), HttpStatus.OK);
 			} else {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -166,7 +172,13 @@ public class MovieController {
 				myList = movieRepo.findAll();
 				
 			}
-			return new ResponseEntity<>(myList, HttpStatus.OK);
+			
+			if (myList.isEmpty()) {
+				return new ResponseEntity<>(myList, HttpStatus.NO_CONTENT);
+			}else {
+				return new ResponseEntity<>(myList, HttpStatus.OK);
+			}
+			
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -179,12 +191,21 @@ public class MovieController {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
 			if (title == null) {
+				
 				myList = movieRepo.findRandom();
+				
 			} else {
+				
 				myList = movieRepo.findByTitleContainingIgnoreCase(title);
+				
+			}
+			
+			if (myList.isEmpty()) {
+				return new ResponseEntity<>(myList, HttpStatus.NO_CONTENT);
+			}else {
+				return new ResponseEntity<>(myList, HttpStatus.OK);
 			}
 
-			return new ResponseEntity<>(myList, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -209,7 +230,7 @@ public class MovieController {
 				
 			} else {
 				
-				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 				
 			}
 		} catch (Exception e) {
@@ -257,7 +278,7 @@ public class MovieController {
 			Optional<User> user = userRepo.findById(id);
 			
 			if (allMovies.isEmpty() || !user.isPresent() || allUsers.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			Recommender movieRecommender = new Recommender();
@@ -279,6 +300,55 @@ public class MovieController {
 		
 	}
 	
-	
+	@PutMapping("/movies/{id}/upload-images")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Movie> uploadMovieImages(@PathVariable long id, 
+												  @RequestParam(name="poster-image",required=false) MultipartFile posterImageFile,
+												  @RequestParam(name="trailer-image",required=false) MultipartFile trailerImageFile){
+		try {
+			
+			Optional<Movie> movie = movieRepo.findById(id);
+			
+			if(!movie.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			String fileNamePoster = null;
+			if (posterImageFile != null) {
+				fileNamePoster = StringUtils.cleanPath(posterImageFile.getOriginalFilename());
+			}
+			
+			String fileNameTrailer = null;
+			if(trailerImageFile != null) {
+				fileNameTrailer = StringUtils.cleanPath(trailerImageFile.getOriginalFilename());
+			}
+			
+			
+			Movie updateMovie = movie.get();
+			
+			updateMovie.setPosterImage(fileNamePoster);
+			updateMovie.setTrailerImage(fileNameTrailer);
+			
+			updateMovie.setUpdatedAt(new Date());
+			
+			movieRepo.save(updateMovie);
+			
+			String uploadDir = "movie-photos/" + updateMovie.getId();
+			
+			if (fileNamePoster != null) {
+				FileUploadUtil.saveFile(uploadDir, fileNamePoster, posterImageFile);
+			}
+			
+			if (fileNameTrailer != null) {
+				FileUploadUtil.saveFile(uploadDir, fileNameTrailer, trailerImageFile);
+			}
+			
+			return new ResponseEntity<>(updateMovie, HttpStatus.OK);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 }

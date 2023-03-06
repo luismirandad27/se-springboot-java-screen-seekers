@@ -35,6 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +50,7 @@ import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.RatingRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
-import com.webwizards.screenseekers.service.FilesStorageService;
+import com.webwizards.screenseekers.service.FileUploadUtil;
 import com.webwizards.screenseekers.utils.ResponseMessage;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -68,9 +69,6 @@ public class UserController {
 	
 	@Autowired
 	PasswordEncoder encoder;
-	
-	@Autowired
-	FilesStorageService storageService;
 	
 	@GetMapping("/users")
 	@PreAuthorize("hasRole('ADMIN')" )
@@ -99,7 +97,7 @@ public class UserController {
 			Optional<User> userResult = userRepo.findById(id);
 			
 			if (!userResult.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			User user = userResult.get();
@@ -162,7 +160,7 @@ public class UserController {
 			Optional<User> user = userRepo.findById(id);
 			
 			if(!user.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			User updateUser = user.get();
@@ -188,7 +186,7 @@ public class UserController {
 			Optional<User> user = userRepo.findById(id);
 			
 			if(!user.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			User updateUser = user.get();
@@ -209,59 +207,30 @@ public class UserController {
 	
 	@PutMapping("/users/{id}/upload-profile-image")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
-	public ResponseEntity<User> updateProfileImage(@PathVariable long id, @RequestParam("file") MultipartFile profileImageFile){
+	public ResponseEntity<User> uploadProfileImage(@PathVariable long id, @RequestParam("file") MultipartFile profileImageFile){
 		try {
 			
 			Optional<User> user = userRepo.findById(id);
 			
 			if(!user.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
+			
+			String fileName = StringUtils.cleanPath(profileImageFile.getOriginalFilename());
 			
 			User updateUser = user.get();
 			
-			if (updateUser.getProfileImage() != null) {
-				
-				String fileName = updateUser.getProfileImage();
-				
-				if (storageService.fileExists(fileName)) {
-					
-					storageService.deleteFile(fileName);
-					
-				}
-				
-			}
-			
-			storageService.save(profileImageFile);
-			updateUser.setProfileImage(profileImageFile.getOriginalFilename());
+			updateUser.setProfileImage(fileName);
 			
 			updateUser.setUpdatedAt(new Date());
 			
 			userRepo.save(updateUser);
 			
+			String uploadDir = "user-photos/" + updateUser.getId();
+			
+			FileUploadUtil.saveFile(uploadDir, fileName, profileImageFile);
+			
 			return new ResponseEntity<>(updateUser, HttpStatus.OK);
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@GetMapping("/users/{id}/load-profile-image")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
-	public ResponseEntity<Resource> loadProfileImage(@PathVariable long id){
-		try {
-			
-			Optional<User> user = userRepo.findById(id);
-			
-			if(!user.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			
-			String profileImageFilename = user.get().getProfileImage();
-			Resource profileImage = storageService.load(profileImageFilename);
-			
-			return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(profileImage);
 			
 		}catch(Exception e) {
 			e.printStackTrace();

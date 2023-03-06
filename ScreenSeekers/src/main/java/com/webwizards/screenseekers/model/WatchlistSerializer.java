@@ -34,10 +34,18 @@ public class WatchlistSerializer extends StdSerializer<WatchlistDetail> {
     public void serialize(WatchlistDetail value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
         
-        //Retrieving the information of the movie
+        
         gen.writeNumberField("id", value.getId());
-        gen.writeNumberField("movieId", value.getMovie().getId());
-        gen.writeStringField("title", value.getMovie().getTitle());
+        
+        if (value.getMovie() != null) {
+        	//Retrieving the information of the movie
+        	gen.writeFieldName("movie");
+        	gen.writeStartObject();
+            gen.writeNumberField("movieId", value.getMovie().getId());
+            gen.writeStringField("title", value.getMovie().getTitle());
+            gen.writeEndObject();
+        }
+        
         
         gen.writeEndObject();
     }
