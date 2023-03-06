@@ -136,12 +136,14 @@ public class User {
 		this.createdAt = new Date();
 	}
 	
-	public User(Long id, String password, String firstName,
+	public User(String username, String email, String password, String firstName,
 			String lastName, Date dateOfBirth,
 			String phone, String address,
 			String city, String province,
-			String country, Date createdAt, Date updatedAt, Date deletedAt) {
-		this.id = id;
+			String country) {
+		
+		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -151,9 +153,8 @@ public class User {
 		this.city = city;
 		this.province = province;
 		this.country = country;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
+		this.createdAt = new Date();
+		
 	}
 
 	public Long getId() {

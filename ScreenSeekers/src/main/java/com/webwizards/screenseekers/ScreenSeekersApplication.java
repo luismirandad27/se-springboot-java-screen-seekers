@@ -90,7 +90,6 @@ public class ScreenSeekersApplication {
 					dateFormat.parse("1991-02-14"), 118,
 					"A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer, a madman who skins his victims.",
 					"R", "https://www.youtube.com/watch?v=RuX2MQeb8UM",false));
-			
 			movieRepo.save(new Movie("Avengers: Endgame", "Action, Adventure, Drama", dateFormat.parse("2019-04-26"),
 					181,
 					"After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to undo Thanos' actions and restore order to the universe.",
@@ -155,14 +154,14 @@ public class ScreenSeekersApplication {
 
 			
 			//USER'S SAMPLES
-			User user1 = new User("lmirandad","lmirandad27@gmail.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			User user2 = new User("ftoffanelli0","rchatel0@merriam-webster.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			User user3 = new User("dmiddas1","adinsmore1@engadget.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			User user4 = new User("wzelley2","patlee2@hibu.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			User user5 = new User("cstandishbrooks3","lbellay3@sciencedirect.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			User user6 = new User("efoucar4","bfarthin4@oaic.gov.au","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			User user7 = new User("bpyer5","kfoffano5@arizona.edu","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
-			User user8 = new User("admin123","admin@screenseekers.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu");
+			User user1= new User("aalwen0","aalwen0@twitpic.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Avrit","Alwen",dateFormat.parse("1988-12-19"),"564-669-3183","23 South Road","Vancouver","BC","Canada");
+			User user2= new User("jkeppin1","jkeppin1@forbes.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Jaclyn","Keppin",dateFormat.parse("1994-09-28"),"428-461-2797","63 Bashford Avenue","Vancouver","BC","Canada");
+			User user3= new User("sshaxby2","sshaxby2@taobao.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Sharleen","Shaxby",dateFormat.parse("1987-08-07"),"843-912-8340","62111 Graceland Point","Vancouver","BC","Canada");
+			User user4= new User("bblagburn3","bblagburn3@forbes.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Brandise","Blagburn",dateFormat.parse("1981-12-03"),"112-574-5074","35866 Truax Plaza","Vancouver","BC","Canada");
+			User user5= new User("mdumphries4","mdumphries4@utexas.edu","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Monty","Dumphries",dateFormat.parse("1966-07-09"),"381-596-7879","81 Nancy Place","Vancouver","BC","Canada");
+			User user6= new User("akitcher5","akitcher5@liveinternet.ru","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Alica","Kitcher",dateFormat.parse("1978-01-02"),"747-924-7579","7126 Eliot Plaza","Vancouver","BC","Canada");
+			User user7= new User("ujoret6","ujoret6@mashable.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Ulrick","Joret",dateFormat.parse("1990-01-03"),"292-367-7000","07 Holmberg Junction","Vancouver","BC","Canada");
+			User user8= new User("admin123","admin@screenseekers.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Admin","Admin",null,null,null,null,null,null);
 
 			Set<Role> roles = new HashSet<>();
 			Role userRole = roleRepo.findByName(ERole.ROLE_USER)
@@ -191,62 +190,6 @@ public class ScreenSeekersApplication {
 			userRepo.save(user6);
 			userRepo.save(user7);
 			userRepo.save(user8);
-			
-			
-			//CREW MEMBER'S SAMPLES
-			Movie movie1 = movieRepo.findById(1L).get();
-			Movie movie2 = movieRepo.findById(2L).get();
-			Movie movie3 = movieRepo.findById(3L).get();
-			Movie movie4 = movieRepo.findById(4L).get();
-			Movie movie5 = movieRepo.findById(5L).get();
-			
-			//creating crew object for testing
-			CrewMember crew1 = new CrewMember("Cristian", "Bale",dateFormat.parse("2018-08-15"), "Phil", "Award");
-			CrewMember crew2 = new CrewMember("Heath", "Ledger",dateFormat.parse("2018-08-15"), "Phil", "Award");
-			
-			crewRepo.save(crew1);
-			crewRepo.save(crew2);
-			
-			ProductionCrew prodCrew1 = new ProductionCrew("Batman","Actor");
-			ProductionCrew prodCrew2 = new ProductionCrew("The Joker","Actor");
-			
-			prodCrew1.setMovie(movie1);
-			prodCrew1.setCrewMember(crew1);
-			
-			prodCrew2.setMovie(movie1);
-			prodCrew2.setCrewMember(crew2);
-			
-			prodCrewRepo.save(prodCrew1);
-			prodCrewRepo.save(prodCrew2);
-			
-			//WATCHLIST'S SAMPLES
-			Watchlist watchlist = new Watchlist("My favorite Sci-fi movies",user1);
-			watchlistRepo.save(watchlist);
-			
-			//Adding watchlist item
-			WatchlistDetail item1 = new WatchlistDetail();
-			item1.setWatchlist(watchlist);
-			item1.setMovie(movie1);
-			watchlistDetailRepo.save(item1);
-			
-			WatchlistDetail item2 = new WatchlistDetail();
-			item2.setWatchlist(watchlist);
-			item2.setMovie(movie2);
-			watchlistDetailRepo.save(item2);
-			
-			WatchlistDetail item3 = new WatchlistDetail();
-			item3.setWatchlist(watchlist);
-			item3.setMovie(movie3);
-			watchlistDetailRepo.save(item3);
-			
-			//RATING'S SAMPLES
-			ratingRepo.save(new Rating(4,"Amazing Movie",user1,movie1));
-			ratingRepo.save(new Rating(5,"Fantastic!",user3,movie1));
-			ratingRepo.save(new Rating(5,"100% recommended",user5,movie1));
-			
-			ratingRepo.save(new Rating(5,"The best movie I've seen",user1,movie1));
-			ratingRepo.save(new Rating(1,"Not recommended",user2,movie1));
-			ratingRepo.save(new Rating(3,"A good one!",user3,movie1));
 			
 		};
 
