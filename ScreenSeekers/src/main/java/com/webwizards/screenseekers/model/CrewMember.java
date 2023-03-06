@@ -48,6 +48,8 @@ public class CrewMember {
 	private String nationality;
 	@Column(name="award")
 	private String award;
+	@Column(name="profileImage")
+	private String profileImage;
 	@Column(name="createdAt")
 	private Date createdAt;
 	@Column(name="updatedAt")
@@ -115,6 +117,12 @@ public class CrewMember {
 	}
 	public void setAward(String award) {
 		this.award = award;
+	}
+	public String getProfileImage() {
+		return profileImage;
+	}
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 	public Date getCreatedAt() {
 		return createdAt;

@@ -71,18 +71,19 @@ public class RatingController {
 	public ResponseEntity<Rating> createRating(@RequestBody Rating rating, @PathVariable long userId, @PathVariable long movieId) {
 		try {
 			
-			Optional<User> user = userRepo.findById(userId);
 			Optional<Movie> movie = movieRepo.findById(movieId);
+			Optional<User> user = userRepo.findById(userId);
 			
-			if (!user.isPresent() || !movie.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			if (!movie.isPresent() || !user.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			Rating newRating = new Rating(rating.getUserRating(), rating.getComment(),user.get(),movie.get());
 			
 			ratingRepo.save(newRating);
 			
-			return new ResponseEntity<>(newRating, HttpStatus.OK);
+			return new ResponseEntity<>(newRating, HttpStatus.CREATED);
+			
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -105,8 +106,13 @@ public class RatingController {
 				ratingRepo.save(_myRating);
 				
 				return new ResponseEntity<>(_myRating, HttpStatus.OK);
-			} else
-				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+				
+			} else {
+				
+				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+				
+			}
+				
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -122,7 +128,11 @@ public class RatingController {
 			
 			ratingRepo.findAll().forEach(myRate::add);
 			
-			return new ResponseEntity<>(myRate, HttpStatus.OK);
+			if(myRate.isEmpty()) {
+				return new ResponseEntity<>(myRate, HttpStatus.NO_CONTENT);
+			}else {
+				return new ResponseEntity<>(myRate, HttpStatus.OK);
+			}
 			
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -130,7 +140,7 @@ public class RatingController {
 	}
 	
 	@GetMapping("/users/{userId}/ratings")
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<List<Rating>> getRatingsByUser(@PathVariable Long userId) {
 		try {
 			
@@ -141,8 +151,10 @@ public class RatingController {
 			if(!myRatings.isEmpty()) {
 				
 				for(Rating rating: myRatings) {
+					
 					rating.setUser(null);
 					ratingsResponse.add(rating);
+					
 				}
 				
 				return new ResponseEntity<>(ratingsResponse, HttpStatus.OK);
@@ -158,7 +170,7 @@ public class RatingController {
 	}
 	
 	@GetMapping("/users/ratings/{movieId}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<List<Rating>> getRatingsByMovie(@PathVariable Long movieId) {
 		try {
 			

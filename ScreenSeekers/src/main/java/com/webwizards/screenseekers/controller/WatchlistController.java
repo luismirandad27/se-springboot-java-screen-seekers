@@ -98,7 +98,7 @@ public class WatchlistController {
 				return new ResponseEntity<>(watchlistRepo.findById(id).get(), HttpStatus.OK);
 			}
 			
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			
 		} catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -113,13 +113,13 @@ public class WatchlistController {
 			Optional<User> user = userRepo.findById(userId);
 			
 			if(!user.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			List<Watchlist> watchlist = watchlistRepo.findByUserId(userId);
 			
 			if(watchlist.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			return new ResponseEntity<>(watchlist,HttpStatus.OK);
@@ -136,7 +136,7 @@ public class WatchlistController {
 			Optional<User> user = userRepo.findById(userId);
 			
 			if(!user.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			} 
 			
 			User userObj = user.get();
@@ -175,7 +175,7 @@ public class WatchlistController {
 				
 				
 			} else {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 		} catch(Exception e) {
@@ -200,7 +200,7 @@ public class WatchlistController {
 				return new ResponseEntity<>	(new ResponseMessage(message),HttpStatus.OK);
 				
 			}else {
-				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 			}
 			
 		} catch(Exception e) {
@@ -216,7 +216,7 @@ public class WatchlistController {
 			Optional<User> user = userRepo.findById(userId);
 			
 			if(!user.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			watchlistRepo.deleteByUserId(userId);
@@ -266,7 +266,7 @@ public class WatchlistController {
 			Optional<Movie> movie = movieRepo.findById(movieId);
 			
 			if(!watchlist.isPresent() || !movie.isPresent()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			WatchlistDetail watchlistDetailObj = new WatchlistDetail();
@@ -291,7 +291,7 @@ public class WatchlistController {
 			Optional<WatchlistDetail> watchlistDetail = watchlistDetailRepo.findByWatchlistIdAndMovieId(watchlistId,movieId);
 			
 			if(!watchlistDetail.isPresent() ) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			
 			watchlistDetailRepo.deleteById(watchlistDetail.get().getId());
