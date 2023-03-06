@@ -262,44 +262,6 @@ public class MovieController {
 		}
 	}
 	
-	@GetMapping("/movies/{id}/recommend")
-	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<List<Movie>> recommendMoviesToUser(@PathVariable long id){
-		
-		try {
-			
-			//Getting All Movies
-			List<Movie> allMovies = movieRepo.findAll();
-			
-			//Getting All Available Ratings
-			List<User> allUsers = userRepo.findAllUsersAvailable();
-			
-			//Get the User Info
-			Optional<User> user = userRepo.findById(id);
-			
-			if (allMovies.isEmpty() || !user.isPresent() || allUsers.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-			
-			Recommender movieRecommender = new Recommender();
-			
-			//Let's create the HashMap
-			movieRecommender.setRatings(allUsers);
-			
-			List<Movie> recommendations = movieRecommender.getRecommendedMovieList(allMovies, id);
-			
-			if (recommendations.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			
-			return new ResponseEntity<>(recommendations,HttpStatus.OK);
-			
-		}catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-	}
-	
 	@PutMapping("/movies/{id}/upload-images")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Movie> uploadMovieImages(@PathVariable long id, 

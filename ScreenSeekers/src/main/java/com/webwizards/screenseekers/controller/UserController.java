@@ -12,8 +12,8 @@
  * 3) Update the information of a user
  * 4) Disable a user's account
  * 5) Enable a user's account
- * 6) Upload a profile image
- * 7) Download a profile image
+ * 6) Recommend a set of movies of a user (by user id)
+ * 7) Upload a profile image
  * 
  * @author Luis Miguel Miranda
  * @version 1.0
@@ -46,11 +46,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.webwizards.screenseekers.model.Movie;
 import com.webwizards.screenseekers.model.User;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.RatingRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
 import com.webwizards.screenseekers.service.FileUploadUtil;
+import com.webwizards.screenseekers.utils.Recommender;
 import com.webwizards.screenseekers.utils.ResponseMessage;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -203,6 +205,44 @@ public class UserController {
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@GetMapping("/users/{id}/recommend")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<List<Movie>> recommendMoviesToUser(@PathVariable long id){
+		
+		try {
+			
+			//Getting All Movies
+			List<Movie> allMovies = movieRepo.findAll();
+			
+			//Getting All Available Ratings
+			List<User> allUsers = userRepo.findAllUsersAvailable();
+			
+			//Get the User Info
+			Optional<User> user = userRepo.findById(id);
+			
+			if (allMovies.isEmpty() || !user.isPresent() || allUsers.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			
+			Recommender movieRecommender = new Recommender();
+			
+			//Let's create the HashMap
+			movieRecommender.setRatings(allUsers);
+			
+			List<Movie> recommendations = movieRecommender.getRecommendedMovieList(allMovies, id);
+			
+			if (recommendations.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			return new ResponseEntity<>(recommendations,HttpStatus.OK);
+			
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	@PutMapping("/users/{id}/upload-profile-image")
