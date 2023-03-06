@@ -295,7 +295,7 @@ public class MovieController {
 			
 			movieRepo.save(updateMovie);
 			
-			String uploadDir = "movie-photos/" + updateMovie.getId();
+			String uploadDir = "resources/movie-photos/" + updateMovie.getId();
 			
 			if (fileNamePoster != null) {
 				FileUploadUtil.saveFile(uploadDir, fileNamePoster, posterImageFile);
