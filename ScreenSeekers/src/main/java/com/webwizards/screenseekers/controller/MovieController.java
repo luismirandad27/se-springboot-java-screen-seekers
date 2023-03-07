@@ -92,7 +92,8 @@ public class MovieController {
 					 movie.getSynopsis(), 
 					 movie.getClassificationRating(), 
 					 movie.getMovieTrailerLink(), 
-					 movie.getIsInTheaters());
+					 movie.getIsInTheaters(),
+					 movie.getWhereToWatch());
 			
 			movieRepo.save(newMovie);
 
@@ -119,6 +120,7 @@ public class MovieController {
 				_myMovie.setClassificationRating(movie.getClassificationRating());
 				_myMovie.setMovieTrailerLink(movie.getMovieTrailerLink());
 				_myMovie.setIsInTheaters(movie.getIsInTheaters());
+				_myMovie.setWhereToWatch(movie.getWhereToWatch());
 				_myMovie.setUpdatedAt(new Date());
 				
 				movieRepo.save(_myMovie);

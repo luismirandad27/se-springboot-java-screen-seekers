@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,6 +58,8 @@ public class Movie {
 	private String posterImage;
 	@Column(name= "trailerImage")
 	private String trailerImage;
+	@Column(name="whereToWatch")
+	private String[] whereToWatch;
 	@Column(name="createdAt")
 	private Date createdAt;
 	@Column(name="updatedAt")
@@ -65,18 +69,21 @@ public class Movie {
 	@OneToMany(mappedBy = "movie",
 				cascade = CascadeType.ALL,
 				fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<Rating> ratings = new HashSet<>();
 	
 	//Setting relation with Watchlist table (comes from a Many to Many relationship)
 	@OneToMany(mappedBy="movie",
 			cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<WatchlistDetail> watchlistDetails = new HashSet<>(); 
 	
 	//Setting relation with Crew table (comes from a Many to Many relationship)
 	@OneToMany(mappedBy="movie",
 			cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<ProductionCrew> productionCrews = new HashSet<>(); 
 	
 	public Long getId() {
@@ -140,11 +147,18 @@ public class Movie {
 	public void setPosterImage(String posterImage) {
 		this.posterImage = posterImage;
 	}
-	public String getImageTrailer() {
+	public String getTrailerImage() {
 		return trailerImage;
 	}
 	public void setTrailerImage(String trailerImage) {
 		this.trailerImage = trailerImage;
+	}
+	
+	public String[] getWhereToWatch() {
+		return whereToWatch;
+	}
+	public void setWhereToWatch(String[] whereToWatch) {
+		this.whereToWatch = whereToWatch;
 	}
 	public Date getCreatedAt() {
 		return createdAt;
@@ -179,7 +193,7 @@ public class Movie {
 		this.productionCrews = productionCrews;
 	}
 	public Movie(String title, String genre, Date releaseDate, int length, String synopsis, String classificationRating,
-			String movieTrailerLink, Boolean isInTheaters) {
+			String movieTrailerLink, Boolean isInTheaters, String[] whereToWatch) {
 		
 		this.title = title;
 		this.genre = genre;
@@ -190,6 +204,7 @@ public class Movie {
 		this.movieTrailerLink = movieTrailerLink;
 		this.createdAt = new Date();
 		this.isInTheaters = isInTheaters;
+		this.whereToWatch = whereToWatch;
 	}
 	public Movie() {
 		
