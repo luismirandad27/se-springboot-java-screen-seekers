@@ -94,7 +94,7 @@ public class CrewController {
 	}
 	
 	@GetMapping("/movies/crew-members/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<CrewMember> getACrew(@PathVariable("id") Long id) {
 		try {
 			if (crewRepo.findById(id).isPresent()) {
@@ -112,7 +112,7 @@ public class CrewController {
 	}
 	
 	@GetMapping("/movies/{movieId}/crew-members")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<List<ProductionCrew>> getProductionCrewByMovie(@PathVariable Long movieId) {
 		try {
 			

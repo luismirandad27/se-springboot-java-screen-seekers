@@ -1,3 +1,15 @@
+/**
+ * Java Class: ResponseMessage
+ * 
+ * ------------
+ * Description:
+ * ------------ 
+ * This class consists on the structure of a response message when a API method does not return any object
+ * 
+ * @author Luis Miguel MIranda
+ * @version 1.0
+ **/
+
 package com.webwizards.screenseekers.utils;
 
 public class ResponseMessage {

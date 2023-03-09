@@ -1,3 +1,15 @@
+/**
+ * Java Class: FileUploadUtil
+ * 
+ * ------------
+ * Description:
+ * ------------ 
+ * This class consists in a method to store a file into a Path inside the project
+ * 
+ * @author Luis Miguel MIranda
+ * @version 1.0
+ **/
+
 package com.webwizards.screenseekers.service;
 
 import java.io.*;
