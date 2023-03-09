@@ -1,3 +1,15 @@
+/**
+ * Java Class: MvcConfig
+ * 
+ * ------------
+ * Description:
+ * ------------ 
+ * This class consists on a Resource Handler so we can expose the path of the images to the VueJs app
+ * 
+ * @author Luis Miguel MIranda
+ * @version 1.0
+ **/
+
 package com.webwizards.screenseekers.service;
 
 import java.nio.file.Path;
@@ -12,9 +24,6 @@ public class MvcConfig implements WebMvcConfigurer{
 	
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        /*exposeDirectory("user-photos", registry);
-        exposeDirectory("movie-photos", registry);
-        exposeDirectory("crew-photos", registry);*/
 		exposeDirectory("resources",registry);
     }
      

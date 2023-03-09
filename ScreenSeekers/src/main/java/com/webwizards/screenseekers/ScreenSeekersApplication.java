@@ -6,9 +6,6 @@
  * ------------
  * added 20 movies, Rating Repo (testing purposes)
  * added 8 users, User Repo (testing purposes)
- * added 2 crew members, Crew Repo (testing purposes)
- * added 1 watchlist with 3 items (movies), Watchlist Repo (testing purposes)
- * added ratings
  * 
  * @author Victor Chawsukho, Luis Miguel Miranda, Regal Cruz
  * @version 1.0
