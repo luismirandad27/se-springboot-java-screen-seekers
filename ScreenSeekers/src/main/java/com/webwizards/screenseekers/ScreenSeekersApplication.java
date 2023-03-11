@@ -172,7 +172,11 @@ public class ScreenSeekersApplication {
 		              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 			rolesAdmin.add(adminRole);
 			
-			user1.setRoles(roles);
+			Set<Role> bothRoles = new HashSet<>();
+			bothRoles.add(userRole);
+			bothRoles.add(adminRole);
+			
+			user1.setRoles(bothRoles);
 			user2.setRoles(roles);
 			user3.setRoles(roles);
 			user4.setRoles(roles);
@@ -190,6 +194,25 @@ public class ScreenSeekersApplication {
 			userRepo.save(user7);
 			userRepo.save(user8);
 			
+			System.out.println("Initial dataset loaded into H2 Database\n");
+			
+			System.out.println("ScreenSeekers API Server running...\n");
+			System.out.println("Important Notes:");
+			System.out.println("---------------:\n");
+			
+			System.out.println("Accessing the DB:");
+			System.out.println("To check the H2 Database, please go to the following link: http://localhost:8080/h2-ui");
+			System.out.println("JDBC URL: jdbc:h2:mem:screenseekersdb");
+			System.out.println("User Name: sa");
+			System.out.println("No password required! :) \n");
+			
+			System.out.println("Testing API's:");
+			System.out.println("On the Project Folder, go to Test_API_Resources and import the json file into PostMan (ScreenSeekers-Backend.postman_collection)\n");
+			
+			System.out.println("Simulation of the Movie Recommendation:");
+			System.out.println("1. Access the H2 Database UI");
+			System.out.println("2. Copy & Paste the INSERT commands from the file DML_RATINGS_RECOMMENDATIONS_TEST.sql");
+			System.out.println("3. Run the API request related to this feature");
 		};
 
 	}

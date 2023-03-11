@@ -55,9 +55,9 @@ import com.webwizards.screenseekers.service.FileUploadUtil;
 import com.webwizards.screenseekers.utils.Recommender;
 import com.webwizards.screenseekers.utils.ResponseMessage;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins="http://localhost:8081")
 public class UserController {
 
 	@Autowired

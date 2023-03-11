@@ -14,8 +14,7 @@
  * 5) Retrieve random movies
  * 6) Delete movies based on id
  * 7) Delete all movies
- * 8) Get recommendations for an specific user
- * 9) Add Poster Image and Trailer Image
+ * 8) Add Poster Image and Trailer Image
  * 
  * @author Victor Chawsukho, Luis Miguel Miranda
  * @version 1.0
@@ -58,7 +57,6 @@ import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.ProductionCrewRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
 import com.webwizards.screenseekers.service.FileUploadUtil;
-import com.webwizards.screenseekers.utils.Recommender;
 import com.webwizards.screenseekers.utils.ResponseMessage;
 
 @RestController
@@ -224,6 +222,26 @@ public class MovieController {
 				
 				String movieName = movie.get().getTitle();
 				
+				//Delete the assets(images)
+				String filePosterImage = movie.get().getPosterImage();
+				
+				if (filePosterImage != null) {
+					FileUploadUtil.deleteFile("resources/movie-photos/"+
+												movie.get().getId()+"/"+filePosterImage);
+				}
+				
+				String fileTrailerImage = movie.get().getTrailerImage();
+				
+				if (fileTrailerImage != null) {
+					FileUploadUtil.deleteFile("resources/movie-photos/"+
+							movie.get().getId()+"/"+fileTrailerImage);
+				}
+				
+				//try to delete if exists the folder /id/
+				FileUploadUtil.deleteFile("resources/movie-photos/"+
+						movie.get().getId());
+				
+				
 				movieRepo.deleteById(id);
 				
 				String message = "Movie: "+movieName+" has been deleted successfully!";
@@ -250,6 +268,30 @@ public class MovieController {
 			if(movieList.isEmpty()) {
 				
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				
+			}
+			
+			//Removing images
+			for(Movie movie: movieList) {
+				
+				//Delete the assets(images)
+				String filePosterImage = movie.getPosterImage();
+				
+				if (filePosterImage != null) {
+					FileUploadUtil.deleteFile("resources/movie-photos/"+
+												movie.getId()+"/"+filePosterImage);
+				}
+				
+				String fileTrailerImage = movie.getTrailerImage();
+				
+				if (fileTrailerImage != null) {
+					FileUploadUtil.deleteFile("resources/movie-photos/"+
+							movie.getId()+"/"+fileTrailerImage);
+				}
+				
+				//try to delete if exists the folder /id/
+				FileUploadUtil.deleteFile("resources/movie-photos/"+
+						movie.getId());
 				
 			}
 			

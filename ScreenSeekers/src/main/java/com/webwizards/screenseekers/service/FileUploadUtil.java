@@ -36,4 +36,10 @@ public class FileUploadUtil {
         }      
     }
 	
+	public static void deleteFile(String filePath) throws IOException {
+        Path fileToDeletePath = Paths.get(filePath);
+        System.out.println(fileToDeletePath);
+        Files.deleteIfExists(fileToDeletePath);
+    }
+	
 }

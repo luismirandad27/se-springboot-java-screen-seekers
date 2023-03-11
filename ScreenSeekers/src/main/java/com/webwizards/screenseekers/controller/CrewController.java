@@ -199,6 +199,18 @@ public class CrewController {
 				
 				String message = "Crew member: "+crew.get().getFirstName()+" "+crew.get().getLastName() + " has been deleted successfully!";
 				
+				//Delete the assets(images)
+				String fileProfileImage = crew.get().getProfileImage();
+				
+				if (fileProfileImage != null) {
+					FileUploadUtil.deleteFile("resources/crew-photos/"+
+												crew.get().getId()+"/"+fileProfileImage);
+				}
+				
+				//try to delete if exists the folder /id/
+				FileUploadUtil.deleteFile("resources/crew-photos/"+
+						crew.get().getId());
+				
 				crewRepo.deleteById(id);
 				
 				return new ResponseEntity<>(new ResponseMessage(message),HttpStatus.OK);
@@ -217,6 +229,31 @@ public class CrewController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ResponseMessage> deleteAllCrews() {
 		try {
+			
+			List<CrewMember> crewList = crewRepo.findAll();
+			
+			if (crewList.isEmpty()) {
+				
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				
+			}
+			
+			for(CrewMember crew: crewList) {
+				
+				//Delete the assets(images)
+				String fileProfileImage = crew.getProfileImage();
+				
+				if (fileProfileImage != null) {
+					FileUploadUtil.deleteFile("resources/crew-photos/"+
+												crew.getId()+"/"+fileProfileImage);
+				}
+				
+				//try to delete if exists the folder /id/
+				FileUploadUtil.deleteFile("resources/crew-photos/"+
+						crew.getId());
+				
+			}
+			
 			
 			crewRepo.deleteAll();
 			
