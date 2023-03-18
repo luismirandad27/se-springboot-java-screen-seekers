@@ -63,6 +63,8 @@ import com.webwizards.screenseekers.utils.ResponseMessage;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:8081")
 public class MovieController {
+	
+	private final String URL_RESOURCES = "http://localhost:8080/resources/movie-photos";
 
 	@Autowired
 	MovieRepository movieRepo;
@@ -186,7 +188,6 @@ public class MovieController {
 
 	
 	@GetMapping("/movies/random")
-	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<List<Movie>> getRandomMovies(@RequestParam(required = false) String title) {
 		try {
 			List<Movie> myList = new ArrayList<Movie>();
@@ -332,8 +333,8 @@ public class MovieController {
 			
 			Movie updateMovie = movie.get();
 			
-			updateMovie.setPosterImage(fileNamePoster);
-			updateMovie.setTrailerImage(fileNameTrailer);
+			updateMovie.setPosterImage(URL_RESOURCES+"/"+movie.get().getId()+"/"+fileNamePoster);
+			updateMovie.setTrailerImage(URL_RESOURCES+"/"+movie.get().getId()+"/"+fileNameTrailer);
 			
 			updateMovie.setUpdatedAt(new Date());
 			
