@@ -206,6 +206,24 @@ public class Movie {
 		this.isInTheaters = isInTheaters;
 		this.whereToWatch = whereToWatch;
 	}
+	
+	public Movie(String title, String genre, Date releaseDate, int length, String synopsis, String classificationRating,
+			String movieTrailerLink, Boolean isInTheaters, String[] whereToWatch, String posterImage, String trailerImage) {
+		
+		this.title = title;
+		this.genre = genre;
+		this.releaseDate = releaseDate;
+		this.length = length;
+		this.synopsis = synopsis;
+		this.classificationRating = classificationRating;
+		this.movieTrailerLink = movieTrailerLink;
+		this.createdAt = new Date();
+		this.isInTheaters = isInTheaters;
+		this.whereToWatch = whereToWatch;
+		this.posterImage = posterImage;
+		this.trailerImage = trailerImage;
+	}
+	
 	public Movie() {
 		
 		// TODO Auto-generated constructor stub

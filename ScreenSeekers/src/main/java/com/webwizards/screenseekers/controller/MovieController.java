@@ -333,8 +333,8 @@ public class MovieController {
 			
 			Movie updateMovie = movie.get();
 			
-			updateMovie.setPosterImage(URL_RESOURCES+"/"+movie.get().getId()+"/"+fileNamePoster);
-			updateMovie.setTrailerImage(URL_RESOURCES+"/"+movie.get().getId()+"/"+fileNameTrailer);
+			updateMovie.setPosterImage(fileNamePoster);
+			updateMovie.setTrailerImage(fileNameTrailer);
 			
 			updateMovie.setUpdatedAt(new Date());
 			

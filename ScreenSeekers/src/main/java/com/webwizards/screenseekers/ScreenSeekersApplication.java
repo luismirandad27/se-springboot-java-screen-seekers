@@ -47,6 +47,8 @@ import com.webwizards.screenseekers.repository.WatchlistRepository;
 public class ScreenSeekersApplication {
 	// this is for parsing input date from ApplicationRunner
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	private final static String POSTER_IMAGE = "poster-image.jpg";
+	private final static String TRAILER_IMAGE = "trailer-image.jpg";
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScreenSeekersApplication.class, args);
@@ -69,26 +71,39 @@ public class ScreenSeekersApplication {
 			
 			String [] whereToWatch = new String[] {"Netflix","Cinema","PrimeVideo"};
 			
-			movieRepo.save(new Movie("The Dark Knight", "Action, Crime, Drama", dateFormat.parse("2008-07-18"), 152,
+			Movie movie1 = new Movie("The Dark Knight", "Action, Crime, Drama", dateFormat.parse("2008-07-18"), 152,
 					"When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
-					"PG-13", "https://www.youtube.com/watch?v=EXeTwQWrcwY",false,whereToWatch));
-			movieRepo.save(new Movie("Inception", "Action, Adventure, Sci-Fi", dateFormat.parse("2010-07-16"), 148,
+					"PG-13", "https://www.youtube.com/watch?v=EXeTwQWrcwY",false,whereToWatch, POSTER_IMAGE, TRAILER_IMAGE);
+			
+			Movie movie2 = new Movie("Inception", "Action, Adventure, Sci-Fi", dateFormat.parse("2010-07-16"), 148,
 					"A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
-					"PG-13", "https://www.youtube.com/watch?v=YoHD9XEInc0",false,whereToWatch));
-			movieRepo.save(new Movie("The Lord of the Rings: The Return of the King", "Adventure, Drama, Fantasy",
+					"PG-13", "https://www.youtube.com/watch?v=YoHD9XEInc0",false,whereToWatch, POSTER_IMAGE, TRAILER_IMAGE);
+			
+			Movie movie3 = new Movie("The Lord of the Rings: The Return of the King", "Adventure, Drama, Fantasy",
 					dateFormat.parse("2003-12-17"), 201,
 					"Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
-					"PG-13", "https://www.youtube.com/watch?v=r5X-hFf6Bwo",false,whereToWatch));
-			movieRepo.save(new Movie("The Matrix", "Action, Sci-Fi", dateFormat.parse("1999-03-31"), 136,
+					"PG-13", "https://www.youtube.com/watch?v=r5X-hFf6Bwo",false,whereToWatch, POSTER_IMAGE, TRAILER_IMAGE);
+			
+			Movie movie4 = new Movie("The Matrix", "Action, Sci-Fi", dateFormat.parse("1999-03-31"), 136,
 					"A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
-					"R", "https://www.youtube.com/watch?v=m8e-FF8MsqU",false,whereToWatch));
-			movieRepo.save(new Movie("Interstellar", "Adventure, Drama, Sci-Fi", dateFormat.parse("2014-11-07"), 169,
+					"R", "https://www.youtube.com/watch?v=m8e-FF8MsqU",false,whereToWatch, POSTER_IMAGE, TRAILER_IMAGE);
+			
+			Movie movie5 = new Movie("Interstellar", "Adventure, Drama, Sci-Fi", dateFormat.parse("2014-11-07"), 169,
 					"A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-					"PG-13", "https://www.youtube.com/watch?v=zSWdZVtXT7E",false,whereToWatch));
-			movieRepo.save(new Movie("The Silence of the Lambs", "Crime, Drama, Thriller",
+					"PG-13", "https://www.youtube.com/watch?v=zSWdZVtXT7E",false,whereToWatch, POSTER_IMAGE, TRAILER_IMAGE);
+			
+			Movie movie6 = new Movie("The Silence of the Lambs", "Crime, Drama, Thriller",
 					dateFormat.parse("1991-02-14"), 118,
 					"A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer, a madman who skins his victims.",
-					"R", "https://www.youtube.com/watch?v=RuX2MQeb8UM",false,whereToWatch));
+					"R", "https://www.youtube.com/watch?v=RuX2MQeb8UM",false,whereToWatch, POSTER_IMAGE, TRAILER_IMAGE);
+			
+			movieRepo.save(movie1);
+			movieRepo.save(movie2);
+			movieRepo.save(movie3);
+			movieRepo.save(movie4);
+			movieRepo.save(movie5);
+			movieRepo.save(movie6);
+			/*
 			movieRepo.save(new Movie("Avengers: Endgame", "Action, Adventure, Drama", dateFormat.parse("2019-04-26"),
 					181,
 					"After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to undo Thanos' actions and restore order to the universe.",
@@ -147,7 +162,7 @@ public class ScreenSeekersApplication {
 			movieRepo.save(new Movie("Titanic", "Drama", dateFormat.parse("1997-12-19"), 180, "Synopsys here..", "R",
 					"https://www.youtube.com/watch?v=I7c1etV7D7g",false,whereToWatch));
 			
-
+			*/
 			roleRepo.save(new Role(ERole.ROLE_ADMIN));
 			roleRepo.save(new Role(ERole.ROLE_USER));
 
