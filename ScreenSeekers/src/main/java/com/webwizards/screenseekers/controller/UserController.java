@@ -23,10 +23,12 @@
 package com.webwizards.screenseekers.controller;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -47,7 +49,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.webwizards.screenseekers.model.Movie;
+import com.webwizards.screenseekers.model.PasswordUpdateRequest;
 import com.webwizards.screenseekers.model.User;
+import com.webwizards.screenseekers.payload.response.MessageResponse;
 import com.webwizards.screenseekers.repository.MovieRepository;
 import com.webwizards.screenseekers.repository.RatingRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
@@ -59,6 +63,8 @@ import com.webwizards.screenseekers.utils.ResponseMessage;
 @RequestMapping("/api")
 @CrossOrigin(origins="http://localhost:8081")
 public class UserController {
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
 
 	@Autowired
 	UserRepository userRepo;
@@ -71,6 +77,9 @@ public class UserController {
 	
 	@Autowired
 	PasswordEncoder encoder;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/users")
 	@PreAuthorize("hasRole('ADMIN')" )
@@ -128,7 +137,14 @@ public class UserController {
 			//Changing basic information of the user
 			currentUser.setFirstName(newUserInfo.getFirstName());
 			currentUser.setLastName(newUserInfo.getLastName());
-			currentUser.setDateOfBirth(newUserInfo.getDateOfBirth());
+			
+			//Setting the timezone for the date field
+			
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			String formattedDate = sdf.format(newUserInfo.getDateOfBirth());
+			Date date = sdf.parse(formattedDate);
+			
+			currentUser.setDateOfBirth(date);
 			currentUser.setPhone(newUserInfo.getPhone());
 			currentUser.setAddress(newUserInfo.getAddress());
 			currentUser.setCity(newUserInfo.getCity());
@@ -137,9 +153,6 @@ public class UserController {
 			currentUser.setEmail(newUserInfo.getEmail());
 			
 			currentUser.setUpdatedAt(new Date());
-			
-			//Changing password
-			currentUser.setPassword(encoder.encode(newUserInfo.getPassword()));
 			
 			//Store the new User information
 			userRepo.save(currentUser);
@@ -271,6 +284,53 @@ public class UserController {
 			FileUploadUtil.saveFile(uploadDir, fileName, profileImageFile);
 			
 			return new ResponseEntity<>(updateUser, HttpStatus.OK);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/users/{id}/change-password")
+	@PreAuthorize("hasRole('USER')" )
+	public ResponseEntity<MessageResponse> updatePassword(@PathVariable long id, @RequestBody PasswordUpdateRequest passwordRequest){
+		try {
+			
+			Optional<User> user = userRepo.findById(id);
+			
+			if(!user.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			
+			String newPasswordString = passwordRequest.getNewPassword();
+			String oldPasswordString = passwordRequest.getOldPassword();
+			
+			//Changing password (should be in another method)
+			String newPasswordEncode = encoder.encode(newPasswordString); 
+			String oldPasswordEncode = encoder.encode(oldPasswordString); 
+			
+			//Validate if the user put the proper previous password
+			User updateUser = user.get();
+			
+			String message;
+			
+			if (passwordEncoder.matches(oldPasswordString, updateUser.getPassword())) {
+				//the previous password is correct
+				updateUser.setPassword(newPasswordEncode);
+				message = "Password has been updated successfully!";
+				
+				updateUser.setUpdatedAt(new Date());
+				userRepo.save(updateUser);
+				
+				return new ResponseEntity<>(new MessageResponse(message) , HttpStatus.OK);
+				
+			}else {
+				
+				message = "Previous password is not correct, try again!";
+				
+				return new ResponseEntity<>(new MessageResponse(message) , HttpStatus.NOT_MODIFIED);
+				
+			}
 			
 		}catch(Exception e) {
 			e.printStackTrace();
