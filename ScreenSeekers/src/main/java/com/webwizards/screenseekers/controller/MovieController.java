@@ -23,6 +23,7 @@
 
 package com.webwizards.screenseekers.controller;
 
+import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -149,29 +152,31 @@ public class MovieController {
 
 	@GetMapping("/movies")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-	public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required = false) String title, 
+	public ResponseEntity<Page<Movie>> getAllMovies(@RequestParam(required = false) String title, 
 													@RequestParam(required = false) String genre, 
-													@RequestParam(required = false) Integer year) {
+													@RequestParam(required = false) Integer year,
+													Pageable pageable) {
 		try {
 			
-			List<Movie> myList = new ArrayList<Movie>();
+			Page<Movie> myList = null;
+			
 			
 			if (title != null) {
 				
-				myList = movieRepo.findByTitleContainingIgnoreCase(title);
+				myList = movieRepo.findByTitleContainingIgnoreCase(title, pageable);
 				
 			} else if(genre != null) {
 				
-				myList = movieRepo.findByGenreContainingIgnoreCase(genre);
+				myList = movieRepo.findByGenreContainingIgnoreCase(genre, pageable);
 				
 			} else if(year != null) {
 				
-				myList = movieRepo.findByReleaseDateYear(year);
+				myList = movieRepo.findByReleaseDateYear(year, pageable);
 				
 			}
 			else {
 				
-				myList = movieRepo.findAll();
+				myList = movieRepo.findAll(pageable);
 				
 			}
 			

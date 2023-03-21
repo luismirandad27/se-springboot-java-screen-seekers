@@ -139,12 +139,16 @@ public class UserController {
 			currentUser.setLastName(newUserInfo.getLastName());
 			
 			//Setting the timezone for the date field
+			if(newUserInfo.getDateOfBirth() != null) {
+				sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				String formattedDate = sdf.format(newUserInfo.getDateOfBirth());
+				Date date = sdf.parse(formattedDate);
+				currentUser.setDateOfBirth(date);
+			}else {
+				
+				currentUser.setDateOfBirth(null);
+			}
 			
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			String formattedDate = sdf.format(newUserInfo.getDateOfBirth());
-			Date date = sdf.parse(formattedDate);
-			
-			currentUser.setDateOfBirth(date);
 			currentUser.setPhone(newUserInfo.getPhone());
 			currentUser.setAddress(newUserInfo.getAddress());
 			currentUser.setCity(newUserInfo.getCity());
