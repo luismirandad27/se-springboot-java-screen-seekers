@@ -54,6 +54,10 @@ public class Movie {
 	private String movieTrailerLink;
 	@Column(name="isInTheaters")
 	private Boolean isInTheaters;
+	@Column(name="isInStreaming")
+	private Boolean isInStreaming;
+	@Column(name="isComingSoon")
+	private Boolean isComingSoon;
 	@Column(name= "posterImage")
 	private String posterImage;
 	@Column(name= "trailerImage")
@@ -137,9 +141,21 @@ public class Movie {
 	public Boolean getIsInTheaters() {
 		return isInTheaters;
 	}
-	
 	public void setIsInTheaters(Boolean isInTheaters) {
 		this.isInTheaters = isInTheaters;
+	}
+	public Boolean getIsInStreaming() {
+		return isInStreaming;
+	}
+	public void setIsInStreaming(Boolean isInStreaming) {
+		this.isInStreaming = isInStreaming;
+	}
+	
+	public Boolean getIsComingSoon() {
+		return isComingSoon;
+	}
+	public void setIsComingSoon(Boolean isComingSoon) {
+		this.isComingSoon = isComingSoon;
 	}
 	public String getPosterImage() {
 		return posterImage;
@@ -193,7 +209,7 @@ public class Movie {
 		this.productionCrews = productionCrews;
 	}
 	public Movie(String title, String genre, Date releaseDate, int length, String synopsis, String classificationRating,
-			String movieTrailerLink, Boolean isInTheaters, String[] whereToWatch) {
+			String movieTrailerLink, Boolean isInTheaters, Boolean isInStreaming, Boolean isComingSoon, String[] whereToWatch) {
 		
 		this.title = title;
 		this.genre = genre;
@@ -204,11 +220,14 @@ public class Movie {
 		this.movieTrailerLink = movieTrailerLink;
 		this.createdAt = new Date();
 		this.isInTheaters = isInTheaters;
+		this.isInStreaming = isInStreaming;
+		this.isComingSoon = isComingSoon;
 		this.whereToWatch = whereToWatch;
 	}
 	
 	public Movie(String title, String genre, Date releaseDate, int length, String synopsis, String classificationRating,
-			String movieTrailerLink, Boolean isInTheaters, String[] whereToWatch, String posterImage, String trailerImage) {
+			String movieTrailerLink, Boolean isInTheaters,Boolean isInStreaming, Boolean isComingSoon,String[] whereToWatch, 
+			String posterImage, String trailerImage) {
 		
 		this.title = title;
 		this.genre = genre;
@@ -219,6 +238,8 @@ public class Movie {
 		this.movieTrailerLink = movieTrailerLink;
 		this.createdAt = new Date();
 		this.isInTheaters = isInTheaters;
+		this.isInStreaming = isInStreaming;
+		this.isComingSoon = isComingSoon;
 		this.whereToWatch = whereToWatch;
 		this.posterImage = posterImage;
 		this.trailerImage = trailerImage;

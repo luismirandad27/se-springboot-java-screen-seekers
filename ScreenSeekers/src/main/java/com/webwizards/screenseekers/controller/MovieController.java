@@ -96,6 +96,8 @@ public class MovieController {
 					 movie.getClassificationRating(), 
 					 movie.getMovieTrailerLink(), 
 					 movie.getIsInTheaters(),
+					 movie.getIsInStreaming(),
+					 movie.getIsComingSoon(),
 					 movie.getWhereToWatch());
 			
 			movieRepo.save(newMovie);
@@ -123,6 +125,8 @@ public class MovieController {
 				_myMovie.setClassificationRating(movie.getClassificationRating());
 				_myMovie.setMovieTrailerLink(movie.getMovieTrailerLink());
 				_myMovie.setIsInTheaters(movie.getIsInTheaters());
+				_myMovie.setIsInStreaming(movie.getIsInStreaming());
+				_myMovie.setIsComingSoon(movie.getIsComingSoon());
 				_myMovie.setWhereToWatch(movie.getWhereToWatch());
 				_myMovie.setUpdatedAt(new Date());
 				
@@ -151,7 +155,7 @@ public class MovieController {
 	}
 
 	@GetMapping("/movies")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or permitAll()")
 	public ResponseEntity<Page<Movie>> getAllMovies(@RequestParam(required = false) String title, 
 													@RequestParam(required = false) String genre, 
 													@RequestParam(required = false) Integer year,
