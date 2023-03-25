@@ -73,79 +73,79 @@ public class ScreenSeekersApplication {
 			
 			Movie movie1 = new Movie("The Dark Knight", "Action, Crime, Drama", dateFormat.parse("2008-07-18"), 152,
 					"When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
-					"PG-13", "https://www.youtube.com/watch?v=EXeTwQWrcwY",false,false,false,whereToWatch, null, null);
+					"PG-13", "https://www.youtube.com/embed/EXeTwQWrcwY",false,false,false,whereToWatch, null, null);
 			
 			Movie movie2 = new Movie("Inception", "Action, Adventure, Sci-Fi", dateFormat.parse("2010-07-16"), 148,
 					"A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
-					"PG-13", "https://www.youtube.com/watch?v=YoHD9XEInc0",false,false,false,whereToWatch, null, null);
+					"PG-13", "https://www.youtube.com/embed/YoHD9XEInc0",false,false,false,whereToWatch, null, null);
 			
 			Movie movie3 = new Movie("The Lord of the Rings: The Return of the King", "Adventure, Drama, Fantasy",
 					dateFormat.parse("2003-12-17"), 201,
 					"Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
-					"PG-13", "https://www.youtube.com/watch?v=r5X-hFf6Bwo",false,false,false,whereToWatch, null, null);
+					"PG-13", "https://www.youtube.com/embed/r5X-hFf6Bwo",false,false,false,whereToWatch, null, null);
 			
 			Movie movie4 = new Movie("The Matrix", "Action, Sci-Fi", dateFormat.parse("1999-03-31"), 136,
 					"A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
-					"R", "https://www.youtube.com/watch?v=m8e-FF8MsqU",false,false,false,whereToWatch, null, null);
+					"R", "https://www.youtube.com/embed/m8e-FF8MsqU",false,false,false,whereToWatch, null, null);
 			
 			Movie movie5 = new Movie("Interstellar", "Adventure, Drama, Sci-Fi", dateFormat.parse("2014-11-07"), 169,
 					"A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-					"PG-13", "https://www.youtube.com/watch?v=zSWdZVtXT7E",false,false,false,whereToWatch, null, null);
+					"PG-13", "https://www.youtube.com/embed/zSWdZVtXT7E",false,false,false,whereToWatch, null, null);
 			
 			Movie movie6 = new Movie("The Silence of the Lambs", "Crime, Drama, Thriller",
 					dateFormat.parse("1991-02-14"), 118,
 					"A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer, a madman who skins his victims.",
-					"R", "https://www.youtube.com/watch?v=RuX2MQeb8UM",false,false,false,whereToWatch, null, null);
+					"R", "https://www.youtube.com/embed/RuX2MQeb8UM",false,false,false,whereToWatch, null, null);
 			
 			Movie movie7 = new Movie("Forrest Gump", "Drama, Romance", dateFormat.parse("1994-07-06"), 142,
 					"The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate and other historical events unfold through the perspective of an Alabama man with an IQ of 75, whose only desire is to be reunited with his childhood sweetheart.",
-					"PG-13", "https://www.youtube.com/watch?v=bLvqoHBptjg",false,false,false,whereToWatch, null, null);
+					"PG-13", "https://www.youtube.com/embed/bLvqoHBptjg",false,false,false,whereToWatch, null, null);
 
 			Movie movie8 = new Movie("The Shawshank Redemption", "Drama", dateFormat.parse("1994-10-14"), 142,
 			"Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-			"R", "https://www.youtube.com/watch?v=6hB3S9bIaco",false,false,false,whereToWatch, null, null);
+			"R", "https://www.youtube.com/embed/6hB3S9bIaco",false,false,false,whereToWatch, null, null);
 
 			Movie movie9 = new Movie("Pulp Fiction", "Crime, Drama", dateFormat.parse("1994-10-14"), 154,
 			"The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-			"R", "https://www.youtube.com/watch?v=s7EdQ4FqbhY",false,false,false,whereToWatch, null, null);
+			"R", "https://www.youtube.com/embed/s7EdQ4FqbhY",false,false,false,whereToWatch, null, null);
 
 			Movie movie10 = new Movie("The Godfather", "Crime, Drama", dateFormat.parse("1972-03-24"), 175,
 			"The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-			"R", "https://www.youtube.com/watch?v=sY1S34973zA",false,false,false,whereToWatch, null, null);
+			"R", "https://www.youtube.com/embed/sY1S34973zA",false,false,false,whereToWatch, null, null);
 
 			Movie movie11 = new Movie("The Godfather: Part II", "Crime, Drama", dateFormat.parse("1974-12-20"), 202,
 			"The early life and career of Vito Corleone in 1920s New York City is portrayed, while his son, Michael, expands and tightens his grip on the family crime syndicate.",
-			"R", "https://www.youtube.com/watch?v=qJr92K_hKl0",false,false,false,whereToWatch, null, null);
+			"R", "https://www.youtube.com/embed/qJr92K_hKl0",false,false,false,whereToWatch, null, null);
 
 			Movie movie12 = new Movie("The Prestige", "Drama, Mystery, Sci-Fi", dateFormat.parse("2006-10-20"), 130,
 			"Two stage magicians engage in competitive one-upmanship in an attempt to create the ultimate stage illusion.",
-			"PG-13", "https://www.youtube.com/watch?v=o4gHCmTQDVI",false,false,false,whereToWatch, null, null);
+			"PG-13", "https://www.youtube.com/embed/o4gHCmTQDVI",false,false,false,whereToWatch, null, null);
 
 			Movie movie13 = new Movie("Fight Club", "Drama", dateFormat.parse("1999-10-15"), 139,
 			"An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much, much more.",
-			"R", "https://www.youtube.com/watch?v=SUXWAEX2jlg",false,false,false,whereToWatch, null, null);
+			"R", "https://www.youtube.com/embed/SUXWAEX2jlg",false,false,false,whereToWatch, null, null);
 			
 			
 			//Simulation (on theathers)
 			Movie movie14 = new Movie("Doctor Strange in the Multiverse of Madness", "Action, Adventure, Fantasy",
 	                  dateFormat.parse("2022-03-25"), 152,
 	                  "After the events of Spider-Man: No Way Home, Dr. Strange continues his research on the Time Stone. But an old friend turned enemy seeks to destroy every sorcerer on Earth, messing with Strange's plan.",
-	                  "PG-13", "https://www.youtube.com/watch?v=_EGQaRnOtYQ", true, false, false, whereToWatch, null, null);
+	                  "PG-13", "https://www.youtube.com/embed/aWzlQ2N6qqg", true, false, false, whereToWatch, null, null);
 			
 			Movie movie15 = new Movie("Avatar: The Way of Water", "Action, Adventure, Fantasy",
 	                  dateFormat.parse("2022-12-16"), 160,
 	                  "Taking place a few years after the events of the original Avatar movie, this film follows Jake Sully and Neytiri as they explore more of the otherworldly planet of Pandora and encounter new threats and allies.",
-	                  "PG-13", "https://www.youtube.com/watch?v=Vt9uoYcLpks", true, false, false, whereToWatch, null, null);
+	                  "PG-13", "https://www.youtube.com/embed/a8Gx8wiNbs8", true, false, false, whereToWatch, null, null);
 			
 			Movie movie16 = new Movie("Jurassic World: Dominion", "Action, Adventure, Sci-Fi",
 	                  dateFormat.parse("2022-06-10"), 151,
 	                  "The dinosaurs have escaped from Isla Nublar and now roam free in the world. As chaos ensues, the original Jurassic Park characters come together to stop the impending disaster.",
-	                  "PG-13", "https://www.youtube.com/watch?v=KjqlvLIfyFI", true, false, false, whereToWatch, null, null);
+	                  "PG-13", "https://www.youtube.com/embed/fb5ELWi-ekk", true, false, false, whereToWatch, null, null);
 			
 			Movie movie17 = new Movie("The Batman", "Action, Crime, Drama",
 	                  dateFormat.parse("2022-03-04"), 164,
 	                  "A new take on the Batman story, this film follows a young Bruce Wayne as he navigates his way through Gotham's corrupt underbelly and tries to stop a deadly villain known as The Riddler.",
-	                  "R", "https://www.youtube.com/watch?v=29vKZtZLm5g", true, false, false, whereToWatch, null, null);
+	                  "R", "https://www.youtube.com/embed/mqqft2x_Aa4", true, false, false, whereToWatch, null, null);
 
 			Movie movie18 = new Movie(
 				    "The Queen's Gambit",
@@ -154,7 +154,7 @@ public class ScreenSeekersApplication {
 				    394,
 				    "In the 1950s, orphaned chess prodigy Beth Harmon struggles with addiction in a quest to become the greatest chess player in the world.",
 				    "TV-MA",
-				    "https://www.youtube.com/watch?v=CDrieqwSdgI",
+				    "https://www.youtube.com/embed/oZn3qSgmLqI",
 				    false,
 				    true,
 				    false,
@@ -169,7 +169,7 @@ public class ScreenSeekersApplication {
 				    155,
 				    "Feature adaptation of Frank Herbert's science fiction novel, about the son of a noble family entrusted with the protection of the most valuable asset and most vital element in the galaxy.",
 				    "PG-13",
-				    "https://www.youtube.com/watch?v=n9xhJrPXop4",
+				    "https://www.youtube.com/embed/8g18jFHCLXk",
 				    false,
 				    true,
 				    false,
@@ -183,7 +183,7 @@ public class ScreenSeekersApplication {
 				    118,
 				    "An Interpol agent tracks the world's most wanted art thief.",
 				    "PG-13",
-				    "https://www.youtube.com/watch?v=tSPoKjW3KVc",
+				    "https://www.youtube.com/embed/Pj0wz7zu3Ms",
 				    false,
 				    true,
 				    false,
@@ -197,7 +197,7 @@ public class ScreenSeekersApplication {
 				    126,
 				    "Charismatic rancher Phil Burbank inspires fear and awe in those around him. When his brother brings home a new wife and her son, Phil torments them until he finds himself exposed to the possibility of love.",
 				    "R",
-				    "https://www.youtube.com/watch?v=BHyt08SPZdA",
+				    "https://www.youtube.com/embed/LRDPo0CHrko",
 				    false,
 				    true,
 				    false,
@@ -207,18 +207,18 @@ public class ScreenSeekersApplication {
 			Movie movie22 = new Movie("Black Panther: Wakanda Forever", "Action, Adventure, Drama",
 					dateFormat.parse("2022-11-10"), 0,
 					"The sequel to the 2018 superhero hit Black Panther, which will explore the world of Wakanda after the death of King T'Challa.",
-					"PG-13", "https://www.youtube.com/watch?v=K34JpksL4s4",false,false,true, whereToWatch, null, null);
+					"PG-13", "https://www.youtube.com/embed/_Z3QKkl1WyM",false,false,true, whereToWatch, null, null);
 			
 			Movie movie23 = new Movie("The Flash", "Action, Adventure, Fantasy",
 					dateFormat.parse("2022-11-03"), 0,
 					"Ezra Miller stars as the DC superhero The Flash, who gains superhuman speed after being struck by lightning and uses his abilities to fight crime and save the world.",
-					"PG-13", "https://www.youtube.com/watch?v=e5jNveBx6ko",false,false,true, whereToWatch, null, null);
+					"PG-13", "https://www.youtube.com/embed/hebWYacbdvc",false,false,true, whereToWatch, null, null);
 
 			
 			Movie movie24 = new Movie("Fantastic Beasts: The Secrets of Dumbledore", "Adventure, Family, Fantasy",
 					dateFormat.parse("2022-04-14"), 0,
 					"The third installment of the Fantastic Beasts series, in which Newt Scamander teams up with a young Albus Dumbledore to battle the dark wizard Gellert Grindelwald.",
-					"PG-13", "https://www.youtube.com/watch?v=xdgv6XfRN6s",false,false,true, whereToWatch, null, null);
+					"PG-13", "https://www.youtube.com/embed/Y9dr2zw-TXQ",false,false,true, whereToWatch, null, null);
 			
 			movieRepo.save(movie1);
 			movieRepo.save(movie2);
@@ -251,7 +251,7 @@ public class ScreenSeekersApplication {
 
 			
 			//USER'S SAMPLES
-			User user1= new User("aalwen0","aalwen0@twitpic.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Avrit","Alwen",dateFormat.parse("1988-12-19"),"564-669-3183","23 South Road","Vancouver","BC","Canada");
+			User user1= new User("lmirandad","lmirandad27@gmail.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Luis","Miranda",dateFormat.parse("1993-03-01"),"564-669-3183","23 South Road","Vancouver","BC","Canada");
 			User user2= new User("jkeppin1","jkeppin1@forbes.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Jaclyn","Keppin",dateFormat.parse("1994-09-28"),"428-461-2797","63 Bashford Avenue","Vancouver","BC","Canada");
 			User user3= new User("sshaxby2","sshaxby2@taobao.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Sharleen","Shaxby",dateFormat.parse("1987-08-07"),"843-912-8340","62111 Graceland Point","Vancouver","BC","Canada");
 			User user4= new User("bblagburn3","bblagburn3@forbes.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Brandise","Blagburn",dateFormat.parse("1981-12-03"),"112-574-5074","35866 Truax Plaza","Vancouver","BC","Canada");
@@ -274,7 +274,7 @@ public class ScreenSeekersApplication {
 			bothRoles.add(userRole);
 			bothRoles.add(adminRole);
 			
-			user1.setRoles(bothRoles);
+			user1.setRoles(roles);
 			user2.setRoles(roles);
 			user3.setRoles(roles);
 			user4.setRoles(roles);

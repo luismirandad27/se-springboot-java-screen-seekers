@@ -24,6 +24,8 @@
 package com.webwizards.screenseekers.controller;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -159,10 +161,11 @@ public class MovieController {
 	public ResponseEntity<Page<Movie>> getAllMovies(@RequestParam(required = false) String title, 
 													@RequestParam(required = false) String genre, 
 													@RequestParam(required = false) Integer year,
-													Pageable pageable) {
+													@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
 		try {
 			
 			Page<Movie> myList = null;
+			
 			
 			
 			if (title != null) {

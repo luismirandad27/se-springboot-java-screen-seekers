@@ -32,6 +32,12 @@ import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -226,7 +232,8 @@ public class UserController {
 	
 	@GetMapping("/users/{id}/recommend")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<List<Movie>> recommendMoviesToUser(@PathVariable long id){
+	public ResponseEntity<Page<Movie>> recommendMoviesToUser(@PathVariable long id, 
+																@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable){
 		
 		try {
 			
@@ -250,11 +257,17 @@ public class UserController {
 			
 			List<Movie> recommendations = movieRecommender.getRecommendedMovieList(allMovies, id);
 			
+			
+			int start = (int)pageable.getOffset();
+			int end = Math.min((start + pageable.getPageSize()), recommendations.size());
+			
+			Page<Movie> pageRecommendations = new PageImpl<>(recommendations.subList(start, end), pageable, recommendations.size());
+			
 			if (recommendations.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			
-			return new ResponseEntity<>(recommendations,HttpStatus.OK);
+			return new ResponseEntity<>(pageRecommendations,HttpStatus.OK);
 			
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
