@@ -166,8 +166,6 @@ public class MovieController {
 			
 			Page<Movie> myList = null;
 			
-			
-			
 			if (title != null) {
 				
 				myList = movieRepo.findByTitleContainingIgnoreCase(title, pageable);

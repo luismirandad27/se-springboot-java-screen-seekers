@@ -17,12 +17,14 @@ package com.webwizards.screenseekers.controller;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,6 +48,7 @@ import com.webwizards.screenseekers.repository.RoleRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
 import com.webwizards.screenseekers.security.jwt.JwtUtils;
 import com.webwizards.screenseekers.security.services.UserDetailsImpl;
+import com.webwizards.screenseekers.utils.ResponseMessage;
 
 import jakarta.validation.Valid;
 
@@ -71,22 +74,39 @@ public class AuthController {
 	  @PostMapping("/signin")
 	  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-	    Authentication authentication = authenticationManager.authenticate(
-	        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+	    //validate if the user exists and it's disabled
+		Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
+		
+		if (!user.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}else {
+			
+			User userObj = user.get();
+			
+			if (userObj.getDeletedAt() == null) {
+				Authentication authentication = authenticationManager.authenticate(
+				        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-	    SecurityContextHolder.getContext().setAuthentication(authentication);
-	    String jwt = jwtUtils.generateJwtToken(authentication);
-	    
-	    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
-	    List<String> roles = userDetails.getAuthorities().stream()
-	        .map(item -> item.getAuthority())
-	        .collect(Collectors.toList());
+				    SecurityContextHolder.getContext().setAuthentication(authentication);
+				    String jwt = jwtUtils.generateJwtToken(authentication);
+				    
+				    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
+				    List<String> roles = userDetails.getAuthorities().stream()
+				        .map(item -> item.getAuthority())
+				        .collect(Collectors.toList());
 
-	    return ResponseEntity.ok(new JwtResponse(jwt, 
-	                         userDetails.getId(), 
-	                         userDetails.getUsername(), 
-	                         userDetails.getEmail(), 
-	                         roles));
+				    return ResponseEntity.ok(new JwtResponse(jwt, 
+				                         userDetails.getId(), 
+				                         userDetails.getUsername(), 
+				                         userDetails.getEmail(), 
+				                         roles));
+			}else {
+				return new ResponseEntity<>(new ResponseMessage("Username: "+loginRequest.getUsername()+" does not exist"),HttpStatus.NOT_FOUND);
+			}
+				
+		}
+		  
+		
 	  }
 
 	  @PostMapping("/signup")
