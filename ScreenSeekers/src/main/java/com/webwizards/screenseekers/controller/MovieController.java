@@ -143,7 +143,7 @@ public class MovieController {
 	}
 	
 	@GetMapping("/movies/{id}")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN') or permitAll()")
 	public ResponseEntity<Movie> getMovie(@PathVariable("id") Long id) {
 		try {
 			if (movieRepo.findById(id).isPresent()) {
@@ -237,20 +237,17 @@ public class MovieController {
 				String filePosterImage = movie.get().getPosterImage();
 				
 				if (filePosterImage != null) {
-					FileUploadUtil.deleteFile("resources/movie-photos/"+
-												movie.get().getId()+"/"+filePosterImage);
+					FileUploadUtil.deleteFile("resources/movie-photos/"+filePosterImage);
 				}
 				
 				String fileTrailerImage = movie.get().getTrailerImage();
 				
 				if (fileTrailerImage != null) {
-					FileUploadUtil.deleteFile("resources/movie-photos/"+
-							movie.get().getId()+"/"+fileTrailerImage);
+					FileUploadUtil.deleteFile("resources/movie-photos/"+fileTrailerImage);
 				}
 				
 				//try to delete if exists the folder /id/
-				FileUploadUtil.deleteFile("resources/movie-photos/"+
-						movie.get().getId());
+				FileUploadUtil.deleteFile("resources/movie-photos");
 				
 				
 				movieRepo.deleteById(id);
@@ -289,20 +286,17 @@ public class MovieController {
 				String filePosterImage = movie.getPosterImage();
 				
 				if (filePosterImage != null) {
-					FileUploadUtil.deleteFile("resources/movie-photos/"+
-												movie.getId()+"/"+filePosterImage);
+					FileUploadUtil.deleteFile("resources/movie-photos/"+filePosterImage);
 				}
 				
 				String fileTrailerImage = movie.getTrailerImage();
 				
 				if (fileTrailerImage != null) {
-					FileUploadUtil.deleteFile("resources/movie-photos/"+
-							movie.getId()+"/"+fileTrailerImage);
+					FileUploadUtil.deleteFile("resources/movie-photos/"+fileTrailerImage);
 				}
 				
 				//try to delete if exists the folder /id/
-				FileUploadUtil.deleteFile("resources/movie-photos/"+
-						movie.getId());
+				FileUploadUtil.deleteFile("resources/movie-photos/"+fileTrailerImage);
 				
 			}
 			
@@ -350,7 +344,7 @@ public class MovieController {
 			
 			movieRepo.save(updateMovie);
 			
-			String uploadDir = "resources/movie-photos/" + updateMovie.getId();
+			String uploadDir = "resources/movie-photos";
 			
 			if (fileNamePoster != null) {
 				FileUploadUtil.saveFile(uploadDir, fileNamePoster, posterImageFile);

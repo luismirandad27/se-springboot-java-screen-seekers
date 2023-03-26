@@ -112,7 +112,7 @@ public class CrewController {
 	}
 	
 	@GetMapping("/movies/{movieId}/crew-members")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or permitAll()")
 	public ResponseEntity<List<ProductionCrew>> getProductionCrewByMovie(@PathVariable Long movieId) {
 		try {
 			
@@ -203,13 +203,11 @@ public class CrewController {
 				String fileProfileImage = crew.get().getProfileImage();
 				
 				if (fileProfileImage != null) {
-					FileUploadUtil.deleteFile("resources/crew-photos/"+
-												crew.get().getId()+"/"+fileProfileImage);
+					FileUploadUtil.deleteFile("resources/crew-photos/"+fileProfileImage);
 				}
 				
 				//try to delete if exists the folder /id/
-				FileUploadUtil.deleteFile("resources/crew-photos/"+
-						crew.get().getId());
+				FileUploadUtil.deleteFile("resources/crew-photos");
 				
 				crewRepo.deleteById(id);
 				
@@ -244,8 +242,7 @@ public class CrewController {
 				String fileProfileImage = crew.getProfileImage();
 				
 				if (fileProfileImage != null) {
-					FileUploadUtil.deleteFile("resources/crew-photos/"+
-												crew.getId()+"/"+fileProfileImage);
+					FileUploadUtil.deleteFile("resources/crew-photos/"+fileProfileImage);
 				}
 				
 				//try to delete if exists the folder /id/
@@ -344,7 +341,7 @@ public class CrewController {
 			
 			crewRepo.save(updatedCrewMember);
 			
-			String uploadDir = "resources/crew-photos/" + updatedCrewMember.getId();
+			String uploadDir = "resources/crew-photos";
 			
 			FileUploadUtil.saveFile(uploadDir, fileName, profileImageFile);
 			

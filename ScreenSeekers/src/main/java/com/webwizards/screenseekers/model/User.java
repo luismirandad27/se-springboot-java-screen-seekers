@@ -302,9 +302,7 @@ public class User {
 	}
 
 	public String getProfileImage() {
-		if (profileImage == null || id == null) return null;
-        
-        return "/user-photos/" + id + "/" + profileImage;
+		return profileImage;
 	}
 
 	public void setProfileImage(String profileImage) {

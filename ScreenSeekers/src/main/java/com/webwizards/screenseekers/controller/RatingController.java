@@ -170,7 +170,7 @@ public class RatingController {
 	}
 	
 	@GetMapping("/users/ratings/{movieId}")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or permitAll()")
 	public ResponseEntity<List<Rating>> getRatingsByMovie(@PathVariable Long movieId) {
 		try {
 			

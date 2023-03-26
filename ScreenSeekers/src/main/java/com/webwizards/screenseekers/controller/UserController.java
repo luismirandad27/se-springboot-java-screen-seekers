@@ -296,7 +296,7 @@ public class UserController {
 			
 			userRepo.save(updateUser);
 			
-			String uploadDir = "resources/user-photos/" + updateUser.getId();
+			String uploadDir = "resources/user-photos";
 			
 			FileUploadUtil.saveFile(uploadDir, fileName, profileImageFile);
 			
