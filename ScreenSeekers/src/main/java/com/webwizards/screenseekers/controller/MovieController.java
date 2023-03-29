@@ -161,6 +161,9 @@ public class MovieController {
 	public ResponseEntity<Page<Movie>> getAllMovies(@RequestParam(required = false) String title, 
 													@RequestParam(required = false) String genre, 
 													@RequestParam(required = false) Integer year,
+													@RequestParam(required = false) Boolean isInTheaters,
+													@RequestParam(required = false) Boolean isInStreaming,
+													@RequestParam(required = false) Boolean isComingSoon,
 													@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
 		try {
 			
@@ -178,6 +181,20 @@ public class MovieController {
 				
 				myList = movieRepo.findByReleaseDateYear(year, pageable);
 				
+			}
+			else if(isInTheaters != null) {
+			
+				myList = movieRepo.findByIsInTheaters(isInTheaters, pageable);
+			
+			} else if(isInStreaming != null) {
+			
+				myList = movieRepo.findByIsInStreaming(isInStreaming, pageable);
+			
+			}
+			else if(isComingSoon != null) {
+			
+				myList = movieRepo.findByIsComingSoon(isComingSoon, pageable);
+		
 			}
 			else {
 				

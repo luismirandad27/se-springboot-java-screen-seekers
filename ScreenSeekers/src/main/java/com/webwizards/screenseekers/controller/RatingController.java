@@ -29,6 +29,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -171,20 +175,23 @@ public class RatingController {
 	
 	@GetMapping("/users/ratings/{movieId}")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER') or permitAll()")
-	public ResponseEntity<List<Rating>> getRatingsByMovie(@PathVariable Long movieId) {
+	public ResponseEntity<Page<Rating>> getRatingsByMovie(@PathVariable Long movieId,
+														  @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
 		try {
 			
-			List<Rating> myRatings = ratingRepo.findByMovieId(movieId);
-			List<Rating> ratingResponse = new ArrayList<>();
+			Page<Rating> myRatings = ratingRepo.findByMovieId(movieId, pageable);
+			List<Rating> ratingsWithoutMovieField = new ArrayList<>();
 			
 			if(!myRatings.isEmpty()) {
 				
-				for (Rating rating : myRatings) {
+				for (Rating rating : myRatings.getContent()) {
 					
 					rating.setMovie(null);
-					ratingResponse.add(rating);
+					ratingsWithoutMovieField.add(rating);
 					
 				}
+				
+				Page<Rating> ratingResponse = new PageImpl<>(ratingsWithoutMovieField, pageable, myRatings.getTotalElements());
 				
 				return new ResponseEntity<>(ratingResponse, HttpStatus.OK);
 				

@@ -14,11 +14,13 @@
 
 package com.webwizards.screenseekers.repository;
 
+
 import java.util.List;
 
 import java.util.Optional;
 
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -48,5 +50,8 @@ public interface RatingRepository extends JpaRepository<Rating,Long>{
 	@Modifying
 	@Query("DELETE FROM Rating r WHERE r.movie.id = ?1")
 	void deleteByMovieId(Long movieId);
+	
+	//With Pageable
+	Page<Rating> findByMovieId(Long movieId,Pageable page);
 	
 }

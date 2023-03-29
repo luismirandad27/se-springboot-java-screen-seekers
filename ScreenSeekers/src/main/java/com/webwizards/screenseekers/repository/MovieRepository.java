@@ -59,5 +59,11 @@ public interface MovieRepository extends JpaRepository<Movie, Long>{
 	@Query("SELECT e FROM Movie e WHERE EXTRACT(YEAR FROM e.releaseDate) = ?1")
 	Page<Movie> findByReleaseDateYear(int year, Pageable pageable);
 	
+	Page<Movie> findByIsInTheaters(Boolean isInTheaters, Pageable pageable);
+	
+	Page<Movie> findByIsInStreaming(Boolean isInStreaming, Pageable pageable);
+	
+	Page<Movie> findByIsComingSoon(Boolean isComingSoon, Pageable pageable);
+	
 
 }

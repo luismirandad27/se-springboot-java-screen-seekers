@@ -292,6 +292,52 @@ public class ScreenSeekersApplication {
 			userRepo.save(user7);
 			userRepo.save(user8);
 			
+			//RATING'S SAMPLE
+			Rating rating1= new Rating(4,"Great movie, loved the plot!",user1,movie1);
+			Rating rating2= new Rating(5,"Absolutely amazing, one of the best movies I've seen.",user1,movie3);
+			Rating rating3= new Rating(5,"Highly recommend this movie, it's a must-watch!",user1,movie5);
+			Rating rating4= new Rating(5,"One of my all-time favorite movies, can't recommend it enough.",user2,movie1);
+			Rating rating5= new Rating(1,"Not my cup of tea, didn't enjoy it.",user2,movie2);
+			Rating rating6= new Rating(4,"Really enjoyed this movie, great acting and storyline.",user2,movie3);
+			Rating rating7= new Rating(2,"Disappointing, expected more from this movie.",user2,movie4);
+			Rating rating8= new Rating(5,"Incredible movie, loved everything about it!",user2,movie5);
+			Rating rating9= new Rating(1,"Not my type of movie, didn't enjoy it much.",user2,movie6);
+			Rating rating10= new Rating(2,"Average movie, nothing special.",user3,movie2);
+			Rating rating11= new Rating(2,"Decent movie, but didn't leave a lasting impression.",user3,movie3);
+			Rating rating12= new Rating(4,"One of the best movies I've seen recently, highly recommend it!",user3,movie5);
+			Rating rating13= new Rating(3,"Interesting plot, but felt like something was missing.",user3,movie6);
+			Rating rating14= new Rating(4,"Great movie, enjoyed every minute of it!",user4,movie1);
+			Rating rating15= new Rating(3,"Not bad, but didn't live up to the hype.",user4,movie2);
+			Rating rating16= new Rating(1,"Didn't enjoy this movie, felt like a waste of time.",user4,movie3);
+			Rating rating17= new Rating(4,"Really enjoyed this movie, great performances by the actors.",user4,movie4);
+			Rating rating18= new Rating(5,"This movie was amazing, I loved the plot and the characters!",user4,movie5);
+			Rating rating19= new Rating(4,"I thought this movie was pretty good, the acting was great!",user4,movie14);
+			Rating rating20= new Rating(3,"This is one of my all-time favorite movies, I can watch it over and over again!",user3,movie14);
+			Rating rating21= new Rating(2,"This movie was incredible, the cinematography and special effects were mind-blowing!",user2,movie14);
+					
+			ratingRepo.save(rating1);
+			ratingRepo.save(rating2);
+			ratingRepo.save(rating3);
+			ratingRepo.save(rating4);
+			ratingRepo.save(rating5);
+			ratingRepo.save(rating6);
+			ratingRepo.save(rating7);
+			ratingRepo.save(rating8);
+			ratingRepo.save(rating9);
+			ratingRepo.save(rating10);
+			ratingRepo.save(rating11);
+			ratingRepo.save(rating12);
+			ratingRepo.save(rating13);
+			ratingRepo.save(rating14);
+			ratingRepo.save(rating15);
+			ratingRepo.save(rating16);
+			ratingRepo.save(rating17);
+			ratingRepo.save(rating18);
+			ratingRepo.save(rating19);
+			ratingRepo.save(rating20);
+			ratingRepo.save(rating21);
+			
+			
 			System.out.println("Initial dataset loaded into H2 Database\n");
 			
 			System.out.println("ScreenSeekers API Server running...\n");
