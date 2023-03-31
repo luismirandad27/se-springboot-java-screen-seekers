@@ -119,7 +119,7 @@ public class WatchlistController {
 			List<Watchlist> watchlist = watchlistRepo.findByUserId(userId);
 			
 			if(watchlist.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			
 			return new ResponseEntity<>(watchlist,HttpStatus.OK);
