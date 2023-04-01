@@ -54,4 +54,6 @@ public interface RatingRepository extends JpaRepository<Rating,Long>{
 	//With Pageable
 	Page<Rating> findByMovieId(Long movieId,Pageable page);
 	
+	Page<Rating> findByUserId(Long userId, Pageable page);
+	
 }

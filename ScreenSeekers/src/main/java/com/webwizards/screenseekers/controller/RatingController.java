@@ -145,23 +145,26 @@ public class RatingController {
 	
 	@GetMapping("/users/{userId}/ratings")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-	public ResponseEntity<List<Rating>> getRatingsByUser(@PathVariable Long userId) {
+	public ResponseEntity<Page<Rating>> getRatingsByUser(@PathVariable Long userId,
+			@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
 		try {
 			
-			List<Rating> myRatings = ratingRepo.findByUserId(userId);
+			Page<Rating> myRatings = ratingRepo.findByUserId(userId, pageable);
 			
-			List<Rating> ratingsResponse = new ArrayList<>();
+			List<Rating> ratingsWithoutUserField = new ArrayList<>();
 			
 			if(!myRatings.isEmpty()) {
 				
-				for(Rating rating: myRatings) {
+				for(Rating rating: myRatings.getContent()) {
 					
 					rating.setUser(null);
-					ratingsResponse.add(rating);
+					ratingsWithoutUserField.add(rating);
 					
 				}
 				
-				return new ResponseEntity<>(ratingsResponse, HttpStatus.OK);
+				Page<Rating> ratingResponse = new PageImpl<>(ratingsWithoutUserField, pageable, myRatings.getTotalElements());
+				
+				return new ResponseEntity<>(ratingResponse, HttpStatus.OK);
 				
 			} else {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
