@@ -17,10 +17,18 @@ package com.webwizards.screenseekers.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.webwizards.screenseekers.model.CrewMember;
+import com.webwizards.screenseekers.model.Movie;
 
 public interface CrewMemberRepository extends JpaRepository<CrewMember, Long> {
 	List<CrewMember> findByFirstName(String firstName);
+	
+	//Include Pageable
+	Page<CrewMember> findAll(Pageable page);
+	
+	Page<CrewMember> findByFirstName(String title, Pageable pageable);
 }

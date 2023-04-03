@@ -17,6 +17,7 @@ package com.webwizards.screenseekers;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -339,6 +340,39 @@ public class ScreenSeekersApplication {
 			ratingRepo.save(rating20);
 			ratingRepo.save(rating21);
 			
+			
+			
+			CrewMember cm1 = new CrewMember("Tom", "Hanks", new Date(1956, 7, 9), "American", "Academy Award");
+			CrewMember cm2 = new CrewMember("Meryl", "Streep", new Date(1949, 6, 22), "American", "Academy Award");
+			CrewMember cm3 = new CrewMember("Christopher", "Nolan", new Date(1970, 7, 30), "British", "Academy Award");
+			CrewMember cm4 = new CrewMember("Cate", "Blanchett", new Date(1969, 5, 14), "Australian", "Academy Award");
+			CrewMember cm5 = new CrewMember("Brad", "Pitt", new Date(1963, 12, 18), "American", "Academy Award");
+			CrewMember cm6 = new CrewMember("Quentin", "Tarantino", new Date(1963, 3, 27), "American", "Academy Award");
+			CrewMember cm7 = new CrewMember("Denzel", "Washington", new Date(1954, 12, 28), "American", "Academy Award");
+			CrewMember cm8 = new CrewMember("Kathryn", "Bigelow", new Date(1951, 11, 27), "American", "Academy Award");
+			CrewMember cm9 = new CrewMember("Daniel", "Day-Lewis", new Date(1957, 4, 29), "British", "Academy Award");
+			CrewMember cm10 = new CrewMember("Natalie", "Portman", new Date(1981, 6, 9), "Israeli", "Academy Award");
+			CrewMember cm11 = new CrewMember("Martin", "Scorsese", new Date(1942, 11, 17), "American", "Academy Award");
+			CrewMember cm12 = new CrewMember("Morgan", "Freeman", new Date(1937, 6, 1), "American", "Academy Award");
+			CrewMember cm13 = new CrewMember("Kate", "Winslet", new Date(1975, 10, 5), "British", "Academy Award");
+			CrewMember cm14 = new CrewMember("George", "Lucas", new Date(1944, 5, 14), "American", "Academy Award");
+			CrewMember cm15 = new CrewMember("Clint", "Eastwood", new Date(1930, 5, 31), "American", "Academy Award");
+
+			crewRepo.save(cm1);
+			crewRepo.save(cm2);
+			crewRepo.save(cm3);
+			crewRepo.save(cm4);
+			crewRepo.save(cm5);
+			crewRepo.save(cm6);
+			crewRepo.save(cm7);
+			crewRepo.save(cm8);
+			crewRepo.save(cm9);
+			crewRepo.save(cm10);
+			crewRepo.save(cm11);
+			crewRepo.save(cm12);
+			crewRepo.save(cm13);
+			crewRepo.save(cm14);
+			crewRepo.save(cm15);			
 			
 			System.out.println("Initial dataset loaded into H2 Database\n");
 			

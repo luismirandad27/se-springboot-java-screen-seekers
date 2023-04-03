@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -71,18 +74,19 @@ public class CrewController {
 	
 	@GetMapping("/movies/crew-members")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<List<CrewMember>> getAllCrew(@RequestParam(required = false) String name) {
+	public ResponseEntity<Page<CrewMember>> getAllCrew(@RequestParam(required = false) String name, 
+			@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
 		try {
 			
-			List<CrewMember> myList = new ArrayList<CrewMember>();
+			Page<CrewMember> myList = null;
 			
 			if (name == null) {
 				
-				myList = crewRepo.findAll();
+				myList = crewRepo.findAll(pageable);
 				
 			} else {
 				
-				myList = crewRepo.findByFirstName(name);
+				myList = crewRepo.findByFirstName(name, pageable);
 				
 			}
 			

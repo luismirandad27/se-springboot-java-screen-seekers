@@ -263,10 +263,6 @@ public class MovieController {
 					FileUploadUtil.deleteFile("resources/movie-photos/"+fileTrailerImage);
 				}
 				
-				//try to delete if exists the folder /id/
-				FileUploadUtil.deleteFile("resources/movie-photos");
-				
-				
 				movieRepo.deleteById(id);
 				
 				String message = "Movie: "+movieName+" has been deleted successfully!";
@@ -312,8 +308,6 @@ public class MovieController {
 					FileUploadUtil.deleteFile("resources/movie-photos/"+fileTrailerImage);
 				}
 				
-				//try to delete if exists the folder /id/
-				FileUploadUtil.deleteFile("resources/movie-photos/"+fileTrailerImage);
 				
 			}
 			
@@ -341,21 +335,19 @@ public class MovieController {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			
+			Movie updateMovie = movie.get();
+			
 			String fileNamePoster = null;
 			if (posterImageFile != null) {
 				fileNamePoster = StringUtils.cleanPath(posterImageFile.getOriginalFilename());
+				updateMovie.setPosterImage(fileNamePoster);
 			}
 			
 			String fileNameTrailer = null;
 			if(trailerImageFile != null) {
 				fileNameTrailer = StringUtils.cleanPath(trailerImageFile.getOriginalFilename());
+				updateMovie.setTrailerImage(fileNameTrailer);
 			}
-			
-			
-			Movie updateMovie = movie.get();
-			
-			updateMovie.setPosterImage(fileNamePoster);
-			updateMovie.setTrailerImage(fileNameTrailer);
 			
 			updateMovie.setUpdatedAt(new Date());
 			
