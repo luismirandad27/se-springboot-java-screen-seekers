@@ -38,13 +38,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-
 @Entity
-@Table(	name = "users", 
-		uniqueConstraints = { 
-			@UniqueConstraint(columnNames = "username"),
-			@UniqueConstraint(columnNames = "email") 
-		})
+@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
+		@UniqueConstraint(columnNames = "email") })
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,83 +61,90 @@ public class User {
 	@Size(max = 120)
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "firstName")
 	private String firstName;
-	
+
 	@Column(name = "lastName")
 	private String lastName;
-	
+
 	@Column(name = "dateOfBirth")
 	private Date dateOfBirth;
-	
+
 	@Column(name = "phone")
 	private String phone;
-	
+
 	@Column(name = "address")
 	private String address;
-	
+
 	@Column(name = "city")
 	private String city;
-	
+
 	@Column(name = "province")
 	private String province;
-	
+
 	@Column(name = "country")
 	private String country;
-	
-	@Column(name= "profileImage")
+
+	@Column(name = "profileImage")
 	private String profileImage;
 
 	@Column(name = "createdAt")
 	private Date createdAt;
-	
+
 	@Column(name = "updatedAt")
 	private Date updatedAt;
-	
+
 	@Column(name = "deletedAt")
 	private Date deletedAt;
-	
-	
-	//Setting relation with Role table
+
+	// Setting relation with Role table
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(	name = "userRole", 
-				joinColumns = @JoinColumn(name = "user_id"), 
-				inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@JoinTable(name = "userRole", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
 	public User() {
 	}
-	
-	//Setting relation with Rating table (comes from a Many to Many relationship)
-	@OneToMany(mappedBy="user",
-				cascade = CascadeType.ALL,
-				fetch = FetchType.LAZY)
+
+	// Setting relation with Rating table (comes from a Many to Many relationship)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<Rating> ratings = new HashSet<>();
-	
-	//Setting relation with Watchlist table (comes from a One to Many relationship)
-	@OneToMany(mappedBy="user",
-				cascade = CascadeType.ALL,
-				fetch = FetchType.LAZY)
+
+	// Setting relation with Watchlist table (comes from a One to Many relationship)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<Watchlist> watchlists = new HashSet<>();
-	
-	
-	//Constructor to create the User in the database
+
+	// Constructor to create the User in the database
 	public User(String username, String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.createdAt = new Date();
 	}
-	
-	public User(String username, String email, String password, String firstName,
-			String lastName, Date dateOfBirth,
-			String phone, String address,
-			String city, String province,
-			String country) {
-		
+
+//	public User(String username, String email, String password, String firstName, String lastName, Date dateOfBirth,
+//			String phone, String address, String city, String province, String country) {
+//
+//		this.username = username;
+//		this.email = email;
+//		this.password = password;
+//		this.firstName = firstName;
+//		this.lastName = lastName;
+//		this.dateOfBirth = dateOfBirth;
+//		this.phone = phone;
+//		this.address = address;
+//		this.city = city;
+//		this.province = province;
+//		this.country = country;
+//		this.createdAt = new Date();
+//
+//	}
+
+	public User(String username, String email, String password, String firstName, String lastName, Date dateOfBirth,
+			String phone, String address, String city, String province, String country, String profileImage) {
+
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -154,7 +157,8 @@ public class User {
 		this.province = province;
 		this.country = country;
 		this.createdAt = new Date();
-		
+		this.profileImage = profileImage;
+
 	}
 
 	public Long getId() {
@@ -260,7 +264,7 @@ public class User {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -308,5 +312,5 @@ public class User {
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
 	}
-	
+
 }

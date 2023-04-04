@@ -70,6 +70,8 @@ import com.webwizards.screenseekers.utils.ResponseMessage;
 @CrossOrigin(origins="http://localhost:8081")
 public class UserController {
 	
+	private final String URL_RESOURCES = "http://localhost:8080/resources/user-photos";
+	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
 
 	@Autowired
