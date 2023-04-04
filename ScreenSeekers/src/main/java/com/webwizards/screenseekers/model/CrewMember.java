@@ -82,6 +82,16 @@ public class CrewMember {
 		this.award = award;
 		this.createdAt = new Date();
 	}
+	public CrewMember(String firstName, String lastName, Date dateOfBirth, String nationality, String award, String profileImage) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.nationality = nationality;
+		this.award = award;
+		this.createdAt = new Date();
+		this.profileImage = profileImage;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -63,6 +63,8 @@ import com.webwizards.screenseekers.utils.ResponseMessage;
 @CrossOrigin(origins = "http://localhost:8081")
 public class CrewController {
 	
+	private final String URL_RESOURCES = "http://localhost:8080/resources/crew-photos";
+	
 	@Autowired
 	CrewMemberRepository crewRepo;
 	

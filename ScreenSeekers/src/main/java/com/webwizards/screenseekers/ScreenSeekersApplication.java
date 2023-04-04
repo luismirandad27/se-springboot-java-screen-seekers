@@ -342,21 +342,23 @@ public class ScreenSeekersApplication {
 			
 			
 			
-			CrewMember cm1 = new CrewMember("Tom", "Hanks", new Date(1956, 7, 9), "American", "Academy Award");
-			CrewMember cm2 = new CrewMember("Meryl", "Streep", new Date(1949, 6, 22), "American", "Academy Award");
-			CrewMember cm3 = new CrewMember("Christopher", "Nolan", new Date(1970, 7, 30), "British", "Academy Award");
-			CrewMember cm4 = new CrewMember("Cate", "Blanchett", new Date(1969, 5, 14), "Australian", "Academy Award");
-			CrewMember cm5 = new CrewMember("Brad", "Pitt", new Date(1963, 12, 18), "American", "Academy Award");
-			CrewMember cm6 = new CrewMember("Quentin", "Tarantino", new Date(1963, 3, 27), "American", "Academy Award");
-			CrewMember cm7 = new CrewMember("Denzel", "Washington", new Date(1954, 12, 28), "American", "Academy Award");
-			CrewMember cm8 = new CrewMember("Kathryn", "Bigelow", new Date(1951, 11, 27), "American", "Academy Award");
-			CrewMember cm9 = new CrewMember("Daniel", "Day-Lewis", new Date(1957, 4, 29), "British", "Academy Award");
-			CrewMember cm10 = new CrewMember("Natalie", "Portman", new Date(1981, 6, 9), "Israeli", "Academy Award");
-			CrewMember cm11 = new CrewMember("Martin", "Scorsese", new Date(1942, 11, 17), "American", "Academy Award");
-			CrewMember cm12 = new CrewMember("Morgan", "Freeman", new Date(1937, 6, 1), "American", "Academy Award");
-			CrewMember cm13 = new CrewMember("Kate", "Winslet", new Date(1975, 10, 5), "British", "Academy Award");
-			CrewMember cm14 = new CrewMember("George", "Lucas", new Date(1944, 5, 14), "American", "Academy Award");
-			CrewMember cm15 = new CrewMember("Clint", "Eastwood", new Date(1930, 5, 31), "American", "Academy Award");
+
+			CrewMember cm1 = new CrewMember("Tom", "Hanks", dateFormat.parse("1956-07-09"), "American", "Academy Award","1.jpeg");
+			CrewMember cm2 = new CrewMember("Meryl", "Streep", dateFormat.parse("1949-06-22"), "American", "Academy Award","2.jpeg");
+			CrewMember cm3 = new CrewMember("Christopher", "Nolan", dateFormat.parse("1970-07-30"), "British", "Academy Award","3.jpeg");
+			CrewMember cm4 = new CrewMember("Cate", "Blanchett", dateFormat.parse("1969-05-14"), "Australian", "Academy Award","4.jpeg");
+			CrewMember cm5 = new CrewMember("Brad", "Pitt", dateFormat.parse("1963-12-18"), "American", "Academy Award","5.jpeg");
+			CrewMember cm6 = new CrewMember("Quentin", "Tarantino", dateFormat.parse("1963-03-27"), "American", "Academy Award","6.jpeg");
+			CrewMember cm7 = new CrewMember("Denzel", "Washington", dateFormat.parse("1954-12-28"), "American", "Academy Award","7.jpeg");
+			CrewMember cm8 = new CrewMember("Kathryn", "Bigelow", dateFormat.parse("1951-11-27"), "American", "Academy Award","8.jpeg");
+			CrewMember cm9 = new CrewMember("Daniel", "Day-Lewis", dateFormat.parse("1957-04-29"), "British", "Academy Award","9.jpeg");
+			CrewMember cm10 = new CrewMember("Natalie", "Portman", dateFormat.parse("1981-06-09"), "Israeli", "Academy Award","10.jpeg");
+			CrewMember cm11 = new CrewMember("Martin", "Scorsese", dateFormat.parse("1942-11-17"), "American", "Academy Award","11.jpeg");
+			CrewMember cm12 = new CrewMember("Morgan", "Freeman", dateFormat.parse("1937-06-01"), "American", "Academy Award","12.jpeg");
+			CrewMember cm13 = new CrewMember("Kate", "Winslet", dateFormat.parse("1975-10-05"), "British", "Academy Award","13.jpeg");
+			CrewMember cm14 = new CrewMember("George", "Lucas", dateFormat.parse("1944-05-14"), "American", "Academy Award","14.jpeg");
+			CrewMember cm15 = new CrewMember("Clint", "Eastwood", dateFormat.parse("1930-05-31"), "American", "Academy Award","15.jpeg");
+
 
 			crewRepo.save(cm1);
 			crewRepo.save(cm2);
