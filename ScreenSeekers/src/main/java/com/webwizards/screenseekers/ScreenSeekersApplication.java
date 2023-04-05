@@ -97,57 +97,57 @@ public class ScreenSeekersApplication {
 			Movie movie6 = new Movie("The Silence of the Lambs", "Crime, Drama, Thriller",
 					dateFormat.parse("1991-02-14"), 118,
 					"A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer, a madman who skins his victims.",
-					"R", "https://www.youtube.com/embed/RuX2MQeb8UM",false,false,false,whereToWatch, "0006_The Silence of the Lambs.jfif", "0006_t-The Silence of the Lambs.jpeg");
+					"R", "https://www.youtube.com/embed/RuX2MQeb8UM",false,false,false,whereToWatch, "0006_The_Silence_of_the_Lambs.jfif", "0006_t-The_Silence_of_the_Lambs.jpeg");
 			
 			Movie movie7 = new Movie("Forrest Gump", "Drama, Romance", dateFormat.parse("1994-07-06"), 142,
 					"The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate and other historical events unfold through the perspective of an Alabama man with an IQ of 75, whose only desire is to be reunited with his childhood sweetheart.",
-					"PG-13", "https://www.youtube.com/embed/bLvqoHBptjg",false,false,false,whereToWatch, "0007_Forrest Gump.jfif", "0007_t-Forrest Gump.jpeg");
+					"PG-13", "https://www.youtube.com/embed/bLvqoHBptjg",false,false,false,whereToWatch, "0007_Forrest_Gump.jfif", "0007_t-Forrest_Gump.jpeg");
 
 			Movie movie8 = new Movie("The Shawshank Redemption", "Drama", dateFormat.parse("1994-10-14"), 142,
 			"Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-			"R", "https://www.youtube.com/embed/6hB3S9bIaco",false,false,false,whereToWatch, "0008_The Shawshank Redemption.jfif", "0008_t-The Shawshank Redemption.jpeg");
+			"R", "https://www.youtube.com/embed/6hB3S9bIaco",false,false,false,whereToWatch, "0008_The_Shawshank_Redemption.jfif", "0008_t-The_Shawshank_Redemption.jpeg");
 
 			Movie movie9 = new Movie("Pulp Fiction", "Crime, Drama", dateFormat.parse("1994-10-14"), 154,
 			"The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-			"R", "https://www.youtube.com/embed/s7EdQ4FqbhY",false,false,false,whereToWatch, "0009_Pulp Fiction.jfif", "0009_t-Pulp Fiction.jpg");
+			"R", "https://www.youtube.com/embed/s7EdQ4FqbhY",false,false,false,whereToWatch, "0009_Pulp_Fiction.jfif", "0009_t-Pulp_Fiction.jpg");
 
 			Movie movie10 = new Movie("The Godfather", "Crime, Drama", dateFormat.parse("1972-03-24"), 175,
 			"The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-			"R", "https://www.youtube.com/embed/sY1S34973zA",false,false,false,whereToWatch, "0010_The GodfatherI.jfif", "0010_t-The GodfatherI.jpeg");
+			"R", "https://www.youtube.com/embed/sY1S34973zA",false,false,false,whereToWatch, "0010_The_GodfatherI.jfif", "0010_t-The_GodfatherI.jpeg");
 
 			Movie movie11 = new Movie("The Godfather: Part II", "Crime, Drama", dateFormat.parse("1974-12-20"), 202,
 			"The early life and career of Vito Corleone in 1920s New York City is portrayed, while his son, Michael, expands and tightens his grip on the family crime syndicate.",
-			"R", "https://www.youtube.com/embed/qJr92K_hKl0",false,false,false,whereToWatch, "0011_The GodfatherII.jfif", "0011_The GodfatherII.jpeg");
+			"R", "https://www.youtube.com/embed/qJr92K_hKl0",false,false,false,whereToWatch, "0011_The_GodfatherII.jfif", "0011_The_GodfatherII.jpeg");
 
 			Movie movie12 = new Movie("The Prestige", "Drama, Mystery, Sci-Fi", dateFormat.parse("2006-10-20"), 130,
 			"Two stage magicians engage in competitive one-upmanship in an attempt to create the ultimate stage illusion.",
-			"PG-13", "https://www.youtube.com/embed/o4gHCmTQDVI",false,false,false,whereToWatch, "0012_The Prestige.jfif", "0012_t-the Prestige.jpeg");
+			"PG-13", "https://www.youtube.com/embed/o4gHCmTQDVI",false,false,false,whereToWatch, "0012_The_Prestige.jfif", "0012_t-the_Prestige.jpeg");
 
 			Movie movie13 = new Movie("Fight Club", "Drama", dateFormat.parse("1999-10-15"), 139,
 			"An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much, much more.",
-			"R", "https://www.youtube.com/embed/SUXWAEX2jlg",false,false,false,whereToWatch, "0013_Fight Club.jfif", "0013_t-Fight Club.jpeg");
+			"R", "https://www.youtube.com/embed/SUXWAEX2jlg",false,false,false,whereToWatch, "0013_Fight_Club.jfif", "0013_t-Fight_Club.jpeg");
 			
 			
 			//Simulation (on theathers)
 			Movie movie14 = new Movie("Doctor Strange in the Multiverse of Madness", "Action, Adventure, Fantasy",
 	                  dateFormat.parse("2022-03-25"), 152,
 	                  "After the events of Spider-Man: No Way Home, Dr. Strange continues his research on the Time Stone. But an old friend turned enemy seeks to destroy every sorcerer on Earth, messing with Strange's plan.",
-	                  "PG-13", "https://www.youtube.com/embed/aWzlQ2N6qqg", true, false, false, whereToWatch, "0014_Doctor Strange in the Multiverse of Madness.jfif", "0014_t-Doctor Strange in the Multiverse of Madness.jpeg");
+	                  "PG-13", "https://www.youtube.com/embed/aWzlQ2N6qqg", true, false, false, whereToWatch, "0014_Doctor_Strange_in_the_Multiverse_of_Madness.jfif", "0014_t-Doctor_Strange_in_the_Multiverse_of_Madness.jpeg");
 			
 			Movie movie15 = new Movie("Avatar: The Way of Water", "Action, Adventure, Fantasy",
 	                  dateFormat.parse("2022-12-16"), 160,
 	                  "Taking place a few years after the events of the original Avatar movie, this film follows Jake Sully and Neytiri as they explore more of the otherworldly planet of Pandora and encounter new threats and allies.",
-	                  "PG-13", "https://www.youtube.com/embed/a8Gx8wiNbs8", true, false, false, whereToWatch, "0015_AvatarThe Way of Water.jpeg", "0015_t-AvatarThe Way of Water.jpeg");
+	                  "PG-13", "https://www.youtube.com/embed/a8Gx8wiNbs8", true, false, false, whereToWatch, "0015_AvatarThe_Way_of_Water.jpeg", "0015_t-AvatarThe_Way_of_Water.jpeg");
 			
 			Movie movie16 = new Movie("Jurassic World: Dominion", "Action, Adventure, Sci-Fi",
 	                  dateFormat.parse("2022-06-10"), 151,
 	                  "The dinosaurs have escaped from Isla Nublar and now roam free in the world. As chaos ensues, the original Jurassic Park characters come together to stop the impending disaster.",
-	                  "PG-13", "https://www.youtube.com/embed/fb5ELWi-ekk", true, false, false, whereToWatch, "0016_Jurassic WorldDominion.jfif", "0016_t-Jurassic WorldDominion.jpeg");
+	                  "PG-13", "https://www.youtube.com/embed/fb5ELWi-ekk", true, false, false, whereToWatch, "0016_Jurassic_WorldDominion.jfif", "0016_t-Jurassic_WorldDominion.jpeg");
 			
 			Movie movie17 = new Movie("The Batman", "Action, Crime, Drama",
 	                  dateFormat.parse("2022-03-04"), 164,
 	                  "A new take on the Batman story, this film follows a young Bruce Wayne as he navigates his way through Gotham's corrupt underbelly and tries to stop a deadly villain known as The Riddler.",
-	                  "R", "https://www.youtube.com/embed/mqqft2x_Aa4", true, false, false, whereToWatch, "0017_The Batman.jfif", "0017_t-The Batman.jpeg");
+	                  "R", "https://www.youtube.com/embed/mqqft2x_Aa4", true, false, false, whereToWatch, "0017_The_Batman.jfif", "0017_t-The_Batman.jpeg");
 
 			Movie movie18 = new Movie(
 				    "The Queen's Gambit",
@@ -160,7 +160,7 @@ public class ScreenSeekersApplication {
 				    false,
 				    true,
 				    false,
-				    new String[] {"Netflix"},"0018_The Queens Gambit.jfif", "0018_t-The Queens Gambit.jpeg"
+				    new String[] {"Netflix"},"0018_The_Queens_Gambit.jfif", "0018_t-The_Queens_Gambit.jpeg"
 				);
 
 			
@@ -189,7 +189,7 @@ public class ScreenSeekersApplication {
 				    false,
 				    true,
 				    false,
-				    new String[] {"Netflix"},"0020_Red Notice.jfif", "0020_t-Red Notice.jpeg"
+				    new String[] {"Netflix"},"0020_Red_Notice.jfif", "0020_t-Red_Notice.jpeg"
 				);
 			
 			Movie movie21 = new Movie(
@@ -203,24 +203,24 @@ public class ScreenSeekersApplication {
 				    false,
 				    true,
 				    false,
-				    new String[] {"Netflix"},"0021_The Power of the Dog.jfif", "0021_t-The Power of the Dog.jpeg"
+				    new String[] {"Netflix"},"0021_The_Power_of_the_Dog.jfif", "0021_t-The_Power_of_the_Dog.jpeg"
 				);
 			
 			Movie movie22 = new Movie("Black Panther: Wakanda Forever", "Action, Adventure, Drama",
 					dateFormat.parse("2022-11-10"), 0,
 					"The sequel to the 2018 superhero hit Black Panther, which will explore the world of Wakanda after the death of King T'Challa.",
-					"PG-13", "https://www.youtube.com/embed/_Z3QKkl1WyM",false,false,true, whereToWatch, "0022_Black Panther Wakanda Forever.jfif", "0022_t-Black Panther Wakanda Forever.jpeg");
+					"PG-13", "https://www.youtube.com/embed/_Z3QKkl1WyM",false,false,true, whereToWatch, "0022_Black_Panther_Wakanda_Forever.jfif", "0022_t-Black_Panther_Wakanda_Forever.jpeg");
 			
 			Movie movie23 = new Movie("The Flash", "Action, Adventure, Fantasy",
 					dateFormat.parse("2022-11-03"), 0,
 					"Ezra Miller stars as the DC superhero The Flash, who gains superhuman speed after being struck by lightning and uses his abilities to fight crime and save the world.",
-					"PG-13", "https://www.youtube.com/embed/hebWYacbdvc",false,false,true, whereToWatch, "0023_The Flash.jfif", "0023_t-The Flash.jpeg");
+					"PG-13", "https://www.youtube.com/embed/hebWYacbdvc",false,false,true, whereToWatch, "0023_The_Flash.jfif", "0023_t-The_Flash.jpeg");
 
 			
 			Movie movie24 = new Movie("Fantastic Beasts: The Secrets of Dumbledore", "Adventure, Family, Fantasy",
 					dateFormat.parse("2022-04-14"), 0,
 					"The third installment of the Fantastic Beasts series, in which Newt Scamander teams up with a young Albus Dumbledore to battle the dark wizard Gellert Grindelwald.",
-					"PG-13", "https://www.youtube.com/embed/Y9dr2zw-TXQ",false,false,true, whereToWatch, "0024_Fantastic BeastsThe Secrets of Dumbledore.jfif", "0024_t-Fantastic BeastsThe Secrets of Dumbledore.jpeg");
+					"PG-13", "https://www.youtube.com/embed/Y9dr2zw-TXQ",false,false,true, whereToWatch, "0024_Fantastic_BeastsThe_Secrets_of_Dumbledore.jfif", "0024_t-Fantastic_BeastsThe_Secrets_of_Dumbledore.jpeg");
 			
 			movieRepo.save(movie1);
 			movieRepo.save(movie2);
