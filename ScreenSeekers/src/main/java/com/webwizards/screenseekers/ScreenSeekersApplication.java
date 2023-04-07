@@ -247,7 +247,6 @@ public class ScreenSeekersApplication {
 			movieRepo.save(movie23);
 			movieRepo.save(movie24);
 
-			
 			roleRepo.save(new Role(ERole.ROLE_ADMIN));
 			roleRepo.save(new Role(ERole.ROLE_USER));
 

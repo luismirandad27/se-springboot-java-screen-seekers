@@ -212,9 +212,6 @@ public class CrewController {
 					FileUploadUtil.deleteFile("resources/crew-photos/"+fileProfileImage);
 				}
 				
-				//try to delete if exists the folder /id/
-				FileUploadUtil.deleteFile("resources/crew-photos");
-				
 				crewRepo.deleteById(id);
 				
 				return new ResponseEntity<>(new ResponseMessage(message),HttpStatus.OK);
@@ -282,6 +279,14 @@ public class CrewController {
 			
 			if (!movie.isPresent() || !crew.isPresent()) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			
+			List<ProductionCrew> prodCrewMovie = productionCrewRepo.findByMovieId(movieId);
+			
+			for(ProductionCrew prodCrewItem: prodCrewMovie) {
+				if (prodCrewItem.getCrewMember().getId() ==  crewId) {
+					return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				}
 			}
 			
 			ProductionCrew prodCrew = new ProductionCrew(
