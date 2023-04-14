@@ -1,14 +1,30 @@
+/**
+ * Class File: AuthController.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the API methods for login and signup
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ **/
+
 package com.webwizards.screenseekers.controller;
 
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,14 +48,15 @@ import com.webwizards.screenseekers.repository.RoleRepository;
 import com.webwizards.screenseekers.repository.UserRepository;
 import com.webwizards.screenseekers.security.jwt.JwtUtils;
 import com.webwizards.screenseekers.security.services.UserDetailsImpl;
+import com.webwizards.screenseekers.utils.ResponseMessage;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins="http://localhost:8081")
 public class AuthController {
-	@Autowired
+	  @Autowired
 	  AuthenticationManager authenticationManager;
 
 	  @Autowired
@@ -57,30 +74,69 @@ public class AuthController {
 	  @PostMapping("/signin")
 	  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-	    Authentication authentication = authenticationManager.authenticate(
-	        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+	    //validate if the user exists and it's disabled
+		Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
+		
+		if (!user.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}else {
+			
+			User userObj = user.get();
+			
+			if (userObj.getDeletedAt() == null) {
+				Authentication authentication = authenticationManager.authenticate(
+				        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-	    SecurityContextHolder.getContext().setAuthentication(authentication);
-	    String jwt = jwtUtils.generateJwtToken(authentication);
-	    
-	    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
-	    List<String> roles = userDetails.getAuthorities().stream()
-	        .map(item -> item.getAuthority())
-	        .collect(Collectors.toList());
+				    SecurityContextHolder.getContext().setAuthentication(authentication);
+				    String jwt = jwtUtils.generateJwtToken(authentication);
+				    
+				    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
+				    List<String> roles = userDetails.getAuthorities().stream()
+				        .map(item -> item.getAuthority())
+				        .collect(Collectors.toList());
 
-	    return ResponseEntity.ok(new JwtResponse(jwt, 
-	                         userDetails.getId(), 
-	                         userDetails.getUsername(), 
-	                         userDetails.getEmail(), 
-	                         roles));
+				    return ResponseEntity.ok(new JwtResponse(jwt, 
+				                         userDetails.getId(), 
+				                         userDetails.getUsername(), 
+				                         userDetails.getEmail(), 
+				                         roles));
+			}else {
+				return new ResponseEntity<>(new ResponseMessage("Username: "+loginRequest.getUsername()+" does not exist"),HttpStatus.NOT_FOUND);
+			}
+				
+		}
+		  
+		
 	  }
 
 	  @PostMapping("/signup")
 	  public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
 	    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-	      return ResponseEntity
-	          .badRequest()
-	          .body(new MessageResponse("Error: Username is already taken!"));
+	    	
+	    	//if the user exists, let's see if it's disabled
+	    	User user = userRepository.findByUsername(signUpRequest.getUsername()).get();
+	    	
+	    	if (user.getDeletedAt() == null) {
+	    		//it's active!
+	    		return ResponseEntity
+	    		          .badRequest()
+	    		          .body(new MessageResponse("Error: Username is already taken!"));
+	    	}else {
+	    		
+	    		//it's inactive, let's re-activate it
+	    		user.setEmail(signUpRequest.getEmail());
+	    		user.setPassword(encoder.encode(signUpRequest.getPassword()));
+	    		user.setUpdatedAt(new Date());
+	    		user.setDeletedAt(null);
+	    		
+	    		userRepository.save(user);
+	    		
+	    		return ResponseEntity
+	    		          .ok()
+	    		          .body(new MessageResponse("User re-activated successfully"));
+	    		
+	    	}
+	      
 	    }
 
 	    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
@@ -93,6 +149,8 @@ public class AuthController {
 	    User user = new User(signUpRequest.getUsername(), 
 	               signUpRequest.getEmail(),
 	               encoder.encode(signUpRequest.getPassword()));
+	    
+	    user.setCreatedAt(new Date());
 
 	    Set<String> strRoles = signUpRequest.getRole();
 	    Set<Role> roles = new HashSet<>();

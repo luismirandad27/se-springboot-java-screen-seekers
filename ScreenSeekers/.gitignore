@@ -34,4 +34,4 @@ build/
 
 ### DS Store (Max) ###
 .DS_Store**
-.DS_Store
+../.DS_Store
