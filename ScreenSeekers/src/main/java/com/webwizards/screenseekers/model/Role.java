@@ -1,9 +1,22 @@
+/**
+ * Class File: Role.java
+ * 
+ * ------------
+ * Description:
+ * ------------
+ * This class will store the information of the different Role type
+ * 
+ * @author Luis Miguel Miranda
+ * @version 1.0
+ * 
+ */
+
 package com.webwizards.screenseekers.model;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "role")
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
