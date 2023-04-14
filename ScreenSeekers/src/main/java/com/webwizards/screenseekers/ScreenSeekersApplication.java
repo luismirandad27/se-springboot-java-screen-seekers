@@ -67,8 +67,7 @@ public class ScreenSeekersApplication {
 
 		return args -> {
 			
-			//MOVIE'S SAMPLES
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
 			String [] whereToWatch = new String[] {"Netflix","Cinema","PrimeVideo"};
 			
@@ -252,14 +251,14 @@ public class ScreenSeekersApplication {
 
 			
 			//USER'S SAMPLES
-			User user1= new User("lmirandad","lmirandad27@gmail.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Luis","Miranda",dateFormat.parse("1993-03-01"),"564-669-3183","23 South Road","Vancouver","BC","Canada","1.jpg");
-			User user2= new User("jkeppin1","jkeppin1@forbes.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Jaclyn","Keppin",dateFormat.parse("1994-09-28"),"428-461-2797","63 Bashford Avenue","Vancouver","BC","Canada","2.jpg");
-			User user3= new User("sshaxby2","sshaxby2@taobao.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Sharleen","Shaxby",dateFormat.parse("1987-08-07"),"843-912-8340","62111 Graceland Point","Vancouver","BC","Canada","3.jpg");
-			User user4= new User("bblagburn3","bblagburn3@forbes.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Brandise","Blagburn",dateFormat.parse("1981-12-03"),"112-574-5074","35866 Truax Plaza","Vancouver","BC","Canada","4.jpg");
-			User user5= new User("mdumphries4","mdumphries4@utexas.edu","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Monty","Dumphries",dateFormat.parse("1966-07-09"),"381-596-7879","81 Nancy Place","Vancouver","BC","Canada","5.jpg");
-			User user6= new User("akitcher5","akitcher5@liveinternet.ru","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Alica","Kitcher",dateFormat.parse("1978-01-02"),"747-924-7579","7126 Eliot Plaza","Vancouver","BC","Canada","6.jpg");
-			User user7= new User("ujoret6","ujoret6@mashable.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Ulrick","Joret",dateFormat.parse("1990-01-03"),"292-367-7000","07 Holmberg Junction","Vancouver","BC","Canada","7.jpg");
-			User user8= new User("admin123","admin@screenseekers.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Admin","Admin",null,null,null,null,null,null,"8.jpg");
+			User user1= new User("lmirandad","lmirandad27@gmail.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Luis","Miranda",dateFormat.parse("1993-03-01"),"564-669-3183","23 South Road","Vancouver","BC","Canada",null);
+			User user2= new User("jkeppin1","jkeppin1@forbes.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Jaclyn","Keppin",dateFormat.parse("1994-09-28"),"428-461-2797","63 Bashford Avenue","Vancouver","BC","Canada",null);
+			User user3= new User("sshaxby2","sshaxby2@taobao.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Sharleen","Shaxby",dateFormat.parse("1987-08-07"),"843-912-8340","62111 Graceland Point","Vancouver","BC","Canada",null);
+			User user4= new User("bblagburn3","bblagburn3@forbes.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Brandise","Blagburn",dateFormat.parse("1981-12-03"),"112-574-5074","35866 Truax Plaza","Vancouver","BC","Canada",null);
+			User user5= new User("mdumphries4","mdumphries4@utexas.edu","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Monty","Dumphries",dateFormat.parse("1966-07-09"),"381-596-7879","81 Nancy Place","Vancouver","BC","Canada",null);
+			User user6= new User("akitcher5","akitcher5@liveinternet.ru","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Alica","Kitcher",dateFormat.parse("1978-01-02"),"747-924-7579","7126 Eliot Plaza","Vancouver","BC","Canada",null);
+			User user7= new User("ujoret6","ujoret6@mashable.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Ulrick","Joret",dateFormat.parse("1990-01-03"),"292-367-7000","07 Holmberg Junction","Vancouver","BC","Canada",null);
+			User user8= new User("admin123","admin@screenseekers.com","$2a$10$uZ24huk8z6RtS84muhRADeoMe88ugfM0W13C2L1Olstp4R5hZ.qnu","Admin","Admin",null,null,null,null,null,null,null);
 
 
 			Set<Role> roles = new HashSet<>();
@@ -373,7 +372,7 @@ public class ScreenSeekersApplication {
 			crewRepo.save(cm12);
 			crewRepo.save(cm13);
 			crewRepo.save(cm14);
-			crewRepo.save(cm15);			
+			crewRepo.save(cm15);
 			
 			System.out.println("Initial dataset loaded into H2 Database\n");
 			
@@ -387,13 +386,6 @@ public class ScreenSeekersApplication {
 			System.out.println("User Name: sa");
 			System.out.println("No password required! :) \n");
 			
-			System.out.println("Testing API's:");
-			System.out.println("On the Project Folder, go to Test_API_Resources and import the json file into PostMan (ScreenSeekers-Backend.postman_collection)\n");
-			
-			System.out.println("Simulation of the Movie Recommendation:");
-			System.out.println("1. Access the H2 Database UI");
-			System.out.println("2. Copy & Paste the INSERT commands from the file DML_RATINGS_RECOMMENDATIONS_TEST.sql");
-			System.out.println("3. Run the API request related to this feature");
 		};
 
 	}
